@@ -12,7 +12,11 @@
         "dynamicLinks": true
       },
       {
-        "source": "!/events/**",
+        "source": "/memories/**",
+        "dynamicLinks": true
+      },
+      {
+        "source": "!/(events|memories)/",
         "destination": "/index.html"
       }
     ]
