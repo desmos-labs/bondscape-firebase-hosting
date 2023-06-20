@@ -16,7 +16,15 @@
         "dynamicLinks": true
       },
       {
-        "source": "!/(events|memories)/",
+        "source": "/privacy",
+        "destination": "/privacy.html"
+      },
+      {
+        "source": "/terms",
+        "destination": "/terms.html"
+      },
+      {
+        "source": "!/(events|memories|privacy|terms)/",
         "destination": "/index.html"
       }
     ]
