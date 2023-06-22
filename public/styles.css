@@ -57,8 +57,16 @@ footer {
 }
 
 .tagline {
+  margin-block: 0.83rem;
+  text-align: center;
+}
+.tagline h2, h3 {
   font-weight: 500;
   font-style: italic;
+  margin: 0;
+  margin-block: 0;
+  padding-block: 0;
+  padding: 0;
 }
 
 /* ------------------------- */
