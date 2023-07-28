@@ -19,7 +19,7 @@
   <!-- Add the QR code generator library -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
 
-  <script src="/scripts/creator.js?v=1.0.1"></script>
+  <script src="/scripts/creator.js?v=1.0.2"></script>
 </head>
 
 <body class="bg-[#FFFFFF] text-[#3B3B3B]">
@@ -35,7 +35,7 @@
     <span class="font-bold">Note</span>: This tool can only be used by people possessing an admin key.
   </p>
 
-  <form id="eventCreationForm" action="">
+  <form id="eventCreationForm" onsubmit="return false;">
     <div class="mb-4">
       <label for="name" class="block font-bold mb-2">Name <span class="text-[#8358f9]">*</span></label>
       <input type="text" id="name" name="name" autocomplete="off"
@@ -103,7 +103,8 @@
              required>
     </div>
 
-    <button type="submit" class="w-full bg-[#8358f9] hover:bg-[#5C3EAE] text-white font-bold py-2 px-4 rounded">
+    <button type="submit" onclick="submitForm()"
+            class="w-full bg-[#8358f9] hover:bg-[#5C3EAE] text-white font-bold py-2 px-4 rounded">
       Create Event
     </button>
   </form>

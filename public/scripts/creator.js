@@ -201,12 +201,8 @@ async function handleFormSubmission(event) {
 // --- Page setup
 // --------------------------------------------------------------------------------------------------------------------
 
-window.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("eventCreationForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    showLoadingIndicator();
-
-    setTimeout(handleFormSubmission, 2000);
-  });
-});
+function submitForm(event) {
+  event.preventDefault();
+  showLoadingIndicator();
+  setTimeout(handleFormSubmission, 2000);
+}
