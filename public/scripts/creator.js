@@ -201,8 +201,7 @@ async function handleFormSubmission(event) {
 // --- Page setup
 // --------------------------------------------------------------------------------------------------------------------
 
-function submitForm(event) {
-  event.preventDefault();
+function submitForm() {
   showLoadingIndicator();
   setTimeout(handleFormSubmission, 2000);
 }
