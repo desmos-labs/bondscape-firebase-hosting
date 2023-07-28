@@ -1,5 +1,5 @@
 // const apiBase = "https://api-bondscape.testnet.desmos.network";
-const apiBase = "http://localhost:3000";
+const apiBase = "https://api-bondscape.testnet.desmos.network/";
 
 const values = {
   place_id: "",
