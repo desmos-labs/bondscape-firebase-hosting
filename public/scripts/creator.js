@@ -1,4 +1,3 @@
-// const apiBase = "https://api-bondscape.testnet.desmos.network";
 const apiBase = "https://api-bondscape.testnet.desmos.network/";
 
 const values = {
