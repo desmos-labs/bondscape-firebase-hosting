@@ -24,6 +24,10 @@
         "destination": "/terms.html"
       },
       {
+        "source": "/creator",
+        "destination": "/creator.html"
+      },
+      {
         "source": "!/(events|memories|privacy|terms)/",
         "destination": "/index.html"
       }
