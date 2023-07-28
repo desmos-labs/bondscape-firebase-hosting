@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "public",
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -14,22 +15,6 @@
       {
         "source": "/memories/**",
         "dynamicLinks": true
-      },
-      {
-        "source": "/privacy",
-        "destination": "/privacy.html"
-      },
-      {
-        "source": "/terms",
-        "destination": "/terms.html"
-      },
-      {
-        "source": "/creator",
-        "destination": "/creator.html"
-      },
-      {
-        "source": "!/(events|memories|privacy|terms)/",
-        "destination": "/index.html"
       }
     ]
   }
