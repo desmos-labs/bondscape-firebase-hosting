@@ -1,4 +1,4 @@
-const apiBase = "https://api-bondscape.testnet.desmos.network/";
+const apiBase = "https://api-bondscape.testnet.desmos.network";
 
 const values = {
   place_id: "",
@@ -201,7 +201,7 @@ async function handleFormSubmission(event) {
 // --- Page setup
 // --------------------------------------------------------------------------------------------------------------------
 
-window.addEventListener("DOMContentLoaded", (event) => {
+window.addEventListener("DOMContentLoaded", function () {
   document.getElementById("eventCreationForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
