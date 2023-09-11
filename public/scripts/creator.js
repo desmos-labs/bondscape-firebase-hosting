@@ -158,7 +158,7 @@ async function handleFormSubmission(event) {
     website: website,
     start_date: formatDate(startDate),
     end_date: formatDate(endDate),
-    place_id: placeID,
+    google_place_id: placeID,
     tags: splitItems(tags),
     organizers: splitItems(organizers),
   }
