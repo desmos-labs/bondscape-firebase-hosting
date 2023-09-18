@@ -2,6 +2,7 @@
 const nextConfig = {
   distDir: ".next",
   reactStrictMode: true,
+  output: 'standalone',
   rewrites: async () => [
     {
       source: "/public/creator.html",
