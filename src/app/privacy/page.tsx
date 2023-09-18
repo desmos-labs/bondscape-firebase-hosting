@@ -1,8 +1,28 @@
+// pages/PrivacyPolicy.tsx
+
 import React from "react";
+import Head from "next/head";
 
 const Privacy: React.FC = () => {
   return (
     <>
+      <Head>
+        <title>Privacy Policy | Bondscape</title>
+        <link rel="stylesheet" href="/styles.css?v=1.1.0" />
+        <link rel="manifest" href="/assets/manifest.json" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/assets/favicon/favicon-16x16.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/assets/favicon/favicon-32x32.png"
+        />
+      </Head>
       <body className="legal">
         {/* Title */}
         <h1>Bondscape Privacy Policy</h1>
@@ -11,10 +31,10 @@ const Privacy: React.FC = () => {
         </p>
         <p>
           This policy describes the privacy practices of Bondscape and related
-          content, features, and functionality (collectively, the
-          &#34;Platform&#34;) and the various services that we offer to you on
-          or through the Platform (the &#34;Services&#34;). Users of our
-          Services are referred to as &#34;users&#34; or &#34;you&#34;.
+          content, features, and functionality (collectively, the "Platform")
+          and the various services that we offer to you on or through the
+          Platform (the "Services"). Users of our Services are referred to as
+          "users" or "you".
         </p>
         <p>
           <strong>
@@ -68,10 +88,10 @@ const Privacy: React.FC = () => {
           Data Collection and Data Retention
         </h2>
         <p>
-          For the purpose of this policy, &#34;<strong>personal data</strong>
-          &#34; refers to any information which is related to an identified or
-          identifiable natural person. &#34;Personal data&#34; and &#34;personal
-          information&#34; are used interchangeably.
+          For the purpose of this policy, "<strong>personal data</strong>"
+          refers to any information which is related to an identified or
+          identifiable natural person. "Personal data" and "personal
+          information" are used interchangeably.
         </p>
         {/* Add the rest of the content similarly */}
 
