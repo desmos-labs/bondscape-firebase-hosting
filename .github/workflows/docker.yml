@@ -30,7 +30,7 @@ jobs:
       - name: Prepare tags 🏷️
         id: prep
         run: |
-          DOCKER_IMAGE=desmoslabs/bondscape-website
+          DOCKER_IMAGE=desmos-labs/bondscape-website
           VERSION=edge
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
