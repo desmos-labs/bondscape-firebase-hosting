@@ -9,6 +9,10 @@
     ],
     "rewrites": [
       {
+        "source": "**",
+        "function": "nextjsFunc"
+      },
+      {
         "source": "/events/**",
         "dynamicLinks": true
       },
@@ -16,6 +20,14 @@
         "source": "/memories/**",
         "dynamicLinks": true
       }
+    ]
+  },
+  "functions": {
+    "runtime": "nodejs16",
+    "source": ".",
+    "predeploy": [
+      "npm --prefix \"$PROJECT_DIR\" install",
+      "npm --prefix \"$PROJECT_DIR\" run build"
     ]
   }
 }

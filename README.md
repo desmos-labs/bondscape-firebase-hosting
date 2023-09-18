@@ -20,5 +20,5 @@ npm install -g firebase-tools
 To test this website on your local machine, just run the following command:
 
 ```
-firebase emulators:start --only hosting
+yarn serve
 ```

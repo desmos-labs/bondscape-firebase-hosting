@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Poppins, system-ui, sans-serif;
+  }
+}
 
 body {
   margin: 0;
@@ -8,7 +16,6 @@ body {
   justify-content: center;
   background: #8358F9;
   color: #fff;
-  font-family: 'Poppins', Arial, sans-serif;
 }
 
 a {
@@ -51,7 +58,7 @@ footer {
 .logo {
   width: 20rem;
   height: 20rem;
-  background-image: url("assets/logo.svg");
+  background-image: url("images/logo.svg");
   background-size: cover;
   display: block;
 }
