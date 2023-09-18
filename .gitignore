@@ -101,3 +101,6 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# Docker
+docker-compose.yml

@@ -1,0 +1,12 @@
+version: '3.6'
+services:
+
+  ## Bondscape website
+  apis:
+    build: .
+    image: desmoslabs/bondscape-website
+    container_name: "bondscape-website"
+    user: "${UID}:${GID}"
+    ports:
+      - "3000:3000"
+    restart: always
