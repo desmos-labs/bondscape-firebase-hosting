@@ -52,7 +52,7 @@ jobs:
         with:
           # push: ${{ github.event_name != 'pull_request' }}
           push: true
-          tags: ${{ steps.prep.outputs.tags }}
+          tags: ghcr.io/${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
