@@ -10,7 +10,7 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "function": "nextjsFunc"
       },
       {
         "source": "/events/**",
@@ -20,6 +20,14 @@
         "source": "/memories/**",
         "dynamicLinks": true
       }
+    ]
+  },
+  "functions": {
+    "runtime": "nodejs14",
+    "source": ".",
+    "predeploy": [
+      "npm --prefix \"$PROJECT_DIR\" install",
+      "npm --prefix \"$PROJECT_DIR\" run build"
     ]
   }
 }

@@ -22,13 +22,15 @@
       "@/*": ["./src/app/*"]
     }
   },
-  // remove public/creator.js from include when refactored into a react component
+  // TODO: Remove public/creator.js from include when refactored into a react component
   "include": [
-    "next-env.d.ts",
+    "./next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
     "public/creator.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "./node_modules"
+  ]
 }
