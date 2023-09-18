@@ -1,28 +1,8 @@
-// pages/PrivacyPolicy.tsx
-
 import React from "react";
-import Head from "next/head";
 
 const Privacy: React.FC = () => {
   return (
     <>
-      <Head>
-        <title>Privacy Policy | Bondscape</title>
-        <link rel="stylesheet" href="/styles.css?v=1.1.0" />
-        <link rel="manifest" href="/assets/manifest.json" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/assets/favicon/favicon-16x16.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/assets/favicon/favicon-32x32.png"
-        />
-      </Head>
       <body className="legal">
         {/* Title */}
         <h1>Bondscape Privacy Policy</h1>

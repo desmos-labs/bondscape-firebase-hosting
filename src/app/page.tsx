@@ -1,10 +1,21 @@
+import Link from "next/link";
 import "./globals.css";
-import MainLayout from "@/layouts/MainLayout";
 
 export default function Home() {
   return (
-    <MainLayout title={"home"} description={"home description"} pageRoute="/">
-      <div className="h-screen w-full bg-center bg-cover bg-no-repeat bg-bondscape-home-bg" />
-    </MainLayout>
+    <>
+      <body className="home">
+        <div className="logo"></div>
+        <div className="tagline">
+          <h2>Create real bonds with engaging event experiences.</h2>
+        </div>
+        <footer>
+          <div className="footer-links">
+            <Link href="privacy">Privacy</Link>
+            <Link href="terms">Terms</Link>
+          </div>
+        </footer>
+      </body>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Bondscape",
+  title: "Terms of Service | Bondscape",
 };
 
 export default function RootLayout({

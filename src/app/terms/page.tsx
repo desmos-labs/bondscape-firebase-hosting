@@ -1,26 +1,8 @@
-// pages/TermsOfService.tsx
-
 import React from "react";
-import Head from "next/head";
 
 const Terms: React.FC = () => {
   return (
     <>
-      <Head>
-        <title>Terms of Service | Bondscape</title>
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/assets/favicon/favicon-16x16.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/assets/favicon/favicon-32x32.png"
-        />
-      </Head>
       <body className="legal">
         {/* Title */}
         <h1>Bondscape Terms of Service</h1>
