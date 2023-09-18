@@ -23,7 +23,7 @@
     ]
   },
   "functions": {
-    "runtime": "nodejs14",
+    "runtime": "nodejs16",
     "source": ".",
     "predeploy": [
       "npm --prefix \"$PROJECT_DIR\" install",

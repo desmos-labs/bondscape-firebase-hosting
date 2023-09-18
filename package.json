@@ -4,6 +4,9 @@
   "private": true,
   "main": "firebaseFunctions.js",
   "type": "commonjs",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "dev": "next",
     "build": "next build",
