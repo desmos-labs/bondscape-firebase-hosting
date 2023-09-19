@@ -11,7 +11,7 @@ This website is developed using [Next.js](https://nextjs.org).
 To test this website on your local machine, just run the following command:
 
 ```
-yarn serve
+yarn dev
 ```
 
 ## Docker
