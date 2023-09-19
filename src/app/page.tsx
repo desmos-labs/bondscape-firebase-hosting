@@ -1,4 +1,3 @@
-import "./globals.css";
 import MainLayout from "@/layouts/MainLayout";
 import React from "react";
 import Image from "next/image";
