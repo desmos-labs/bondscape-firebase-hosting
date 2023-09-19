@@ -21,7 +21,7 @@ const NavigationBar = () => {
     <nav
       className={`${
         colorChange ? "bg-bondscape-background-primary" : "bg-transparent"
-      } transition-colors duration-300 ease-in-out relative flex items-center w-full h-navbar-mobile md:h-navbar-md lg:h-navbar-lg xl:h-navbar-xl px-xMobile md:px-xMd lg:px-xLg xl:px-xXl`}
+      } transition-colors ease-in-out relative flex items-center w-full h-navbar-mobile md:h-navbar-md lg:h-navbar-lg xl:h-navbar-xl px-xMobile md:px-xMd lg:px-xLg xl:px-xXl`}
     >
       <Link href="/">
         <BondscapeLogo />
