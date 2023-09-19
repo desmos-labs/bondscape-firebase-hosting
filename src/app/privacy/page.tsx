@@ -21,10 +21,10 @@ export default function Privacy() {
           </p>
           <p>
             This policy describes the privacy practices of Bondscape and related
-            content, features, and functionality (collectively, the "Platform")
+            content, features, and functionality (collectively, the “Platform“)
             and the various services that we offer to you on or through the
-            Platform (the "Services"). Users of our Services are referred to as
-            "users" or "you".
+            Platform (the Services). Users of our Services are referred to as
+            “users“ or “you“.
           </p>
           <p>
             <strong className="text-bondscape-text_neutral_400">
@@ -64,7 +64,7 @@ export default function Privacy() {
           </h2>
           <p>
             BondScape is a mobile application designed for event management and
-            connection building, seamlessly integrating with the{" "}
+            connection building, seamlessly integrating with the
             <a href="https://desmos.network/">Desmos Blockchain</a>. Our
             platform empowers users to create decentralized and portable
             profiles, giving them complete ownership and control over their
@@ -90,13 +90,13 @@ export default function Privacy() {
             Data Collection and Data Retention
           </h2>
           <p>
-            For the purpose of this policy, "
+            For the purpose of this policy, “
             <strong className="text-bondscape-text_neutral_400">
               personal data
             </strong>
-            " refers to any information which is related to an identified or
-            identifiable natural person. "Personal data" and "personal
-            information" are used interchangeably.
+            “ refers to any information which is related to an identified or
+            identifiable natural person. “Personal data“ and “personal
+            information“ are used interchangeably.
           </p>
           {/* Add the rest of the content similarly */}
 
