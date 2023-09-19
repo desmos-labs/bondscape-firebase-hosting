@@ -40,7 +40,7 @@ const config: Config = {
         "navbar-xl": "80px",
       },
       minHeight: {
-        mobile: "589px",
+        mobile: "667px",
         md: "768px",
         lg: "752px",
         xl: "1000px",
@@ -73,7 +73,10 @@ const config: Config = {
         bondscape: {
           primary: "#8358F9",
           hover: "#FFF3E0",
-          text: "#E8E8E8",
+          text_neutral_300: "#E8E8E8",
+          text_neutral_400: "#CDCDCD",
+          text_neutral_600: "#8F8F8F",
+          textGray: "#8F8F8F",
           background: { primary: "#010308" },
         },
       },
