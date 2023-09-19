@@ -1,6 +1,7 @@
-export const metadata = {
-  title: "Bondscape",
-};
+import React from "react";
+import Footer from "@/components/Footer";
+import Head from "next/head";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -9,7 +10,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </Head>
+      {/* Main content */}
+      <body className="bg-bondscape-background-primary">
+        <div className={`relative mx-auto w-full min-w-[375px]`}>
+          {children}
+          <div className={`relative w-full min-w-[375px] bg-no-repeat`}>
+            <Footer />
+          </div>
+        </div>
+      </body>
     </html>
   );
 }
