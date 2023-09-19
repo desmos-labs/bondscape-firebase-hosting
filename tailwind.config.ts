@@ -75,6 +75,7 @@ const config: Config = {
           hover: "#FFF3E0",
           text_neutral_300: "#E8E8E8",
           text_neutral_400: "#CDCDCD",
+          text_neutral_500: "#B3B3B3",
           text_neutral_600: "#8F8F8F",
           textGray: "#8F8F8F",
           background: { primary: "#010308" },
