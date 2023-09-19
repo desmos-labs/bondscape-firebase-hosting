@@ -50,7 +50,7 @@ export default function Home() {
               their bonds.
             </div>
             <div className="flex flex-row mt-[40px] justify-center lg:justify-start">
-              <Link href={"https://www.google.com"}>
+              <Link href={"https://testflight.apple.com/join/hVfWxAr0"}>
                 <div className="relative w-[160px] md:w-[202px] h-[48px] md:h-[60px]">
                   <Image
                     alt={"App Store Icon"}
@@ -60,8 +60,12 @@ export default function Home() {
                 </div>
               </Link>
               <span className="mr-[16px]"></span>
-              <Link href={"https://www.google.com"}>
-                <div className="relative w-[160px] md:w-[202px] h-[48px] md:h-[60px]">
+              <Link
+                href={
+                  "https://play.google.com/store/apps/details?id=mobile.bondscape.app"
+                }
+              >
+                <div className="relative w-[160px] md:w-[202px] h-[48px] md:h-[60px] hover:fill-red-500 transition-colors ease-in-out duration-300 cursor-pointer">
                   <Image
                     alt={"Google Play Icon"}
                     src={"/google-play-icon.png"}
