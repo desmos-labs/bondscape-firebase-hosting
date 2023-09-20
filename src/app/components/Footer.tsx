@@ -26,7 +26,7 @@ const Footer = () => {
               Privacy Policy
             </Link>
           </div>
-          <Link href="https://twitter.com/desmosnetwork" target="_blank">
+          <Link href="https://twitter.com/bondscape" target="_blank">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="28"
