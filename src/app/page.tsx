@@ -20,7 +20,7 @@ export const metadata = {
     description: "Create real bonds with engaging event experiences",
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_HOST}/bondscapeLogo.png`,
+        url: "https://bondscape.app/bondscapeLogo.png",
         width: 500,
         height: 100,
         alt: "Bondscape logo picture",
