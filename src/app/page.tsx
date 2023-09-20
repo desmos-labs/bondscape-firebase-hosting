@@ -7,6 +7,35 @@ import mockupImage from "../../public/mockup-image-mobile.webp";
 export const metadata = {
   title: "Bondscape",
   description: "Create real bonds with engaging event experiences",
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-US": "/en-US",
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: "https://bondscape.app/",
+    title: "Bondscape",
+    description: "Create real bonds with engaging event experiences",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_HOST}/bondscapeLogo.png`,
+        width: 500,
+        height: 100,
+        alt: "Bondscape logo picture",
+        type: "image/png",
+      },
+    ],
+    siteName: "Bondscape",
+  },
+  twitter: {
+    creator: "@bondscape",
+    card: "summary_large_image",
+    title: "Bondscape",
+    description: "Create real bonds with engaging event experiences",
+  },
+  keywords: ["Desmos", "Event", "Crypto"],
 };
 
 export default function Home() {
