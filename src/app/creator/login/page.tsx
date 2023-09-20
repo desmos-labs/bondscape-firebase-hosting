@@ -2,18 +2,34 @@
 import React from "react";
 import MainLayout from "@/layouts/MainLayout";
 import Image from "next/image";
-import heroImage from "../../../public/bondscape-home-bg.png";
+import heroImage from "../../../../public/bondscape-home-bg.png";
+import overlay from "../../../../public/login-overlay-bg.png";
 import useBreakpoints from "@/hooks/useBreakpoints";
 
-export default function Privacy() {
-  const [isMobile, isMd, isLg, isXl, isBreakpointReady] = useBreakpoints();
+export default function Login() {
+  const [isMobile, isMd] = useBreakpoints();
+
+  if (isMobile || isMd) {
+    return (
+      <div className="flex flex-1 h-screen justify-center items-center px-xMobile">
+        <div className="text-white">
+          This page is not supported on mobile devices. Please use a desktop
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <MainLayout backgroundImage={true} backgroundImageSrc={heroImage}>
+    <MainLayout
+      backgroundImage={true}
+      backgroundImageSrc={heroImage}
+      backgroundOverlay={overlay}
+    >
       <div className="relative items-center w-full h-screen min-h-mobile md:min-h-md lg:min-h-lg xl:min-h-xl">
         <div className="flex flex-col lg:flex-row relative md:justify-center">
           <div className="w-[27rem] flex-col items-center gap-8 inline-flex mt-[120px]">
             <Image
+              priority
               alt={"Bondscape Logo with text"}
               src={"/bondscapeLogoWithIcon.png"}
               width={160}
