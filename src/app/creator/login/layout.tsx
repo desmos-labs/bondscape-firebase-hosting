@@ -1,8 +1,10 @@
 import React from "react";
 import "../../globals.css";
+import DefaultSEO from "@/seo";
 
 export const metadata = {
-  title: "Bondscape | Login",
+  ...DefaultSEO,
+  title: "Login | Bondscape",
 };
 
 export default function RootLayout({
