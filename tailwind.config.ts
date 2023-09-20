@@ -77,6 +77,7 @@ const config: Config = {
           text_neutral_400: "#CDCDCD",
           text_neutral_500: "#B3B3B3",
           text_neutral_600: "#8F8F8F",
+          text_neutral_800: "#3B3B3B",
           textGray: "#8F8F8F",
           background: { primary: "#010308" },
         },
