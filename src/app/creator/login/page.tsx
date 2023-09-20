@@ -25,9 +25,9 @@ export default function Login() {
       backgroundImageSrc={heroImage}
       backgroundOverlay={overlay}
     >
-      <div className="relative items-center w-full h-screen min-h-mobile md:min-h-md lg:min-h-lg xl:min-h-xl">
-        <div className="flex flex-col lg:flex-row relative md:justify-center">
-          <div className="w-[27rem] flex-col items-center gap-8 inline-flex mt-[120px]">
+      <div className="relative w-full h-screen flex justify-center">
+        <div className="flex justify-center">
+          <div className="w-[27rem] flex flex-col items-center gap-8 mt-48">
             <Image
               priority
               alt={"Bondscape Logo with text"}
@@ -39,7 +39,10 @@ export default function Login() {
               Create real bonds with engaging event experiences
             </p>
             <div className="flex flex-col gap-[24px]">
-              <div className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white">
+              <button
+                className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white hover:bg-[#EDEDED] transition-colors ease-in-out duration-300 cursor-pointer bondscape-box-shadow-medium"
+                onClick={() => console.log("test")}
+              >
                 <Image
                   alt={"Google login"}
                   src={"/googleLoginIcon.png"}
@@ -49,8 +52,11 @@ export default function Login() {
                 <p className="text-bondscape-text_neutral_800 font-semibold text-[16px] leading-[24px]">
                   Continue with Google
                 </p>
-              </div>
-              <div className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white">
+              </button>
+              <button
+                className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white hover:bg-[#EDEDED] transition-colors ease-in-out duration-300 cursor-pointer bondscape-box-shadow-medium"
+                onClick={() => console.log("test")}
+              >
                 <Image
                   alt={"Google login"}
                   src={"/appleLoginIcon.png"}
@@ -60,7 +66,7 @@ export default function Login() {
                 <p className="text-bondscape-text_neutral_800 font-semibold text-[16px] leading-[24px]">
                   Continue with Apple
                 </p>
-              </div>
+              </button>
             </div>
           </div>
         </div>
