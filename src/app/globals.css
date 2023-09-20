@@ -17,3 +17,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.bondscape-box-shadow-medium {
+  box-shadow: 0 3px 20px -4px rgba(10, 10, 10, 0.10);
+}

@@ -16,6 +16,7 @@ export default function Home() {
         <div className="flex flex-col lg:flex-row items-center relative h-full md:h-screen md:justify-center mt-16 md:mt-0">
           <div className="flex w-[280px] h-[382px] md:w-[350px] md:h-[478px] lg:w-[438px] lg:h-[597px] relative">
             <Image
+              priority
               quality={100}
               alt={"phone mockup"}
               fill

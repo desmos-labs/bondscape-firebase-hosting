@@ -23,7 +23,6 @@ const useBreakpoints = () => {
     if (isBreakpointReady || !(isMobile || isMd || isLg || isXl)) {
       return;
     }
-    console.log("passato");
     setIsBreakpointReady(true);
   }, [isMobile, isMd, isLg, isXl]);
 

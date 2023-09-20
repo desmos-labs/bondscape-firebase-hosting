@@ -1,33 +1,35 @@
 import React from "react";
 import NavigationBar from "@/components/NavigationBar";
-import Image from "next/image";
 import heroImage from "../../../public/bondscape-home-bg-masked.png";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import BackgroundImage from "@/components/BackgroundImage";
 
 export interface MainLayoutProps {
   readonly backgroundImage?: boolean;
+  readonly backgroundImageSrc?: StaticImport;
+  readonly backgroundOverlay?: StaticImport;
   readonly children: React.ReactNode;
 }
 
 const MainLayout = (props: MainLayoutProps) => {
-  const { children, backgroundImage } = props;
+  const { children, backgroundImage, backgroundImageSrc, backgroundOverlay } =
+    props;
 
   return (
     <div className={"relative"}>
       <div className={`sticky top-0 w-full z-20`}>
-        <div className="relative w-full min-w-[375px] left-1/2 -translate-x-1/2">
+        <div className="relative w-full min-w-[375px]">
           <NavigationBar />
         </div>
       </div>
       {backgroundImage && (
-        <Image
-          priority
-          alt={"phone mockup"}
-          src={heroImage}
-          sizes={"100vw"}
-          quality={100}
-          fill={true}
-          style={{ objectFit: "cover" }}
+        <BackgroundImage
+          image={backgroundImageSrc || heroImage}
+          alt={"Bondscape background"}
         />
+      )}
+      {backgroundOverlay && (
+        <BackgroundImage image={backgroundOverlay} alt={"Bondscape overlay"} />
       )}
       <main className="w-full">{children}</main>
     </div>
