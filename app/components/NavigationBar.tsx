@@ -1,8 +1,8 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import BondscapeLogo from "@/components/BondscapeLogo/BondscapeLogo";
-import useBreakpoints from "@/hooks/useBreakpoints";
+import BondscapeLogo from "./BondscapeLogo/BondscapeLogo";
+import useBreakpoints from "../hooks/useBreakpoints";
 
 const NavigationBar = () => {
   const [isMobile, isMd, isLg, isXl] = useBreakpoints();

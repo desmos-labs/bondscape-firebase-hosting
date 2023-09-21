@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import MainLayout from "@/layouts/MainLayout";
+import MainLayout from "../../layouts/MainLayout";
 import Image from "next/image";
-import heroImage from "../../../../public/bondscape-home-bg.png";
-import overlay from "../../../../public/login-overlay-bg.png";
-import useBreakpoints from "@/hooks/useBreakpoints";
+import heroImage from "../../../public/bondscape-home-bg.png";
+import overlay from "../../../public/login-overlay-bg.png";
+import useBreakpoints from "../../hooks/useBreakpoints";
 
 export default function Login() {
   const [isMobile, isMd] = useBreakpoints();

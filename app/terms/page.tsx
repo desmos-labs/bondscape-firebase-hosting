@@ -1,8 +1,8 @@
 // pages/TermsOfService.tsx
 
 import React from "react";
-import MainLayout from "@/layouts/MainLayout";
-import DefaultSEO from "@/seo";
+import MainLayout from "../layouts/MainLayout";
+import DefaultSEO from "../seo";
 
 export const metadata = {
   ...DefaultSEO,
