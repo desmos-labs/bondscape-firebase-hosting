@@ -10,9 +10,9 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 const multiApiLink = ApolloLink.from([
   new MultiAPILink({
     endpoints: {
-      forbole: "https://gql.desmos.forbole.com",
-      desmos: "https://gql.mainnet.desmos.network",
-      bondscape: "https://gql-bondscape.mainnet.desmos.network",
+      forbole: process.env.NEXT_PUBLIC_FORBOLE_GQL,
+      desmos: process.env.NEXT_PUBLIC_DESMOS_GQL,
+      bondscape: process.env.NEXT_PUBLIC_BONDSCAPE_GQL,
     } as any,
     httpSuffix: "/v1/graphql",
     wsSuffix: "/v1/graphql",

@@ -10,11 +10,9 @@ export const chainConfig = {
   tickerName: "Desmos",
   rpcTarget: "https://rpc.mainnet.desmos.network",
 };
-
 export const newWeb3AuthClient = () =>
   new Web3AuthNoModal({
-    clientId:
-      "BHWelFcafG0YM-MPEXXcjaFhs6MsIb85h7q2ZmgKgv_-6X8RCacaOQ0KTF8_A5LTyxXkdccCxxASdIUEmT50-_I",
+    clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID_MAINNET,
     web3AuthNetwork: OPENLOGIN_NETWORK.CYAN,
     chainConfig,
   });
