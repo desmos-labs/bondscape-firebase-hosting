@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { ContentWidth } from "../utils/sizes";
+import { ContentWidth } from "@/utils/sizes";
 
 const useBreakpoints = () => {
   const [isBreakpointReady, setIsBreakpointReady] = useState(false);
@@ -24,7 +24,7 @@ const useBreakpoints = () => {
       return;
     }
     setIsBreakpointReady(true);
-  }, [isMobile, isMd, isLg, isXl]);
+  }, [isMobile, isMd, isLg, isXl, isBreakpointReady]);
 
   return [isMobile, isMd, isLg, isXl, isBreakpointReady];
 };

@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "npm run build && next start"
+    "start": "yarn build && next start"
   },
   "dependencies": {
     "@types/node": "20.6.1",
