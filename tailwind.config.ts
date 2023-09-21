@@ -73,6 +73,8 @@ const config: Config = {
         bondscape: {
           primary: "#8358F9",
           hover: "#FFF3E0",
+          surface: "#21202A",
+          text_neutral_100: "#F6F6F7",
           text_neutral_300: "#E8E8E8",
           text_neutral_400: "#CDCDCD",
           text_neutral_500: "#B3B3B3",

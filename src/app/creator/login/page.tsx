@@ -1,13 +1,28 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import Image from "next/image";
 import heroImage from "../../../../public/bondscape-home-bg.png";
 import overlay from "../../../../public/login-overlay-bg.png";
-import useBreakpoints from "@/hooks/useBreakpoints";
+import useBreakpoints from "@/hooks/layout/useBreakpoints";
+import useLoginWithWeb3Auth from "@/hooks/web3Auth/useLoginWithWeb3Auth";
+import { DesmosChain } from "@/lib/LinkableChains";
+import { Web3AuthLoginProvider } from "@/types/web3auth";
+import Modal from "react-modal";
 
 export default function Login() {
+  const { login, loginLoading } = useLoginWithWeb3Auth(DesmosChain);
   const [isMobile, isMd] = useBreakpoints();
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   if (isMobile || isMd) {
     return (
@@ -41,7 +56,7 @@ export default function Login() {
             <div className="flex flex-col gap-[24px]">
               <button
                 className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white hover:bg-[#EDEDED] transition-colors ease-in-out duration-300 cursor-pointer bondscape-box-shadow-medium"
-                onClick={() => console.log("test")}
+                onClick={() => login(Web3AuthLoginProvider.Google)}
               >
                 <Image
                   alt={"Google login"}
@@ -55,7 +70,7 @@ export default function Login() {
               </button>
               <button
                 className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white hover:bg-[#EDEDED] transition-colors ease-in-out duration-300 cursor-pointer bondscape-box-shadow-medium"
-                onClick={() => console.log("test")}
+                onClick={() => login(Web3AuthLoginProvider.Apple)}
               >
                 <Image
                   alt={"Google login"}
@@ -70,7 +85,31 @@ export default function Login() {
             </div>
           </div>
         </div>
+        <button onClick={openModal} className="text-white">
+          Open Modal
+        </button>
       </div>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+          },
+          overlay: {
+            backgroundColor: "rgba(0,0,0,0.5)",
+          },
+        }}
+      >
+        <div>I am a modal</div>
+      </Modal>
     </MainLayout>
   );
 }

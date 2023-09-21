@@ -1,39 +1,62 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import BondscapeLogo from "@/components/BondscapeLogo/BondscapeLogo";
-import useBreakpoints from "@/hooks/useBreakpoints";
+import BondscapeLogo from "@/components/BondscapeLogo";
+import useBreakpoints from "@/hooks/layout/useBreakpoints";
+import { useActiveProfile } from "@/recoil/profiles";
+import { DesmosProfile } from "@/types/desmos";
+import SelectComponent from "@/components/SelectComponent";
+import { usePathname } from "next/navigation";
 
 const NavigationBar = () => {
-  const [isMobile, isMd, isLg, isXl] = useBreakpoints();
-  const [colorChange, setColorChange] = useState(false);
-  const changeNavbarColor = useCallback(() => {
-    if (window.scrollY >= 20 && !isLg && !isXl) {
-      setColorChange(true);
-    } else {
-      setColorChange(false);
+  // States
+  const [profile, setProfile] = useState<DesmosProfile | null | undefined>(
+    null,
+  );
+  const [navbarBgVisible, setNavbarBgVisible] = useState(false);
+  // Hooks
+  const [isMobile, isMd, isBreakpointReady] = useBreakpoints();
+  const activeProfile = useActiveProfile();
+  const pathname = usePathname();
+
+  const handleScroll = useCallback(() => {
+    const currentScrollPos = window.scrollY;
+    if (currentScrollPos >= 20 && (isMobile || isMd)) {
+      setNavbarBgVisible(true);
     }
-  }, [isLg, isXl]);
+  }, [isMd, isMobile]);
 
   useEffect(() => {
-    window.addEventListener("scroll", changeNavbarColor);
-  }, [changeNavbarColor]);
+    handleScroll();
+  }, [handleScroll, isBreakpointReady]);
+
+  useEffect(() => {
+    setProfile(activeProfile);
+  }, [activeProfile]);
+
   return (
     <nav
       className={`${
-        colorChange ? "bg-bondscape-background-primary" : "bg-transparent"
+        navbarBgVisible ? "bg-bondscape-background-primary" : "bg-transparent"
       } transition-colors ease-in-out sticky flex justify-between items-center w-full h-navbar-mobile md:h-navbar-md lg:h-navbar-lg xl:h-navbar-xl px-xMobile md:px-xMd lg:px-xLg xl:px-xXl`}
     >
       <Link href="/">
         <BondscapeLogo />
       </Link>
-      {process.env.NODE_ENV === "development" && !(isMobile || isMd) && (
-        <Link href={"/creator/login"}>
-          <div className="text-white font-semibold">
-            <button>Login</button>
-          </div>
-        </Link>
-      )}
+      <div>
+        {pathname !== "/creator/login" &&
+          (profile === null ? (
+            <></>
+          ) : profile ? (
+            <SelectComponent profile={profile} />
+          ) : (
+            <Link href={"/creator/login"}>
+              <div className="text-white font-semibold">
+                <button>Login</button>
+              </div>
+            </Link>
+          ))}
+      </div>
     </nav>
   );
 };

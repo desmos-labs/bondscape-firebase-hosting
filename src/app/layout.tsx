@@ -2,6 +2,9 @@ import React from "react";
 import Footer from "@/components/Footer";
 import Head from "next/head";
 import "./globals.css";
+import BondscapeWrapper from "@/components/BondscapeWrapper";
+import RecoilContextProvider from "@/components/RecoilContextProvider";
+import { ApolloWrapper } from "@/components/ApolloWrapper";
 
 export default function RootLayout({
   children,
@@ -20,7 +23,11 @@ export default function RootLayout({
       {/* Main content */}
       <body className="bg-bondscape-background-primary">
         <div className={`relative mx-auto w-full min-w-[375px]`}>
-          {children}
+          <RecoilContextProvider>
+            <ApolloWrapper>
+              <BondscapeWrapper>{children}</BondscapeWrapper>
+            </ApolloWrapper>
+          </RecoilContextProvider>
           <div className={`relative w-full min-w-[375px] bg-no-repeat`}>
             <Footer />
           </div>

@@ -24,7 +24,7 @@ const useBreakpoints = () => {
       return;
     }
     setIsBreakpointReady(true);
-  }, [isMobile, isMd, isLg, isXl]);
+  }, [isMobile, isMd, isLg, isXl, isBreakpointReady]);
 
   return [isMobile, isMd, isLg, isXl, isBreakpointReady];
 };

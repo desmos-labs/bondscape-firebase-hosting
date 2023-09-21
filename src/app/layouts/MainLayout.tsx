@@ -1,7 +1,7 @@
 import React from "react";
-import NavigationBar from "@/components/NavigationBar";
 import heroImage from "../../../public/bondscape-home-bg-masked.png";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import NavigationBar from "@/components/NavigationBar";
 import BackgroundImage from "@/components/BackgroundImage";
 
 export interface MainLayoutProps {
