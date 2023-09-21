@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import useBreakpoints from "@/hooks/useBreakpoints";
+import useBreakpoints from "../hooks/useBreakpoints";
 
 export interface ContentBackground {
   /**

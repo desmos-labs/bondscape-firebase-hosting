@@ -1,9 +1,9 @@
-import MainLayout from "@/layouts/MainLayout";
+import MainLayout from "./layouts/MainLayout";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import mockupImage from "../../public/mockup-image-mobile.webp";
-import DefaultSEO from "@/seo";
+import mockupImage from "../public/mockup-image-mobile.webp";
+import DefaultSEO from "./seo";
 
 export const metadata = {
   ...DefaultSEO,
