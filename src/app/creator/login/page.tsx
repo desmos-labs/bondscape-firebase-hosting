@@ -8,7 +8,6 @@ import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import useLoginWithWeb3Auth from "@/hooks/web3Auth/useLoginWithWeb3Auth";
 import { DesmosChain } from "@/lib/LinkableChains";
 import { Web3AuthLoginProvider } from "@/types/web3auth";
-import Modal from "react-modal";
 
 export default function Login() {
   const { login, loginLoading } = useLoginWithWeb3Auth(DesmosChain);
@@ -39,6 +38,7 @@ export default function Login() {
       backgroundImage={true}
       backgroundImageSrc={heroImage}
       backgroundOverlay={overlay}
+      isLoading={loginLoading}
     >
       <div className="relative w-full h-screen flex justify-center">
         <div className="flex justify-center">
@@ -85,12 +85,12 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <button onClick={openModal} className="text-white">
+        {/*        <button onClick={openModal} className="text-white">
           Open Modal
-        </button>
+        </button>*/}
       </div>
 
-      <Modal
+      {/*     <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
@@ -109,7 +109,7 @@ export default function Login() {
         }}
       >
         <div>I am a modal</div>
-      </Modal>
+      </Modal>*/}
     </MainLayout>
   );
 }
