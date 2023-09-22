@@ -12,21 +12,25 @@ import { setCookie } from "nookies";
 import axiosInstance from "../../services/axios";
 import useUser from "@/hooks/user/useUser";
 import { useRouter } from "next/navigation";
+import { err, ok, Result } from "neverthrow";
 
 /**
  * Hook that allows to log in using the Web3Auth protocol.
  * @param chain the chain to use.
  */
 const useLoginWithWeb3Auth = (chain: SupportedChain) => {
-  const fetchProfile = useGetOnChainProfile();
   const [loginLoading, setLoginLoading] = useState(false);
   const web3authClient = useWeb3AuthClient();
+  const fetchProfile = useGetOnChainProfile();
   const performLogin = usePerformLogin();
   const router = useRouter();
   const { saveUser } = useUser();
 
   const generatePrivateKey = useCallback(
-    async (loginProvider: string, provider: IProvider) => {
+    async (
+      loginProvider: string,
+      provider: IProvider,
+    ): Promise<Result<void, Error>> => {
       const hexEncodedPrivateKey = (await provider?.request({
         method: "private_key",
       })) as string;
@@ -59,14 +63,21 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
                 isLoggedIn: true,
                 bearer: bearer,
               }).then(() => {
-                web3authClient?.logout();
                 router.push("/");
               });
             }
           }
+        } else {
+          web3authClient?.logout();
+          setLoginLoading(false);
+          return err(
+            new Error("Profile not found", { cause: "profile_not_found" }),
+          );
         }
       }
+      web3authClient?.logout();
       setLoginLoading(false);
+      return ok(undefined);
     },
     [
       chain.prefix,
@@ -83,24 +94,20 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
    * @param loginProvider the login provider to use (google/apple).
    */
   const login = useCallback(
-    async (loginProvider: Web3AuthLoginProvider) => {
+    async (
+      loginProvider: Web3AuthLoginProvider,
+    ): Promise<Result<void, Error>> => {
       if (!web3authClient) {
-        return;
+        return err(new Error("Web3Auth client not initialized"));
       }
       // Wait a bit to let the button complete its animation.
       setLoginLoading(true);
-      try {
-        if (web3authClient.status !== "connected") {
-          await web3authClient.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
-            loginProvider,
-          });
-        }
-        await generatePrivateKey(loginProvider, web3authClient.provider!);
-      } catch (e: any) {
-        console.error(e);
-        setLoginLoading(false);
-        return;
+      if (web3authClient.status !== "connected") {
+        await web3authClient.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+          loginProvider,
+        });
       }
+      return generatePrivateKey(loginProvider, web3authClient.provider!);
     },
     [generatePrivateKey, web3authClient],
   );

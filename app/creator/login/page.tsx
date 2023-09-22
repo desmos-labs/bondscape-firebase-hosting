@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import Image from "next/image";
 import heroImage from "../../../public/bondscape-home-bg.png";
@@ -8,20 +8,31 @@ import useBreakpoints from "../../hooks/layout/useBreakpoints";
 import useLoginWithWeb3Auth from "../../hooks/web3Auth/useLoginWithWeb3Auth";
 import { DesmosChain } from "@/lib/WalletUtils/LinkableChains";
 import { Web3AuthLoginProvider } from "@/types/web3auth";
+import Modal from "react-modal";
 
 export default function Login() {
   const { login, loginLoading } = useLoginWithWeb3Auth(DesmosChain);
   const [isMobile, isMd] = useBreakpoints();
+  const [modalIsOpen, setIsModalOpen] = useState(false);
 
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
+  /**
+   * Wrapper function to login with a specific provider and handle the error with a modal
+   */
+  const loginWrapper = useCallback(
+    async (loginProvider: Web3AuthLoginProvider) => {
+      const result = await login(loginProvider);
+      if (result.isErr()) {
+        if (result.error.cause === "profile_not_found") {
+          setTimeout(() => setIsModalOpen(true), 300);
+        }
+      }
+    },
+    [login],
+  );
 
   if (isMobile || isMd) {
     return (
@@ -56,7 +67,7 @@ export default function Login() {
             <div className="flex flex-col gap-[24px]">
               <button
                 className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white hover:bg-[#EDEDED] transition-colors ease-in-out duration-300 cursor-pointer bondscape-box-shadow-medium"
-                onClick={() => login(Web3AuthLoginProvider.Google)}
+                onClick={() => loginWrapper(Web3AuthLoginProvider.Google)}
               >
                 <Image
                   alt={"Google login"}
@@ -70,7 +81,7 @@ export default function Login() {
               </button>
               <button
                 className="flex flex-row flex-1 py-[6px] w-[420px] rounded-[100px] justify-center items-center bg-white hover:bg-[#EDEDED] transition-colors ease-in-out duration-300 cursor-pointer bondscape-box-shadow-medium"
-                onClick={() => login(Web3AuthLoginProvider.Apple)}
+                onClick={() => loginWrapper(Web3AuthLoginProvider.Apple)}
               >
                 <Image
                   alt={"Google login"}
@@ -85,31 +96,46 @@ export default function Login() {
             </div>
           </div>
         </div>
-        {/*        <button onClick={openModal} className="text-white">
-          Open Modal
-        </button>*/}
       </div>
 
-      {/*     <Modal
+      <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
-        contentLabel="Example Modal"
+        contentLabel="Profile not found modal"
+        ariaHideApp={false}
+        closeTimeoutMS={300}
         style={{
           content: {
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            marginRight: "-50%",
-            transform: "translate(-50%, -50%)",
+            position: "absolute",
+            width: "40rem",
+            height: "10rem",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            margin: "auto",
+            alignSelf: "center",
+            backgroundColor: "#21202A",
+            borderRadius: "8px",
+            border: "none",
           },
           overlay: {
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             backgroundColor: "rgba(0,0,0,0.5)",
           },
         }}
       >
-        <div>I am a modal</div>
-      </Modal>*/}
+        <div className="relative flex flex-1 h-full w-full items-center justify-center">
+          <div className="text-center text-white font-semibold text-[16px] leading-[24px]">
+            Sorry, seems like you don't have a Desmos Profile yet. <br /> <br />
+            Please download Bondscape and create your own Desmos Profile
+          </div>
+        </div>
+      </Modal>
     </MainLayout>
   );
 }
