@@ -7,8 +7,8 @@ import {
 } from "@desmoslabs/desmjs";
 import { toHex } from "@cosmjs/encoding";
 import { ResultAsync } from "neverthrow";
-import { Wallet } from "../../types/wallet";
-import { LoginParams } from "../../services/axios/requests/Login";
+import { Wallet } from "@/types/wallet";
+import Login, { LoginParams } from "@/services/axios/requests/Login";
 import GetNonce from "../../services/axios/requests/GetNonce";
 
 /**
@@ -52,17 +52,15 @@ const generateLoginParams = (
  * After the login is successful, it returns the token that can be
  * used for future API requests.
  */
-const useGenerateLoginParams = () => {
-  return React.useCallback(
-    (account: Wallet): ResultAsync<LoginParams, Error> => {
-      return GetNonce(account.address)
-        .andThen((nonce) => generateLoginParams(nonce, account))
-        .map((result) => {
-          return result;
-        });
-    },
-    [],
-  );
+const usePerformLogin = () => {
+  return React.useCallback((account: Wallet): ResultAsync<string, Error> => {
+    return GetNonce(account.address)
+      .andThen((nonce) => generateLoginParams(nonce, account))
+      .andThen((params) => Login(params))
+      .map((result) => {
+        return result;
+      });
+  }, []);
 };
 
-export default useGenerateLoginParams;
+export default usePerformLogin;

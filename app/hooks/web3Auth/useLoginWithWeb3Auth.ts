@@ -8,7 +8,6 @@ import { fromHex } from "@cosmjs/encoding";
 import { generateWeb3AuthWallet } from "@/lib/WalletUtils";
 import { useWeb3AuthClient } from "@/recoil/web3auth";
 import usePerformLogin from "../apis/usePerformLogin";
-import Login from "../../services/axios/requests/Login";
 import { setCookie } from "nookies";
 import axiosInstance from "../../services/axios";
 import useUser from "@/hooks/user/useUser";
@@ -22,7 +21,7 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
   const fetchProfile = useGetOnChainProfile();
   const [loginLoading, setLoginLoading] = useState(false);
   const web3authClient = useWeb3AuthClient();
-  const generateLoginParams = usePerformLogin();
+  const performLogin = usePerformLogin();
   const router = useRouter();
   const { saveUser } = useUser();
 
@@ -44,20 +43,21 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
       if (account) {
         const profile = await fetchProfile(account.wallet.address);
         if (profile) {
-          const params = await generateLoginParams(account.wallet);
-          if (params.isOk()) {
-            const bearer = await Login(params.value);
-            if (bearer.isOk()) {
+          const loginResult = await performLogin(account.wallet);
+          if (loginResult.isOk()) {
+            const bearer = loginResult.value;
+            if (bearer) {
+              console.log("[TOKEN]:", bearer);
               // We use a cookie to store the bearer token for the apollo client
-              setCookie(null, "bearer_token", bearer.value);
+              setCookie(null, "bearer_token", bearer);
               axiosInstance.defaults.headers.common = {
-                Authorization: `Bearer ${bearer.value}`,
+                Authorization: `Bearer ${bearer}`,
               };
               await saveUser({
                 profile: profile,
                 account: account.account,
                 isLoggedIn: true,
-                bearer: bearer.value,
+                bearer: bearer,
               }).then(() => {
                 web3authClient?.logout();
                 router.push("/");
@@ -68,7 +68,14 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
       }
       setLoginLoading(false);
     },
-    [chain.prefix, fetchProfile, generateLoginParams, router, saveUser],
+    [
+      chain.prefix,
+      fetchProfile,
+      performLogin,
+      router,
+      saveUser,
+      web3authClient,
+    ],
   );
 
   /**
