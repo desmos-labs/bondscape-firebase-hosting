@@ -1,6 +1,7 @@
 import { createResponse, getSession } from "@/lib/session";
 import { NextRequest } from "next/server";
 import axiosInstance from "@/services/axios";
+import { destroyCookie } from "nookies";
 
 /**
  * POST /api/logout
@@ -12,6 +13,7 @@ export async function POST(request: NextRequest) {
   // Get the session
   const session = await getSession(request, response);
   // Clear axios authorization header
+  destroyCookie(null, "bearer_token");
   axiosInstance.defaults.headers.common = {
     Authorization: "",
   };
