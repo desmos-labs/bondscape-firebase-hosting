@@ -1,11 +1,11 @@
 import { useCallback, useState } from "react";
 import useGetOnChainProfile from "../profile/useGetOnChainProfile";
-import { Web3AuthLoginProvider } from "../../types/web3auth";
-import { SupportedChain } from "../../types/chains";
+import { Web3AuthLoginProvider } from "@/types/web3auth";
+import { SupportedChain } from "@/types/chains";
 import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { PrivateKeyType } from "@desmoslabs/desmjs";
 import { fromHex } from "@cosmjs/encoding";
-import { generateWeb3AuthWallet } from "../../lib/WalletUtils";
+import { generateWeb3AuthWallet } from "@/lib/WalletUtils";
 import { useSetActiveAccountAddress, useStoreAccount } from "@/recoil/accounts";
 import { useSetActiveProfile, useStoreProfile } from "@/recoil/profiles";
 import { useRouter } from "next/navigation";
