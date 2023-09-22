@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "public/creator.js"
+    "public/creator.js",
+    "./env.d.ts"
   ],
   "exclude": [
     "./node_modules"

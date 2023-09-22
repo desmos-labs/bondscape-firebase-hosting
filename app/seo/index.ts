@@ -1,6 +1,7 @@
 const DefaultSEO = {
   title: "Bondscape",
   description: "Create real bonds with engaging event experiences",
+  metadataBase: new URL("https://bondscape.app"),
   alternates: {
     canonical: "/",
     languages: {

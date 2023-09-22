@@ -17,8 +17,7 @@ const BackgroundImage = ({ image, alt }: Props) => {
       sizes={"100vw"}
       quality={100}
       fill={true}
-      className="transition-opacity opacity-[0] duration-[1s]"
-      style={{ objectFit: "cover" }}
+      className="transition-opacity opacity-[0] duration-[1s] object-cover"
       onLoadingComplete={(image) => {
         image.classList.remove("opacity-[0]");
       }}

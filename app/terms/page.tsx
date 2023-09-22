@@ -1,5 +1,3 @@
-// pages/TermsOfService.tsx
-
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
 import DefaultSEO from "../seo";
