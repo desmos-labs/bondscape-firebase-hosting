@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/app/*"]
+      "@/*": ["./app/*"]
     }
   },
   // TODO: Remove public/creator.js from include when refactored into a react component
