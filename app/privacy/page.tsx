@@ -10,8 +10,8 @@ export const metadata = {
 export default function Privacy() {
   return (
     <MainLayout backgroundImage={false}>
-      <div className="w-full min-h-mobile md:min-h-md lg:min-h-lg xl:min-h-xl">
-        <div className="flex flex-col text-bondscape-text_neutral_500 px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile text-[16px] leading-loose">
+      <div className="w-full">
+        <div className="flex flex-col text-bondscape-text_neutral_500 px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile md:py-yMd lg:py-yLg xl:py-yXl text-[16px] leading-loose">
           {/* Title */}
           <h1 className="text-2xl md:text-4xl font-semibold leading-9 text-bondscape-text_neutral_400 pb-[32px]">
             Privacy Policy

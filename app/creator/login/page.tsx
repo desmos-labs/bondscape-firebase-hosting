@@ -50,6 +50,7 @@ export default function Login() {
       backgroundImageSrc={heroImage}
       backgroundOverlay={overlay}
       isLoading={loginLoading}
+      disableNavbarBgInDesktop={true}
     >
       <div className="relative w-full h-screen flex justify-center">
         <div className="flex justify-center">

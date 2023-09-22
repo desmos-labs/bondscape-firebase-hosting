@@ -12,6 +12,8 @@ export interface MainLayoutProps {
   readonly backgroundOverlay?: StaticImport;
   readonly children: React.ReactNode;
   readonly isLoading?: boolean;
+  readonly disableNavbarBgInDesktop?: boolean;
+  readonly customClasses?: string;
 }
 
 const MainLayout = (props: MainLayoutProps) => {
@@ -21,6 +23,8 @@ const MainLayout = (props: MainLayoutProps) => {
     backgroundImageSrc,
     backgroundOverlay,
     isLoading,
+    disableNavbarBgInDesktop,
+    customClasses,
   } = props;
 
   return (
@@ -36,10 +40,12 @@ const MainLayout = (props: MainLayoutProps) => {
         }),
       }}
     >
-      <div className={"relative"}>
+      <div className={`${customClasses} relative h-full md:h-screen`}>
         <div className={`sticky top-0 w-full z-10`}>
           <div className="relative w-full min-w-[375px]">
-            <NavigationBar />
+            <NavigationBar
+              disableNavbarBgInDesktop={disableNavbarBgInDesktop}
+            />
           </div>
         </div>
         {backgroundImage && (

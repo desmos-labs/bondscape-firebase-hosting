@@ -22,7 +22,7 @@ export default function RootLayout({
       </Head>
       {/* Main content */}
       <body className="bg-bondscape-background-primary">
-        <div className={`relative mx-auto w-full min-w-[375px]`}>
+        <div className="relative mx-auto w-full min-w-[375px]">
           <RecoilContextProvider>
             <ApolloWrapper>
               <BondscapeWrapper>{children}</BondscapeWrapper>

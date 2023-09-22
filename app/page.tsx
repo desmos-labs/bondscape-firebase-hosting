@@ -11,9 +11,9 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <MainLayout backgroundImage={true}>
-      <div className="relative items-center w-full h-screen min-h-mobile md:min-h-md lg:min-h-lg xl:min-h-xl">
-        <div className="flex flex-col lg:flex-row items-center relative h-full md:h-screen md:justify-center mt-16 md:mt-0">
+    <MainLayout backgroundImage={true} disableNavbarBgInDesktop={true}>
+      <div className="relative items-center w-full h-screen">
+        <div className="flex flex-col lg:flex-row items-center relative h-screen justify-center">
           <div className="flex w-[280px] h-[382px] md:w-[350px] md:h-[478px] lg:w-[438px] lg:h-[597px] relative">
             <Image
               priority

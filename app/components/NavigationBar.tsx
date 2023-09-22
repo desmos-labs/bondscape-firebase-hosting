@@ -8,38 +8,53 @@ import useUser from "@/hooks/user/useUser";
 import SelectComponent from "@/components/SelectComponent";
 import { AnimatePresence, motion } from "framer-motion";
 
-const NavigationBar = () => {
+const NavigationBar = ({
+  disableNavbarBgInDesktop,
+}: {
+  disableNavbarBgInDesktop?: boolean;
+}) => {
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
-  const [isMobile, isMd, isBreakpointReady] = useBreakpoints();
+  const [isMobile, isMd, isLg, isXl, isBreakpointReady] = useBreakpoints();
   const pathname = usePathname();
   const { user } = useUser();
   const handleScroll = useCallback(() => {
-    const currentScrollPos = window.scrollY;
-    if (currentScrollPos >= 20 && (isMobile || isMd)) {
+    if (window.scrollY >= 60 && (isMobile || isMd)) {
       setNavbarBgVisible(true);
+    } else if (
+      window.scrollY >= 80 &&
+      (isLg || isXl) &&
+      !disableNavbarBgInDesktop
+    ) {
+      setNavbarBgVisible(true);
+    } else {
+      setNavbarBgVisible(false);
     }
-  }, [isMd, isMobile]);
+  }, [isLg, isMd, isMobile, isXl]);
 
   useEffect(() => {
-    handleScroll();
+    window.addEventListener("scroll", handleScroll);
   }, [handleScroll, isBreakpointReady]);
 
   const RightButton = useMemo(() => {
+    if (
+      pathname === "/creator/login" ||
+      pathname === "/creator/privacy" ||
+      pathname === "/creator/terms"
+    ) {
+      return;
+    }
     if (!user) {
       return;
     }
-    return (
-      pathname !== "/creator/login" &&
-      (user.profile ? (
-        <SelectComponent profile={user.profile} />
-      ) : (
-        <Link href={"/creator/login"}>
-          <div className="text-white font-semibold">
-            <button>Login</button>
-          </div>
-        </Link>
-      ))
+    return user.profile ? (
+      <SelectComponent profile={user.profile} />
+    ) : (
+      <Link href={"/creator/login"}>
+        <div className="text-white font-semibold">
+          <button>Login</button>
+        </div>
+      </Link>
     );
   }, [pathname, user]);
 
