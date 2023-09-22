@@ -6,7 +6,7 @@ import heroImage from "../../../public/bondscape-home-bg.png";
 import overlay from "../../../public/login-overlay-bg.png";
 import useBreakpoints from "../../hooks/layout/useBreakpoints";
 import useLoginWithWeb3Auth from "../../hooks/web3Auth/useLoginWithWeb3Auth";
-import { DesmosChain } from "@/lib/LinkableChains";
+import { DesmosChain } from "@/lib/WalletUtils/LinkableChains";
 import { Web3AuthLoginProvider } from "@/types/web3auth";
 
 export default function Login() {

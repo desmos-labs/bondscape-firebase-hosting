@@ -5,12 +5,12 @@ import { useSuspenseQuery } from "@apollo/client";
 import GetEvents from "../../services/graphql/queries/bondscape/GetEvents";
 
 export default function Events() {
-  const { data } = useSuspenseQuery<{
+  const { data, fetchMore } = useSuspenseQuery<{
     events: any[];
   }>(GetEvents, {
     variables: {
       offset: 0,
-      limit: 100,
+      limit: 2,
     },
     fetchPolicy: "no-cache",
   });

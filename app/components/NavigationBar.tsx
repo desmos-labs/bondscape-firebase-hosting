@@ -1,24 +1,19 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import BondscapeLogo from "./BondscapeLogo";
 import useBreakpoints from "../hooks/layout/useBreakpoints";
-import { useActiveProfile } from "@/recoil/profiles";
-import { DesmosProfile } from "@/types/desmos";
-import SelectComponent from "./SelectComponent";
 import { usePathname } from "next/navigation";
+import useUser from "@/hooks/user/useUser";
+import SelectComponent from "@/components/SelectComponent";
+import { AnimatePresence, motion } from "framer-motion";
 
 const NavigationBar = () => {
-  // States
-  const [profile, setProfile] = useState<DesmosProfile | null | undefined>(
-    null,
-  );
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
   const [isMobile, isMd, isBreakpointReady] = useBreakpoints();
-  const activeProfile = useActiveProfile();
   const pathname = usePathname();
-
+  const { user } = useUser();
   const handleScroll = useCallback(() => {
     const currentScrollPos = window.scrollY;
     if (currentScrollPos >= 20 && (isMobile || isMd)) {
@@ -30,9 +25,23 @@ const NavigationBar = () => {
     handleScroll();
   }, [handleScroll, isBreakpointReady]);
 
-  useEffect(() => {
-    setProfile(activeProfile);
-  }, [activeProfile]);
+  const RightButton = useMemo(() => {
+    if (!user) {
+      return;
+    }
+    return (
+      pathname !== "/creator/login" &&
+      (user.profile ? (
+        <SelectComponent profile={user.profile} />
+      ) : (
+        <Link href={"/creator/login"}>
+          <div className="text-white font-semibold">
+            <button>Login</button>
+          </div>
+        </Link>
+      ))
+    );
+  }, [pathname, user]);
 
   return (
     <nav
@@ -43,20 +52,11 @@ const NavigationBar = () => {
       <Link href="/">
         <BondscapeLogo />
       </Link>
-      <div>
-        {pathname !== "/creator/login" &&
-          (profile === null ? (
-            <></>
-          ) : profile ? (
-            <SelectComponent profile={profile} />
-          ) : (
-            <Link href={"/creator/login"}>
-              <div className="text-white font-semibold">
-                <button>Login</button>
-              </div>
-            </Link>
-          ))}
-      </div>
+      <AnimatePresence>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          {RightButton}
+        </motion.div>
+      </AnimatePresence>
     </nav>
   );
 };

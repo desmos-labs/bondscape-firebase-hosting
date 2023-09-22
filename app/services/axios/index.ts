@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BONDSCAPE_REST,
+  baseURL: "https://api-bondscape.mainnet.desmos.network",
   timeout: 15000,
 });
 

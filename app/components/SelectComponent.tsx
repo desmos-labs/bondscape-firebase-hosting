@@ -4,40 +4,24 @@ import { DesmosProfile } from "@/types/desmos";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import {
-  useDeleteCachedAccount,
-  useSetActiveAccountAddress,
-} from "@/recoil/accounts";
-import { useDeleteCachedProfile, useSetActiveProfile } from "@/recoil/profiles";
-import { useWeb3AuthClient } from "@/recoil/web3auth";
+import useLogout from "@/hooks/user/useLogout";
+import { useRouter } from "next/navigation";
 
 export default function SelectComponent({
   profile,
 }: {
   readonly profile: DesmosProfile;
 }) {
-  const setActiveAccountAddress = useSetActiveAccountAddress();
-  const setActiveProfile = useSetActiveProfile();
-  const deleteAccount = useDeleteCachedAccount();
-  const deleteProfile = useDeleteCachedProfile();
   const [subMenuVisible, setSubMenuVisible] = useState(false);
-  const web3authClient = useWeb3AuthClient();
+  const logout = useLogout();
+  const router = useRouter();
 
   const logoutFromWeb3Auth = useCallback(async () => {
-    setActiveAccountAddress(undefined);
-    setActiveProfile(undefined);
-    deleteAccount(profile.address);
-    deleteProfile(profile.address);
-    web3authClient?.logout();
+    await logout().then(() => {
+      router.replace("/");
+    });
     setSubMenuVisible(false);
-  }, [
-    deleteAccount,
-    deleteProfile,
-    profile.address,
-    setActiveAccountAddress,
-    setActiveProfile,
-    web3authClient,
-  ]);
+  }, [logout, router]);
 
   return (
     <div className="relative">
@@ -68,7 +52,7 @@ export default function SelectComponent({
           >
             <Link
               onClick={() => setSubMenuVisible(false)}
-              href={"/creator/myEvents"}
+              href={"/creator/events"}
               className="flex flex-row py-[12px] px-[16px] gap-2 border-b-[1px] border-solid border-[#4B4A58]"
             >
               <Image

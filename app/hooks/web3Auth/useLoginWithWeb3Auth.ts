@@ -6,14 +6,13 @@ import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { PrivateKeyType } from "@desmoslabs/desmjs";
 import { fromHex } from "@cosmjs/encoding";
 import { generateWeb3AuthWallet } from "@/lib/WalletUtils";
-import { useSetActiveAccountAddress, useStoreAccount } from "@/recoil/accounts";
-import { useSetActiveProfile, useStoreProfile } from "@/recoil/profiles";
-import { useRouter } from "next/navigation";
 import { useWeb3AuthClient } from "@/recoil/web3auth";
 import usePerformLogin from "../apis/usePerformLogin";
 import Login from "../../services/axios/requests/Login";
 import { setCookie } from "nookies";
 import axiosInstance from "../../services/axios";
+import useUser from "@/hooks/user/useUser";
+import { useRouter } from "next/navigation";
 
 /**
  * Hook that allows to log in using the Web3Auth protocol.
@@ -21,14 +20,11 @@ import axiosInstance from "../../services/axios";
  */
 const useLoginWithWeb3Auth = (chain: SupportedChain) => {
   const fetchProfile = useGetOnChainProfile();
-  const storeAccount = useStoreAccount();
-  const storeProfile = useStoreProfile();
-  const setActiveAccountAddress = useSetActiveAccountAddress();
-  const setActiveProfile = useSetActiveProfile();
   const [loginLoading, setLoginLoading] = useState(false);
-  const router = useRouter();
   const web3authClient = useWeb3AuthClient();
   const generateLoginParams = usePerformLogin();
+  const router = useRouter();
+  const { saveUser } = useUser();
 
   const generatePrivateKey = useCallback(
     async (loginProvider: string, provider: IProvider) => {
@@ -46,38 +42,33 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
       );
 
       if (account) {
-        const params = await generateLoginParams(account.wallet);
-        if (params.isOk()) {
-          const bearer = await Login(params.value);
-          if (bearer.isOk()) {
-            setCookie(null, "bearer_token", bearer.value);
-            axiosInstance.defaults.headers.common = {
-              Authorization: `Bearer ${bearer.value}`,
-            };
+        const profile = await fetchProfile(account.wallet.address);
+        if (profile) {
+          const params = await generateLoginParams(account.wallet);
+          if (params.isOk()) {
+            const bearer = await Login(params.value);
+            if (bearer.isOk()) {
+              // We use a cookie to store the bearer token for the apollo client
+              setCookie(null, "bearer_token", bearer.value);
+              axiosInstance.defaults.headers.common = {
+                Authorization: `Bearer ${bearer.value}`,
+              };
+              await saveUser({
+                profile: profile,
+                account: account.account,
+                isLoggedIn: true,
+                bearer: bearer.value,
+              }).then(() => {
+                web3authClient?.logout();
+                router.push("/");
+              });
+            }
           }
         }
       }
-
-      const profile = await fetchProfile(account.wallet.address);
-      if (profile) {
-        storeAccount(account.account);
-        storeProfile(profile);
-        setActiveAccountAddress(account.account.address);
-        setActiveProfile(profile);
-        router.replace("/");
-      }
       setLoginLoading(false);
     },
-    [
-      chain.prefix,
-      fetchProfile,
-      generateLoginParams,
-      router,
-      setActiveAccountAddress,
-      setActiveProfile,
-      storeAccount,
-      storeProfile,
-    ],
+    [chain.prefix, fetchProfile, generateLoginParams, router, saveUser],
   );
 
   /**
