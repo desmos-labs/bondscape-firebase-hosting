@@ -49,6 +49,10 @@ jobs:
         with:
           push: false
           tags: ${{ steps.prep.outputs.tags }}
+          build-args: |
+            COOKIES_STORAGE_PASSWORD=${{ secrets.COOKIES_STORAGE_PASSWORD }}
+            GOOGLE_PLACES_API_KEY=${{ secrets.GOOGLE_PLACES_API_KEY }}
+            WEB3_AUTH_CLIENT_ID=${{ secrets.WEB3_AUTH_CLIENT_ID }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
