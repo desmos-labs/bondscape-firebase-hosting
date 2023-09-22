@@ -131,7 +131,8 @@ export default function Login() {
       >
         <div className="relative flex flex-1 h-full w-full items-center justify-center">
           <div className="text-center text-white font-semibold text-[16px] leading-[24px]">
-            Sorry, seems like you don't have a Desmos Profile yet. <br /> <br />
+            Sorry, seems like you do not have a Desmos Profile yet. <br />
+            <br />
             Please download Bondscape and create your own Desmos Profile
           </div>
         </div>
