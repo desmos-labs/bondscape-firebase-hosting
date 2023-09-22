@@ -1,6 +1,6 @@
 import { PrivateKeySigner, SigningMode } from "@desmoslabs/desmjs";
-import { WalletGenerationData, WalletType } from "../../types/wallet";
-import { AccountWithWallet } from "../../types/account";
+import { WalletGenerationData, WalletType } from "@/types/wallet";
+import { AccountWithWallet } from "@/types/account";
 
 /**
  * Function allowing to generate a Web3AuthWallet.

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { atom, selector, useRecoilValue, useSetRecoilState } from "recoil";
-import { Account } from "../types/account";
+import { Account } from "@/types/account";
 import { recoilPersist } from "recoil-persist";
 
 // -------------------------------------------------------------------------------------------------------------------

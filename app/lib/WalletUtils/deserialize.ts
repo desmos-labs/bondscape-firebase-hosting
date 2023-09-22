@@ -3,7 +3,7 @@ import {
   SerializableWallet,
   SerializableWeb3AuthWallet,
   WalletType,
-} from "../../types/wallet";
+} from "@/types/wallet";
 
 /**
  * Deserialize a [SerializableWeb3AuthWallet] from a JSON parsed object.

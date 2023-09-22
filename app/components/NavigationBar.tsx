@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import BondscapeLogo from "./BondscapeLogo";
 import useBreakpoints from "../hooks/layout/useBreakpoints";
-import { useActiveProfile } from "../recoil/profiles";
-import { DesmosProfile } from "../types/desmos";
+import { useActiveProfile } from "@/recoil/profiles";
+import { DesmosProfile } from "@/types/desmos";
 import SelectComponent from "./SelectComponent";
 import { usePathname } from "next/navigation";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 import { useActiveAccountAddress } from "./accounts";
-import { DesmosProfile } from "../types/desmos";
+import { DesmosProfile } from "@/types/desmos";
 import { recoilPersist } from "recoil-persist";
 
 /**

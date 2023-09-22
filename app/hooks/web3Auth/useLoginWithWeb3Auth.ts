@@ -6,13 +6,10 @@ import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { PrivateKeyType } from "@desmoslabs/desmjs";
 import { fromHex } from "@cosmjs/encoding";
 import { generateWeb3AuthWallet } from "../../lib/WalletUtils";
-import {
-  useSetActiveAccountAddress,
-  useStoreAccount,
-} from "../../recoil/accounts";
-import { useSetActiveProfile, useStoreProfile } from "../../recoil/profiles";
+import { useSetActiveAccountAddress, useStoreAccount } from "@/recoil/accounts";
+import { useSetActiveProfile, useStoreProfile } from "@/recoil/profiles";
 import { useRouter } from "next/navigation";
-import { useWeb3AuthClient } from "../../recoil/web3auth";
+import { useWeb3AuthClient } from "@/recoil/web3auth";
 import usePerformLogin from "../apis/usePerformLogin";
 import Login from "../../services/axios/requests/Login";
 import { setCookie } from "nookies";

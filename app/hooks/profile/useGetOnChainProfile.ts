@@ -1,6 +1,6 @@
 import React from "react";
 import useCustomLazyQuery from "../graphql/useCustomLazyQuery";
-import { DesmosProfile, GQLProfileResult } from "../../types/desmos";
+import { DesmosProfile, GQLProfileResult } from "@/types/desmos";
 import GetProfileForAddress from "../../services/graphql/queries/desmos/GetProfileForAddress";
 
 /**

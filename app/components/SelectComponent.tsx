@@ -1,18 +1,15 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import { DesmosProfile } from "../types/desmos";
+import { DesmosProfile } from "@/types/desmos";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import {
   useDeleteCachedAccount,
   useSetActiveAccountAddress,
-} from "../recoil/accounts";
-import {
-  useDeleteCachedProfile,
-  useSetActiveProfile,
-} from "../recoil/profiles";
-import { useWeb3AuthClient } from "../recoil/web3auth";
+} from "@/recoil/accounts";
+import { useDeleteCachedProfile, useSetActiveProfile } from "@/recoil/profiles";
+import { useWeb3AuthClient } from "@/recoil/web3auth";
 
 export default function SelectComponent({
   profile,
