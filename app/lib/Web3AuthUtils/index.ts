@@ -1,5 +1,5 @@
-import { Web3AuthNoModal } from "@web3auth/no-modal";
-import { OPENLOGIN_NETWORK } from "@toruslabs/openlogin-utils";
+import {Web3AuthNoModal} from "@web3auth/no-modal";
+import {OPENLOGIN_NETWORK} from "@toruslabs/openlogin-utils";
 
 export const chainConfig = {
   chainNamespace: "other" as any,
@@ -10,9 +10,10 @@ export const chainConfig = {
   tickerName: "Desmos",
   rpcTarget: "https://rpc.mainnet.desmos.network",
 };
-export const newWeb3AuthClient = () =>
-  new Web3AuthNoModal({
-    clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID_MAINNET,
+export const newWeb3AuthClient = () => {
+  return new Web3AuthNoModal({
+    clientId: process.env.NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID,
     web3AuthNetwork: OPENLOGIN_NETWORK.CYAN,
     chainConfig,
   });
+}
