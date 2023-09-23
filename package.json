@@ -31,6 +31,8 @@
     "@web3auth/openlogin-adapter": "^7.0.1",
     "autoprefixer": "10.4.15",
     "axios": "^1.5.0",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "eslint-plugin-neverthrow": "^1.1.4",

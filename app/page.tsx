@@ -11,10 +11,14 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <MainLayout backgroundImage={true} disableNavbarBgInDesktop={true}>
-      <div className="relative items-center w-full h-screen">
-        <div className="flex flex-col lg:flex-row items-center relative h-screen justify-center">
-          <div className="flex w-[280px] h-[382px] md:w-[350px] md:h-[478px] lg:w-[438px] lg:h-[597px] relative">
+    <MainLayout
+      backgroundImage={true}
+      disableNavbarBgInDesktop={true}
+      fullScreenHeightOption={"onlyDesktop"}
+    >
+      <div className="flex justify-center w-full h-screen">
+        <div className="flex flex-col lg:flex-row items-center relative justify-center">
+          <div className="w-[280px] h-[382px] md:w-[350px] md:h-[478px] lg:w-[438px] lg:h-[597px] relative">
             <Image
               priority
               quality={100}

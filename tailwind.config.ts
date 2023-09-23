@@ -81,6 +81,7 @@ const config: Config = {
           text_neutral_600: "#8F8F8F",
           text_neutral_800: "#3B3B3B",
           textGray: "#8F8F8F",
+          inactiveTab: "#9B99A9",
           background: { primary: "#010308" },
         },
       },

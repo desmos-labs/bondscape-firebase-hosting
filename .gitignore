@@ -104,3 +104,9 @@ node_modules/
 
 # Docker
 docker-compose.yml
+
+#GQL
+schema.graphql
+graphql.config.yml
+schema.bondscape.graphql
+schema.desmos.graphql

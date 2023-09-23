@@ -10,7 +10,9 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const NavigationBar = ({
   disableNavbarBgInDesktop,
+  forceNavbarBgVisible,
 }: {
+  forceNavbarBgVisible?: boolean;
   disableNavbarBgInDesktop?: boolean;
 }) => {
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
@@ -27,10 +29,19 @@ const NavigationBar = ({
       !disableNavbarBgInDesktop
     ) {
       setNavbarBgVisible(true);
+    } else if (window.scrollY > 0 && forceNavbarBgVisible) {
+      setNavbarBgVisible(true);
     } else {
       setNavbarBgVisible(false);
     }
-  }, [isLg, isMd, isMobile, isXl]);
+  }, [
+    disableNavbarBgInDesktop,
+    forceNavbarBgVisible,
+    isLg,
+    isMd,
+    isMobile,
+    isXl,
+  ]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -61,7 +72,7 @@ const NavigationBar = ({
   return (
     <nav
       className={`${
-        navbarBgVisible ? "bg-bondscape-background-primary" : "bg-transparent"
+        navbarBgVisible ? "backdrop-blur-lg" : "bg-transparent"
       } transition-colors ease-in-out sticky flex justify-between items-center w-full h-navbar-mobile md:h-navbar-md lg:h-navbar-lg xl:h-navbar-xl px-xMobile md:px-xMd lg:px-xLg xl:px-xXl`}
     >
       <Link href="/">
