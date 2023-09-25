@@ -1,10 +1,8 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
-import DefaultSEO from "../seo";
 
 export const metadata = {
-  ...DefaultSEO,
-  title: "Terms of Service | Bondscape",
+  title: "Terms of Service",
 };
 
 export default function Terms() {

@@ -1,10 +1,8 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
-import DefaultSEO from "../seo";
 
 export const metadata = {
-  ...DefaultSEO,
-  title: "Privacy Policy | Bondscape",
+  title: "Privacy Policy",
 };
 
 export default function Privacy() {
