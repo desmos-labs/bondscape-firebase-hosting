@@ -20,7 +20,7 @@ type bond_shared_contacts {
     bond: bonds!
     bond_id: String!
     "An object relationship"
-    contact: user_contacts!
+    contact: user_contacts
     contact_id: String!
     id: String!
 }
@@ -154,7 +154,11 @@ type bonds_mutation_response {
 
 "columns and relationships of \"event_categories\""
 type event_categories {
+    "An object relationship"
+    category: events_categories!
     category_id: Int!
+    "An object relationship"
+    event: events!
     event_id: String!
     id: Int!
 }
@@ -565,6 +569,291 @@ type event_tags_variance_fields {
     event_count: Float
 }
 
+"columns and relationships of \"event_ticketing_settings\""
+type event_ticketing_settings {
+    "An object relationship"
+    event: events!
+    event_id: String!
+    id: Int!
+    total_tickets_per_user: bigint!
+}
+
+"aggregated selection of \"event_ticketing_settings\""
+type event_ticketing_settings_aggregate {
+    aggregate: event_ticketing_settings_aggregate_fields
+    nodes: [event_ticketing_settings!]!
+}
+
+"aggregate fields of \"event_ticketing_settings\""
+type event_ticketing_settings_aggregate_fields {
+    avg: event_ticketing_settings_avg_fields
+    count(columns: [event_ticketing_settings_select_column!], distinct: Boolean): Int!
+    max: event_ticketing_settings_max_fields
+    min: event_ticketing_settings_min_fields
+    stddev: event_ticketing_settings_stddev_fields
+    stddev_pop: event_ticketing_settings_stddev_pop_fields
+    stddev_samp: event_ticketing_settings_stddev_samp_fields
+    sum: event_ticketing_settings_sum_fields
+    var_pop: event_ticketing_settings_var_pop_fields
+    var_samp: event_ticketing_settings_var_samp_fields
+    variance: event_ticketing_settings_variance_fields
+}
+
+"aggregate avg on columns"
+type event_ticketing_settings_avg_fields {
+    id: Float
+    total_tickets_per_user: Float
+}
+
+"aggregate max on columns"
+type event_ticketing_settings_max_fields {
+    event_id: String
+    id: Int
+    total_tickets_per_user: bigint
+}
+
+"aggregate min on columns"
+type event_ticketing_settings_min_fields {
+    event_id: String
+    id: Int
+    total_tickets_per_user: bigint
+}
+
+"response of any mutation on the table \"event_ticketing_settings\""
+type event_ticketing_settings_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [event_ticketing_settings!]!
+}
+
+"aggregate stddev on columns"
+type event_ticketing_settings_stddev_fields {
+    id: Float
+    total_tickets_per_user: Float
+}
+
+"aggregate stddev_pop on columns"
+type event_ticketing_settings_stddev_pop_fields {
+    id: Float
+    total_tickets_per_user: Float
+}
+
+"aggregate stddev_samp on columns"
+type event_ticketing_settings_stddev_samp_fields {
+    id: Float
+    total_tickets_per_user: Float
+}
+
+"aggregate sum on columns"
+type event_ticketing_settings_sum_fields {
+    id: Int
+    total_tickets_per_user: bigint
+}
+
+"aggregate var_pop on columns"
+type event_ticketing_settings_var_pop_fields {
+    id: Float
+    total_tickets_per_user: Float
+}
+
+"aggregate var_samp on columns"
+type event_ticketing_settings_var_samp_fields {
+    id: Float
+    total_tickets_per_user: Float
+}
+
+"aggregate variance on columns"
+type event_ticketing_settings_variance_fields {
+    id: Float
+    total_tickets_per_user: Float
+}
+
+"columns and relationships of \"event_tickets\""
+type event_tickets {
+    "An object relationship"
+    category: event_tickets_categories!
+    category_id: String!
+    id: String!
+    owner_address: String!
+}
+
+"aggregated selection of \"event_tickets\""
+type event_tickets_aggregate {
+    aggregate: event_tickets_aggregate_fields
+    nodes: [event_tickets!]!
+}
+
+"aggregate fields of \"event_tickets\""
+type event_tickets_aggregate_fields {
+    count(columns: [event_tickets_select_column!], distinct: Boolean): Int!
+    max: event_tickets_max_fields
+    min: event_tickets_min_fields
+}
+
+"columns and relationships of \"event_tickets_categories\""
+type event_tickets_categories {
+    description: String
+    end_date: timestamptz
+    "An object relationship"
+    event: events!
+    event_id: String!
+    id: String!
+    name: String!
+    start_date: timestamptz
+    "An array relationship"
+    tickets(
+        "distinct select on columns"
+        distinct_on: [event_tickets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_order_by!],
+        "filter the rows returned"
+        where: event_tickets_bool_exp
+    ): [event_tickets!]!
+    "An aggregate relationship"
+    tickets_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_tickets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_order_by!],
+        "filter the rows returned"
+        where: event_tickets_bool_exp
+    ): event_tickets_aggregate!
+    tickets_per_user: bigint!
+    total_tickets_available: bigint!
+}
+
+"aggregated selection of \"event_tickets_categories\""
+type event_tickets_categories_aggregate {
+    aggregate: event_tickets_categories_aggregate_fields
+    nodes: [event_tickets_categories!]!
+}
+
+"aggregate fields of \"event_tickets_categories\""
+type event_tickets_categories_aggregate_fields {
+    avg: event_tickets_categories_avg_fields
+    count(columns: [event_tickets_categories_select_column!], distinct: Boolean): Int!
+    max: event_tickets_categories_max_fields
+    min: event_tickets_categories_min_fields
+    stddev: event_tickets_categories_stddev_fields
+    stddev_pop: event_tickets_categories_stddev_pop_fields
+    stddev_samp: event_tickets_categories_stddev_samp_fields
+    sum: event_tickets_categories_sum_fields
+    var_pop: event_tickets_categories_var_pop_fields
+    var_samp: event_tickets_categories_var_samp_fields
+    variance: event_tickets_categories_variance_fields
+}
+
+"aggregate avg on columns"
+type event_tickets_categories_avg_fields {
+    tickets_per_user: Float
+    total_tickets_available: Float
+}
+
+"aggregate max on columns"
+type event_tickets_categories_max_fields {
+    description: String
+    end_date: timestamptz
+    event_id: String
+    id: String
+    name: String
+    start_date: timestamptz
+    tickets_per_user: bigint
+    total_tickets_available: bigint
+}
+
+"aggregate min on columns"
+type event_tickets_categories_min_fields {
+    description: String
+    end_date: timestamptz
+    event_id: String
+    id: String
+    name: String
+    start_date: timestamptz
+    tickets_per_user: bigint
+    total_tickets_available: bigint
+}
+
+"response of any mutation on the table \"event_tickets_categories\""
+type event_tickets_categories_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [event_tickets_categories!]!
+}
+
+"aggregate stddev on columns"
+type event_tickets_categories_stddev_fields {
+    tickets_per_user: Float
+    total_tickets_available: Float
+}
+
+"aggregate stddev_pop on columns"
+type event_tickets_categories_stddev_pop_fields {
+    tickets_per_user: Float
+    total_tickets_available: Float
+}
+
+"aggregate stddev_samp on columns"
+type event_tickets_categories_stddev_samp_fields {
+    tickets_per_user: Float
+    total_tickets_available: Float
+}
+
+"aggregate sum on columns"
+type event_tickets_categories_sum_fields {
+    tickets_per_user: bigint
+    total_tickets_available: bigint
+}
+
+"aggregate var_pop on columns"
+type event_tickets_categories_var_pop_fields {
+    tickets_per_user: Float
+    total_tickets_available: Float
+}
+
+"aggregate var_samp on columns"
+type event_tickets_categories_var_samp_fields {
+    tickets_per_user: Float
+    total_tickets_available: Float
+}
+
+"aggregate variance on columns"
+type event_tickets_categories_variance_fields {
+    tickets_per_user: Float
+    total_tickets_available: Float
+}
+
+"aggregate max on columns"
+type event_tickets_max_fields {
+    category_id: String
+    id: String
+    owner_address: String
+}
+
+"aggregate min on columns"
+type event_tickets_min_fields {
+    category_id: String
+    id: String
+    owner_address: String
+}
+
+"response of any mutation on the table \"event_tickets\""
+type event_tickets_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [event_tickets!]!
+}
+
 "columns and relationships of \"events\""
 type events {
     "An array relationship"
@@ -593,6 +882,32 @@ type events {
         "filter the rows returned"
         where: bonds_bool_exp
     ): bonds_aggregate!
+    "An array relationship"
+    categories(
+        "distinct select on columns"
+        distinct_on: [event_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_categories_order_by!],
+        "filter the rows returned"
+        where: event_categories_bool_exp
+    ): [event_categories!]!
+    "An aggregate relationship"
+    categories_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_categories_order_by!],
+        "filter the rows returned"
+        where: event_categories_bool_exp
+    ): event_categories_aggregate!
     "An object relationship"
     cover_picture_hash: images_hashes
     cover_picture_url: String
@@ -722,10 +1037,63 @@ type events {
         where: event_participations_bool_exp
     ): event_participations_aggregate!
     start_date: timestamptz
+    status: event_status!
     tags(
         "JSON select path"
         path: String
     ): jsonb!
+    "An array relationship"
+    ticketing_setting(
+        "distinct select on columns"
+        distinct_on: [event_ticketing_settings_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_ticketing_settings_order_by!],
+        "filter the rows returned"
+        where: event_ticketing_settings_bool_exp
+    ): [event_ticketing_settings!]!
+    "An aggregate relationship"
+    ticketing_setting_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_ticketing_settings_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_ticketing_settings_order_by!],
+        "filter the rows returned"
+        where: event_ticketing_settings_bool_exp
+    ): event_ticketing_settings_aggregate!
+    "An array relationship"
+    tickets_categories(
+        "distinct select on columns"
+        distinct_on: [event_tickets_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_categories_order_by!],
+        "filter the rows returned"
+        where: event_tickets_categories_bool_exp
+    ): [event_tickets_categories!]!
+    "An aggregate relationship"
+    tickets_categories_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_tickets_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_categories_order_by!],
+        "filter the rows returned"
+        where: event_tickets_categories_bool_exp
+    ): event_tickets_categories_aggregate!
     website: String
 }
 
@@ -847,6 +1215,7 @@ type events_max_fields {
     location_locality: String
     name: String
     start_date: timestamptz
+    status: event_status
     website: String
 }
 
@@ -868,6 +1237,7 @@ type events_min_fields {
     location_locality: String
     name: String
     start_date: timestamptz
+    status: event_status
     website: String
 }
 
@@ -1091,6 +1461,27 @@ type mutation_root {
     ): event_participations_mutation_response
     "delete single row from the table: \"event_participations\""
     delete_event_participations_by_pk(id: Int!): event_participations
+    "delete data from the table: \"event_ticketing_settings\""
+    delete_event_ticketing_settings(
+        "filter the rows which have to be deleted"
+        where: event_ticketing_settings_bool_exp!
+    ): event_ticketing_settings_mutation_response
+    "delete single row from the table: \"event_ticketing_settings\""
+    delete_event_ticketing_settings_by_pk(id: Int!): event_ticketing_settings
+    "delete data from the table: \"event_tickets\""
+    delete_event_tickets(
+        "filter the rows which have to be deleted"
+        where: event_tickets_bool_exp!
+    ): event_tickets_mutation_response
+    "delete single row from the table: \"event_tickets\""
+    delete_event_tickets_by_pk(id: String!): event_tickets
+    "delete data from the table: \"event_tickets_categories\""
+    delete_event_tickets_categories(
+        "filter the rows which have to be deleted"
+        where: event_tickets_categories_bool_exp!
+    ): event_tickets_categories_mutation_response
+    "delete single row from the table: \"event_tickets_categories\""
+    delete_event_tickets_categories_by_pk(id: String!): event_tickets_categories
     "delete data from the table: \"events\""
     delete_events(
         "filter the rows which have to be deleted"
@@ -1140,6 +1531,13 @@ type mutation_root {
     ): profile_mutation_response
     "delete single row from the table: \"profile\""
     delete_profile_by_pk(address: String!): profile
+    "delete data from the table: \"user_contact_platforms\""
+    delete_user_contact_platforms(
+        "filter the rows which have to be deleted"
+        where: user_contact_platforms_bool_exp!
+    ): user_contact_platforms_mutation_response
+    "delete single row from the table: \"user_contact_platforms\""
+    delete_user_contact_platforms_by_pk(id: Int!): user_contact_platforms
     "delete data from the table: \"user_contacts\""
     delete_user_contacts(
         "filter the rows which have to be deleted"
@@ -1147,6 +1545,13 @@ type mutation_root {
     ): user_contacts_mutation_response
     "delete single row from the table: \"user_contacts\""
     delete_user_contacts_by_pk(id: String!): user_contacts
+    "delete data from the table: \"users_events_categories_interests\""
+    delete_users_events_categories_interests(
+        "filter the rows which have to be deleted"
+        where: users_events_categories_interests_bool_exp!
+    ): users_events_categories_interests_mutation_response
+    "delete single row from the table: \"users_events_categories_interests\""
+    delete_users_events_categories_interests_by_pk(id: Int!): users_events_categories_interests
     "insert data into the table: \"bond_shared_contacts\""
     insert_bond_shared_contacts(
         "the rows to be inserted"
@@ -1231,6 +1636,48 @@ type mutation_root {
         "upsert condition"
         on_conflict: event_participations_on_conflict
     ): event_participations
+    "insert data into the table: \"event_ticketing_settings\""
+    insert_event_ticketing_settings(
+        "the rows to be inserted"
+        objects: [event_ticketing_settings_insert_input!]!,
+        "upsert condition"
+        on_conflict: event_ticketing_settings_on_conflict
+    ): event_ticketing_settings_mutation_response
+    "insert a single row into the table: \"event_ticketing_settings\""
+    insert_event_ticketing_settings_one(
+        "the row to be inserted"
+        object: event_ticketing_settings_insert_input!,
+        "upsert condition"
+        on_conflict: event_ticketing_settings_on_conflict
+    ): event_ticketing_settings
+    "insert data into the table: \"event_tickets\""
+    insert_event_tickets(
+        "the rows to be inserted"
+        objects: [event_tickets_insert_input!]!,
+        "upsert condition"
+        on_conflict: event_tickets_on_conflict
+    ): event_tickets_mutation_response
+    "insert data into the table: \"event_tickets_categories\""
+    insert_event_tickets_categories(
+        "the rows to be inserted"
+        objects: [event_tickets_categories_insert_input!]!,
+        "upsert condition"
+        on_conflict: event_tickets_categories_on_conflict
+    ): event_tickets_categories_mutation_response
+    "insert a single row into the table: \"event_tickets_categories\""
+    insert_event_tickets_categories_one(
+        "the row to be inserted"
+        object: event_tickets_categories_insert_input!,
+        "upsert condition"
+        on_conflict: event_tickets_categories_on_conflict
+    ): event_tickets_categories
+    "insert a single row into the table: \"event_tickets\""
+    insert_event_tickets_one(
+        "the row to be inserted"
+        object: event_tickets_insert_input!,
+        "upsert condition"
+        on_conflict: event_tickets_on_conflict
+    ): event_tickets
     "insert data into the table: \"events\""
     insert_events(
         "the rows to be inserted"
@@ -1329,6 +1776,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: profile_on_conflict
     ): profile
+    "insert data into the table: \"user_contact_platforms\""
+    insert_user_contact_platforms(
+        "the rows to be inserted"
+        objects: [user_contact_platforms_insert_input!]!,
+        "upsert condition"
+        on_conflict: user_contact_platforms_on_conflict
+    ): user_contact_platforms_mutation_response
+    "insert a single row into the table: \"user_contact_platforms\""
+    insert_user_contact_platforms_one(
+        "the row to be inserted"
+        object: user_contact_platforms_insert_input!,
+        "upsert condition"
+        on_conflict: user_contact_platforms_on_conflict
+    ): user_contact_platforms
     "insert data into the table: \"user_contacts\""
     insert_user_contacts(
         "the rows to be inserted"
@@ -1343,6 +1804,20 @@ type mutation_root {
         "upsert condition"
         on_conflict: user_contacts_on_conflict
     ): user_contacts
+    "insert data into the table: \"users_events_categories_interests\""
+    insert_users_events_categories_interests(
+        "the rows to be inserted"
+        objects: [users_events_categories_interests_insert_input!]!,
+        "upsert condition"
+        on_conflict: users_events_categories_interests_on_conflict
+    ): users_events_categories_interests_mutation_response
+    "insert a single row into the table: \"users_events_categories_interests\""
+    insert_users_events_categories_interests_one(
+        "the row to be inserted"
+        object: users_events_categories_interests_insert_input!,
+        "upsert condition"
+        on_conflict: users_events_categories_interests_on_conflict
+    ): users_events_categories_interests
     "update data of the table: \"bond_shared_contacts\""
     update_bond_shared_contacts(
         "sets the columns of the filtered rows to the given values"
@@ -1463,6 +1938,68 @@ type mutation_root {
         "updates to execute, in order"
         updates: [event_participations_updates!]!
     ): [event_participations_mutation_response]
+    "update data of the table: \"event_ticketing_settings\""
+    update_event_ticketing_settings(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: event_ticketing_settings_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: event_ticketing_settings_set_input,
+        "filter the rows which have to be updated"
+        where: event_ticketing_settings_bool_exp!
+    ): event_ticketing_settings_mutation_response
+    "update single row of the table: \"event_ticketing_settings\""
+    update_event_ticketing_settings_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: event_ticketing_settings_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: event_ticketing_settings_set_input,
+        pk_columns: event_ticketing_settings_pk_columns_input!
+    ): event_ticketing_settings
+    "update multiples rows of table: \"event_ticketing_settings\""
+    update_event_ticketing_settings_many(
+        "updates to execute, in order"
+        updates: [event_ticketing_settings_updates!]!
+    ): [event_ticketing_settings_mutation_response]
+    "update data of the table: \"event_tickets\""
+    update_event_tickets(
+        "sets the columns of the filtered rows to the given values"
+        _set: event_tickets_set_input,
+        "filter the rows which have to be updated"
+        where: event_tickets_bool_exp!
+    ): event_tickets_mutation_response
+    "update single row of the table: \"event_tickets\""
+    update_event_tickets_by_pk(
+        "sets the columns of the filtered rows to the given values"
+        _set: event_tickets_set_input,
+        pk_columns: event_tickets_pk_columns_input!
+    ): event_tickets
+    "update data of the table: \"event_tickets_categories\""
+    update_event_tickets_categories(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: event_tickets_categories_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: event_tickets_categories_set_input,
+        "filter the rows which have to be updated"
+        where: event_tickets_categories_bool_exp!
+    ): event_tickets_categories_mutation_response
+    "update single row of the table: \"event_tickets_categories\""
+    update_event_tickets_categories_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: event_tickets_categories_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: event_tickets_categories_set_input,
+        pk_columns: event_tickets_categories_pk_columns_input!
+    ): event_tickets_categories
+    "update multiples rows of table: \"event_tickets_categories\""
+    update_event_tickets_categories_many(
+        "updates to execute, in order"
+        updates: [event_tickets_categories_updates!]!
+    ): [event_tickets_categories_mutation_response]
+    "update multiples rows of table: \"event_tickets\""
+    update_event_tickets_many(
+        "updates to execute, in order"
+        updates: [event_tickets_updates!]!
+    ): [event_tickets_mutation_response]
     "update data of the table: \"events\""
     update_events(
         "append existing jsonb value of filtered columns with new jsonb value"
@@ -1637,8 +2174,32 @@ type mutation_root {
         "updates to execute, in order"
         updates: [profile_updates!]!
     ): [profile_mutation_response]
+    "update data of the table: \"user_contact_platforms\""
+    update_user_contact_platforms(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: user_contact_platforms_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: user_contact_platforms_set_input,
+        "filter the rows which have to be updated"
+        where: user_contact_platforms_bool_exp!
+    ): user_contact_platforms_mutation_response
+    "update single row of the table: \"user_contact_platforms\""
+    update_user_contact_platforms_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: user_contact_platforms_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: user_contact_platforms_set_input,
+        pk_columns: user_contact_platforms_pk_columns_input!
+    ): user_contact_platforms
+    "update multiples rows of table: \"user_contact_platforms\""
+    update_user_contact_platforms_many(
+        "updates to execute, in order"
+        updates: [user_contact_platforms_updates!]!
+    ): [user_contact_platforms_mutation_response]
     "update data of the table: \"user_contacts\""
     update_user_contacts(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: user_contacts_inc_input,
         "sets the columns of the filtered rows to the given values"
         _set: user_contacts_set_input,
         "filter the rows which have to be updated"
@@ -1646,6 +2207,8 @@ type mutation_root {
     ): user_contacts_mutation_response
     "update single row of the table: \"user_contacts\""
     update_user_contacts_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: user_contacts_inc_input,
         "sets the columns of the filtered rows to the given values"
         _set: user_contacts_set_input,
         pk_columns: user_contacts_pk_columns_input!
@@ -1655,6 +2218,28 @@ type mutation_root {
         "updates to execute, in order"
         updates: [user_contacts_updates!]!
     ): [user_contacts_mutation_response]
+    "update data of the table: \"users_events_categories_interests\""
+    update_users_events_categories_interests(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: users_events_categories_interests_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: users_events_categories_interests_set_input,
+        "filter the rows which have to be updated"
+        where: users_events_categories_interests_bool_exp!
+    ): users_events_categories_interests_mutation_response
+    "update single row of the table: \"users_events_categories_interests\""
+    update_users_events_categories_interests_by_pk(
+        "increments the numeric columns with given value of the filtered values"
+        _inc: users_events_categories_interests_inc_input,
+        "sets the columns of the filtered rows to the given values"
+        _set: users_events_categories_interests_set_input,
+        pk_columns: users_events_categories_interests_pk_columns_input!
+    ): users_events_categories_interests
+    "update multiples rows of table: \"users_events_categories_interests\""
+    update_users_events_categories_interests_many(
+        "updates to execute, in order"
+        updates: [users_events_categories_interests_updates!]!
+    ): [users_events_categories_interests_mutation_response]
 }
 
 "columns and relationships of \"notifications\""
@@ -1664,6 +2249,7 @@ type notifications {
         path: String
     ): jsonb
     body: String
+    has_been_read: Boolean!
     id: String!
     image_url: String
     timestamp: timestamptz!
@@ -2015,6 +2601,90 @@ type query_root {
         "filter the rows returned"
         where: event_tags_bool_exp
     ): event_tags_aggregate!
+    "fetch data from the table: \"event_ticketing_settings\""
+    event_ticketing_settings(
+        "distinct select on columns"
+        distinct_on: [event_ticketing_settings_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_ticketing_settings_order_by!],
+        "filter the rows returned"
+        where: event_ticketing_settings_bool_exp
+    ): [event_ticketing_settings!]!
+    "fetch aggregated fields from the table: \"event_ticketing_settings\""
+    event_ticketing_settings_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_ticketing_settings_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_ticketing_settings_order_by!],
+        "filter the rows returned"
+        where: event_ticketing_settings_bool_exp
+    ): event_ticketing_settings_aggregate!
+    "fetch data from the table: \"event_ticketing_settings\" using primary key columns"
+    event_ticketing_settings_by_pk(id: Int!): event_ticketing_settings
+    "fetch data from the table: \"event_tickets\""
+    event_tickets(
+        "distinct select on columns"
+        distinct_on: [event_tickets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_order_by!],
+        "filter the rows returned"
+        where: event_tickets_bool_exp
+    ): [event_tickets!]!
+    "fetch aggregated fields from the table: \"event_tickets\""
+    event_tickets_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_tickets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_order_by!],
+        "filter the rows returned"
+        where: event_tickets_bool_exp
+    ): event_tickets_aggregate!
+    "fetch data from the table: \"event_tickets\" using primary key columns"
+    event_tickets_by_pk(id: String!): event_tickets
+    "fetch data from the table: \"event_tickets_categories\""
+    event_tickets_categories(
+        "distinct select on columns"
+        distinct_on: [event_tickets_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_categories_order_by!],
+        "filter the rows returned"
+        where: event_tickets_categories_bool_exp
+    ): [event_tickets_categories!]!
+    "fetch aggregated fields from the table: \"event_tickets_categories\""
+    event_tickets_categories_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_tickets_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_categories_order_by!],
+        "filter the rows returned"
+        where: event_tickets_categories_bool_exp
+    ): event_tickets_categories_aggregate!
+    "fetch data from the table: \"event_tickets_categories\" using primary key columns"
+    event_tickets_categories_by_pk(id: String!): event_tickets_categories
     "fetch data from the table: \"events\""
     events(
         "distinct select on columns"
@@ -2211,6 +2881,34 @@ type query_root {
     ): profile_aggregate!
     "fetch data from the table: \"profile\" using primary key columns"
     profile_by_pk(address: String!): profile
+    "fetch data from the table: \"user_contact_platforms\""
+    user_contact_platforms(
+        "distinct select on columns"
+        distinct_on: [user_contact_platforms_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [user_contact_platforms_order_by!],
+        "filter the rows returned"
+        where: user_contact_platforms_bool_exp
+    ): [user_contact_platforms!]!
+    "fetch aggregated fields from the table: \"user_contact_platforms\""
+    user_contact_platforms_aggregate(
+        "distinct select on columns"
+        distinct_on: [user_contact_platforms_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [user_contact_platforms_order_by!],
+        "filter the rows returned"
+        where: user_contact_platforms_bool_exp
+    ): user_contact_platforms_aggregate!
+    "fetch data from the table: \"user_contact_platforms\" using primary key columns"
+    user_contact_platforms_by_pk(id: Int!): user_contact_platforms
     "fetch data from the table: \"user_contacts\""
     user_contacts(
         "distinct select on columns"
@@ -2239,6 +2937,34 @@ type query_root {
     ): user_contacts_aggregate!
     "fetch data from the table: \"user_contacts\" using primary key columns"
     user_contacts_by_pk(id: String!): user_contacts
+    "fetch data from the table: \"users_events_categories_interests\""
+    users_events_categories_interests(
+        "distinct select on columns"
+        distinct_on: [users_events_categories_interests_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [users_events_categories_interests_order_by!],
+        "filter the rows returned"
+        where: users_events_categories_interests_bool_exp
+    ): [users_events_categories_interests!]!
+    "fetch aggregated fields from the table: \"users_events_categories_interests\""
+    users_events_categories_interests_aggregate(
+        "distinct select on columns"
+        distinct_on: [users_events_categories_interests_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [users_events_categories_interests_order_by!],
+        "filter the rows returned"
+        where: users_events_categories_interests_bool_exp
+    ): users_events_categories_interests_aggregate!
+    "fetch data from the table: \"users_events_categories_interests\" using primary key columns"
+    users_events_categories_interests_by_pk(id: Int!): users_events_categories_interests
 }
 
 type subscription_root {
@@ -2499,6 +3225,117 @@ type subscription_root {
         "filter the rows returned"
         where: event_tags_bool_exp
     ): [event_tags!]!
+    "fetch data from the table: \"event_ticketing_settings\""
+    event_ticketing_settings(
+        "distinct select on columns"
+        distinct_on: [event_ticketing_settings_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_ticketing_settings_order_by!],
+        "filter the rows returned"
+        where: event_ticketing_settings_bool_exp
+    ): [event_ticketing_settings!]!
+    "fetch aggregated fields from the table: \"event_ticketing_settings\""
+    event_ticketing_settings_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_ticketing_settings_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_ticketing_settings_order_by!],
+        "filter the rows returned"
+        where: event_ticketing_settings_bool_exp
+    ): event_ticketing_settings_aggregate!
+    "fetch data from the table: \"event_ticketing_settings\" using primary key columns"
+    event_ticketing_settings_by_pk(id: Int!): event_ticketing_settings
+    "fetch data from the table in a streaming manner: \"event_ticketing_settings\""
+    event_ticketing_settings_stream(
+        "maximum number of rows returned in a single batch"
+        batch_size: Int!,
+        "cursor to stream the results returned by the query"
+        cursor: [event_ticketing_settings_stream_cursor_input]!,
+        "filter the rows returned"
+        where: event_ticketing_settings_bool_exp
+    ): [event_ticketing_settings!]!
+    "fetch data from the table: \"event_tickets\""
+    event_tickets(
+        "distinct select on columns"
+        distinct_on: [event_tickets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_order_by!],
+        "filter the rows returned"
+        where: event_tickets_bool_exp
+    ): [event_tickets!]!
+    "fetch aggregated fields from the table: \"event_tickets\""
+    event_tickets_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_tickets_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_order_by!],
+        "filter the rows returned"
+        where: event_tickets_bool_exp
+    ): event_tickets_aggregate!
+    "fetch data from the table: \"event_tickets\" using primary key columns"
+    event_tickets_by_pk(id: String!): event_tickets
+    "fetch data from the table: \"event_tickets_categories\""
+    event_tickets_categories(
+        "distinct select on columns"
+        distinct_on: [event_tickets_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_categories_order_by!],
+        "filter the rows returned"
+        where: event_tickets_categories_bool_exp
+    ): [event_tickets_categories!]!
+    "fetch aggregated fields from the table: \"event_tickets_categories\""
+    event_tickets_categories_aggregate(
+        "distinct select on columns"
+        distinct_on: [event_tickets_categories_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [event_tickets_categories_order_by!],
+        "filter the rows returned"
+        where: event_tickets_categories_bool_exp
+    ): event_tickets_categories_aggregate!
+    "fetch data from the table: \"event_tickets_categories\" using primary key columns"
+    event_tickets_categories_by_pk(id: String!): event_tickets_categories
+    "fetch data from the table in a streaming manner: \"event_tickets_categories\""
+    event_tickets_categories_stream(
+        "maximum number of rows returned in a single batch"
+        batch_size: Int!,
+        "cursor to stream the results returned by the query"
+        cursor: [event_tickets_categories_stream_cursor_input]!,
+        "filter the rows returned"
+        where: event_tickets_categories_bool_exp
+    ): [event_tickets_categories!]!
+    "fetch data from the table in a streaming manner: \"event_tickets\""
+    event_tickets_stream(
+        "maximum number of rows returned in a single batch"
+        batch_size: Int!,
+        "cursor to stream the results returned by the query"
+        cursor: [event_tickets_stream_cursor_input]!,
+        "filter the rows returned"
+        where: event_tickets_bool_exp
+    ): [event_tickets!]!
     "fetch data from the table: \"events\""
     events(
         "distinct select on columns"
@@ -2758,6 +3595,43 @@ type subscription_root {
         "filter the rows returned"
         where: profile_bool_exp
     ): [profile!]!
+    "fetch data from the table: \"user_contact_platforms\""
+    user_contact_platforms(
+        "distinct select on columns"
+        distinct_on: [user_contact_platforms_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [user_contact_platforms_order_by!],
+        "filter the rows returned"
+        where: user_contact_platforms_bool_exp
+    ): [user_contact_platforms!]!
+    "fetch aggregated fields from the table: \"user_contact_platforms\""
+    user_contact_platforms_aggregate(
+        "distinct select on columns"
+        distinct_on: [user_contact_platforms_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [user_contact_platforms_order_by!],
+        "filter the rows returned"
+        where: user_contact_platforms_bool_exp
+    ): user_contact_platforms_aggregate!
+    "fetch data from the table: \"user_contact_platforms\" using primary key columns"
+    user_contact_platforms_by_pk(id: Int!): user_contact_platforms
+    "fetch data from the table in a streaming manner: \"user_contact_platforms\""
+    user_contact_platforms_stream(
+        "maximum number of rows returned in a single batch"
+        batch_size: Int!,
+        "cursor to stream the results returned by the query"
+        cursor: [user_contact_platforms_stream_cursor_input]!,
+        "filter the rows returned"
+        where: user_contact_platforms_bool_exp
+    ): [user_contact_platforms!]!
     "fetch data from the table: \"user_contacts\""
     user_contacts(
         "distinct select on columns"
@@ -2795,6 +3669,136 @@ type subscription_root {
         "filter the rows returned"
         where: user_contacts_bool_exp
     ): [user_contacts!]!
+    "fetch data from the table: \"users_events_categories_interests\""
+    users_events_categories_interests(
+        "distinct select on columns"
+        distinct_on: [users_events_categories_interests_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [users_events_categories_interests_order_by!],
+        "filter the rows returned"
+        where: users_events_categories_interests_bool_exp
+    ): [users_events_categories_interests!]!
+    "fetch aggregated fields from the table: \"users_events_categories_interests\""
+    users_events_categories_interests_aggregate(
+        "distinct select on columns"
+        distinct_on: [users_events_categories_interests_select_column!],
+        "limit the number of rows returned"
+        limit: Int,
+        "skip the first n rows. Use only with order_by"
+        offset: Int,
+        "sort the rows by one or more columns"
+        order_by: [users_events_categories_interests_order_by!],
+        "filter the rows returned"
+        where: users_events_categories_interests_bool_exp
+    ): users_events_categories_interests_aggregate!
+    "fetch data from the table: \"users_events_categories_interests\" using primary key columns"
+    users_events_categories_interests_by_pk(id: Int!): users_events_categories_interests
+    "fetch data from the table in a streaming manner: \"users_events_categories_interests\""
+    users_events_categories_interests_stream(
+        "maximum number of rows returned in a single batch"
+        batch_size: Int!,
+        "cursor to stream the results returned by the query"
+        cursor: [users_events_categories_interests_stream_cursor_input]!,
+        "filter the rows returned"
+        where: users_events_categories_interests_bool_exp
+    ): [users_events_categories_interests!]!
+}
+
+"columns and relationships of \"user_contact_platforms\""
+type user_contact_platforms {
+    icon_url: String!
+    id: Int!
+    link_url_template: String
+    name: String!
+}
+
+"aggregated selection of \"user_contact_platforms\""
+type user_contact_platforms_aggregate {
+    aggregate: user_contact_platforms_aggregate_fields
+    nodes: [user_contact_platforms!]!
+}
+
+"aggregate fields of \"user_contact_platforms\""
+type user_contact_platforms_aggregate_fields {
+    avg: user_contact_platforms_avg_fields
+    count(columns: [user_contact_platforms_select_column!], distinct: Boolean): Int!
+    max: user_contact_platforms_max_fields
+    min: user_contact_platforms_min_fields
+    stddev: user_contact_platforms_stddev_fields
+    stddev_pop: user_contact_platforms_stddev_pop_fields
+    stddev_samp: user_contact_platforms_stddev_samp_fields
+    sum: user_contact_platforms_sum_fields
+    var_pop: user_contact_platforms_var_pop_fields
+    var_samp: user_contact_platforms_var_samp_fields
+    variance: user_contact_platforms_variance_fields
+}
+
+"aggregate avg on columns"
+type user_contact_platforms_avg_fields {
+    id: Float
+}
+
+"aggregate max on columns"
+type user_contact_platforms_max_fields {
+    icon_url: String
+    id: Int
+    link_url_template: String
+    name: String
+}
+
+"aggregate min on columns"
+type user_contact_platforms_min_fields {
+    icon_url: String
+    id: Int
+    link_url_template: String
+    name: String
+}
+
+"response of any mutation on the table \"user_contact_platforms\""
+type user_contact_platforms_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [user_contact_platforms!]!
+}
+
+"aggregate stddev on columns"
+type user_contact_platforms_stddev_fields {
+    id: Float
+}
+
+"aggregate stddev_pop on columns"
+type user_contact_platforms_stddev_pop_fields {
+    id: Float
+}
+
+"aggregate stddev_samp on columns"
+type user_contact_platforms_stddev_samp_fields {
+    id: Float
+}
+
+"aggregate sum on columns"
+type user_contact_platforms_sum_fields {
+    id: Int
+}
+
+"aggregate var_pop on columns"
+type user_contact_platforms_var_pop_fields {
+    id: Float
+}
+
+"aggregate var_samp on columns"
+type user_contact_platforms_var_samp_fields {
+    id: Float
+}
+
+"aggregate variance on columns"
+type user_contact_platforms_variance_fields {
+    id: Float
 }
 
 "columns and relationships of \"user_contacts\""
@@ -2802,33 +3806,11 @@ type user_contacts {
     creation_time: timestamptz!
     desmos_address: String!
     id: String!
-    platform: String!
-    "An array relationship"
-    shared_contacts(
-        "distinct select on columns"
-        distinct_on: [bond_shared_contacts_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [bond_shared_contacts_order_by!],
-        "filter the rows returned"
-        where: bond_shared_contacts_bool_exp
-    ): [bond_shared_contacts!]!
-    "An aggregate relationship"
-    shared_contacts_aggregate(
-        "distinct select on columns"
-        distinct_on: [bond_shared_contacts_select_column!],
-        "limit the number of rows returned"
-        limit: Int,
-        "skip the first n rows. Use only with order_by"
-        offset: Int,
-        "sort the rows by one or more columns"
-        order_by: [bond_shared_contacts_order_by!],
-        "filter the rows returned"
-        where: bond_shared_contacts_bool_exp
-    ): bond_shared_contacts_aggregate!
+    "An object relationship"
+    platform: user_contact_platforms!
+    platform_id: Int!
+    "An object relationship"
+    shared_contacts: bond_shared_contacts
     username: String!
 }
 
@@ -2840,9 +3822,22 @@ type user_contacts_aggregate {
 
 "aggregate fields of \"user_contacts\""
 type user_contacts_aggregate_fields {
+    avg: user_contacts_avg_fields
     count(columns: [user_contacts_select_column!], distinct: Boolean): Int!
     max: user_contacts_max_fields
     min: user_contacts_min_fields
+    stddev: user_contacts_stddev_fields
+    stddev_pop: user_contacts_stddev_pop_fields
+    stddev_samp: user_contacts_stddev_samp_fields
+    sum: user_contacts_sum_fields
+    var_pop: user_contacts_var_pop_fields
+    var_samp: user_contacts_var_samp_fields
+    variance: user_contacts_variance_fields
+}
+
+"aggregate avg on columns"
+type user_contacts_avg_fields {
+    platform_id: Float
 }
 
 "aggregate max on columns"
@@ -2850,7 +3845,7 @@ type user_contacts_max_fields {
     creation_time: timestamptz
     desmos_address: String
     id: String
-    platform: String
+    platform_id: Int
     username: String
 }
 
@@ -2859,7 +3854,7 @@ type user_contacts_min_fields {
     creation_time: timestamptz
     desmos_address: String
     id: String
-    platform: String
+    platform_id: Int
     username: String
 }
 
@@ -2869,6 +3864,141 @@ type user_contacts_mutation_response {
     affected_rows: Int!
     "data from the rows affected by the mutation"
     returning: [user_contacts!]!
+}
+
+"aggregate stddev on columns"
+type user_contacts_stddev_fields {
+    platform_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type user_contacts_stddev_pop_fields {
+    platform_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type user_contacts_stddev_samp_fields {
+    platform_id: Float
+}
+
+"aggregate sum on columns"
+type user_contacts_sum_fields {
+    platform_id: Int
+}
+
+"aggregate var_pop on columns"
+type user_contacts_var_pop_fields {
+    platform_id: Float
+}
+
+"aggregate var_samp on columns"
+type user_contacts_var_samp_fields {
+    platform_id: Float
+}
+
+"aggregate variance on columns"
+type user_contacts_variance_fields {
+    platform_id: Float
+}
+
+"columns and relationships of \"users_events_categories_interests\""
+type users_events_categories_interests {
+    "An object relationship"
+    category: events_categories!
+    category_id: Int!
+    id: Int!
+    user_address: String!
+}
+
+"aggregated selection of \"users_events_categories_interests\""
+type users_events_categories_interests_aggregate {
+    aggregate: users_events_categories_interests_aggregate_fields
+    nodes: [users_events_categories_interests!]!
+}
+
+"aggregate fields of \"users_events_categories_interests\""
+type users_events_categories_interests_aggregate_fields {
+    avg: users_events_categories_interests_avg_fields
+    count(columns: [users_events_categories_interests_select_column!], distinct: Boolean): Int!
+    max: users_events_categories_interests_max_fields
+    min: users_events_categories_interests_min_fields
+    stddev: users_events_categories_interests_stddev_fields
+    stddev_pop: users_events_categories_interests_stddev_pop_fields
+    stddev_samp: users_events_categories_interests_stddev_samp_fields
+    sum: users_events_categories_interests_sum_fields
+    var_pop: users_events_categories_interests_var_pop_fields
+    var_samp: users_events_categories_interests_var_samp_fields
+    variance: users_events_categories_interests_variance_fields
+}
+
+"aggregate avg on columns"
+type users_events_categories_interests_avg_fields {
+    category_id: Float
+    id: Float
+}
+
+"aggregate max on columns"
+type users_events_categories_interests_max_fields {
+    category_id: Int
+    id: Int
+    user_address: String
+}
+
+"aggregate min on columns"
+type users_events_categories_interests_min_fields {
+    category_id: Int
+    id: Int
+    user_address: String
+}
+
+"response of any mutation on the table \"users_events_categories_interests\""
+type users_events_categories_interests_mutation_response {
+    "number of rows affected by the mutation"
+    affected_rows: Int!
+    "data from the rows affected by the mutation"
+    returning: [users_events_categories_interests!]!
+}
+
+"aggregate stddev on columns"
+type users_events_categories_interests_stddev_fields {
+    category_id: Float
+    id: Float
+}
+
+"aggregate stddev_pop on columns"
+type users_events_categories_interests_stddev_pop_fields {
+    category_id: Float
+    id: Float
+}
+
+"aggregate stddev_samp on columns"
+type users_events_categories_interests_stddev_samp_fields {
+    category_id: Float
+    id: Float
+}
+
+"aggregate sum on columns"
+type users_events_categories_interests_sum_fields {
+    category_id: Int
+    id: Int
+}
+
+"aggregate var_pop on columns"
+type users_events_categories_interests_var_pop_fields {
+    category_id: Float
+    id: Float
+}
+
+"aggregate var_samp on columns"
+type users_events_categories_interests_var_samp_fields {
+    category_id: Float
+    id: Float
+}
+
+"aggregate variance on columns"
+type users_events_categories_interests_variance_fields {
+    category_id: Float
+    id: Float
 }
 
 "unique or primary key constraints on table \"bond_shared_contacts\""
@@ -2963,6 +4093,8 @@ enum cursor_ordering {
 enum event_categories_constraint {
     "unique or primary key constraint on columns \"id\""
     event_categories_pkey
+    "unique or primary key constraint on columns \"event_id\", \"category_id\""
+    unique_event_category
 }
 
 "select columns of table \"event_categories\""
@@ -3081,6 +4213,106 @@ enum event_tags_select_column {
     tag
 }
 
+"unique or primary key constraints on table \"event_ticketing_settings\""
+enum event_ticketing_settings_constraint {
+    "unique or primary key constraint on columns \"event_id\""
+    event_ticketing_settings_event_id_key
+    "unique or primary key constraint on columns \"id\""
+    event_ticketing_settings_pkey
+}
+
+"select columns of table \"event_ticketing_settings\""
+enum event_ticketing_settings_select_column {
+    "column name"
+    event_id
+    "column name"
+    id
+    "column name"
+    total_tickets_per_user
+}
+
+"update columns of table \"event_ticketing_settings\""
+enum event_ticketing_settings_update_column {
+    "column name"
+    event_id
+    "column name"
+    id
+    "column name"
+    total_tickets_per_user
+}
+
+"unique or primary key constraints on table \"event_tickets_categories\""
+enum event_tickets_categories_constraint {
+    "unique or primary key constraint on columns \"id\""
+    event_tickets_categories_pkey
+}
+
+"select columns of table \"event_tickets_categories\""
+enum event_tickets_categories_select_column {
+    "column name"
+    description
+    "column name"
+    end_date
+    "column name"
+    event_id
+    "column name"
+    id
+    "column name"
+    name
+    "column name"
+    start_date
+    "column name"
+    tickets_per_user
+    "column name"
+    total_tickets_available
+}
+
+"update columns of table \"event_tickets_categories\""
+enum event_tickets_categories_update_column {
+    "column name"
+    description
+    "column name"
+    end_date
+    "column name"
+    event_id
+    "column name"
+    id
+    "column name"
+    name
+    "column name"
+    start_date
+    "column name"
+    tickets_per_user
+    "column name"
+    total_tickets_available
+}
+
+"unique or primary key constraints on table \"event_tickets\""
+enum event_tickets_constraint {
+    "unique or primary key constraint on columns \"id\""
+    event_tickets_pkey
+}
+
+"select columns of table \"event_tickets\""
+enum event_tickets_select_column {
+    "column name"
+    category_id
+    "column name"
+    id
+    "column name"
+    owner_address
+}
+
+"update columns of table \"event_tickets\""
+enum event_tickets_update_column {
+    "column name"
+    category_id
+    "column name"
+    id
+    "column name"
+    owner_address
+}
+
 "unique or primary key constraints on table \"events_categories\""
 enum events_categories_constraint {
     "unique or primary key constraint on columns \"id\""
@@ -3146,6 +4378,8 @@ enum events_select_column {
     "column name"
     start_date
     "column name"
+    status
+    "column name"
     tags
     "column name"
     website
@@ -3187,6 +4421,8 @@ enum events_update_column {
     name
     "column name"
     start_date
+    "column name"
+    status
     "column name"
     tags
     "column name"
@@ -3292,6 +4528,8 @@ enum notifications_select_column {
     "column name"
     body
     "column name"
+    has_been_read
+    "column name"
     id
     "column name"
     image_url
@@ -3311,6 +4549,8 @@ enum notifications_update_column {
     additional_data
     "column name"
     body
+    "column name"
+    has_been_read
     "column name"
     id
     "column name"
@@ -3387,9 +4627,41 @@ enum profile_update_column {
     profile_pic
 }
 
+"unique or primary key constraints on table \"user_contact_platforms\""
+enum user_contact_platforms_constraint {
+    "unique or primary key constraint on columns \"name\""
+    user_contact_platforms_name_key
+    "unique or primary key constraint on columns \"id\""
+    user_contact_platforms_pkey
+}
+
+"select columns of table \"user_contact_platforms\""
+enum user_contact_platforms_select_column {
+    "column name"
+    icon_url
+    "column name"
+    id
+    "column name"
+    link_url_template
+    "column name"
+    name
+}
+
+"update columns of table \"user_contact_platforms\""
+enum user_contact_platforms_update_column {
+    "column name"
+    icon_url
+    "column name"
+    id
+    "column name"
+    link_url_template
+    "column name"
+    name
+}
+
 "unique or primary key constraints on table \"user_contacts\""
 enum user_contacts_constraint {
-    "unique or primary key constraint on columns \"platform\", \"desmos_address\""
+    "unique or primary key constraint on columns \"platform_id\", \"desmos_address\""
     unique_platform_user_contact
     "unique or primary key constraint on columns \"id\""
     user_contacts_pkey
@@ -3404,7 +4676,7 @@ enum user_contacts_select_column {
     "column name"
     id
     "column name"
-    platform
+    platform_id
     "column name"
     username
 }
@@ -3418,14 +4690,44 @@ enum user_contacts_update_column {
     "column name"
     id
     "column name"
-    platform
+    platform_id
     "column name"
     username
+}
+
+"unique or primary key constraints on table \"users_events_categories_interests\""
+enum users_events_categories_interests_constraint {
+    "unique or primary key constraint on columns \"user_address\", \"category_id\""
+    unique_user_category_interest
+    "unique or primary key constraint on columns \"id\""
+    users_events_categories_interests_pkey
+}
+
+"select columns of table \"users_events_categories_interests\""
+enum users_events_categories_interests_select_column {
+    "column name"
+    category_id
+    "column name"
+    id
+    "column name"
+    user_address
+}
+
+"update columns of table \"users_events_categories_interests\""
+enum users_events_categories_interests_update_column {
+    "column name"
+    category_id
+    "column name"
+    id
+    "column name"
+    user_address
 }
 
 scalar bigint
 
 scalar bond_status
+
+scalar event_status
 
 scalar geography
 
@@ -3567,6 +4869,13 @@ input bond_shared_contacts_min_order_by {
     bond_id: order_by
     contact_id: order_by
     id: order_by
+}
+
+"input type for inserting object relation for remote table \"bond_shared_contacts\""
+input bond_shared_contacts_obj_rel_insert_input {
+    data: bond_shared_contacts_insert_input!
+    "upsert condition"
+    on_conflict: bond_shared_contacts_on_conflict
 }
 
 "on_conflict condition type for table \"bond_shared_contacts\""
@@ -3795,12 +5104,53 @@ input bonds_updates {
     where: bonds_bool_exp!
 }
 
+input event_categories_aggregate_bool_exp {
+    count: event_categories_aggregate_bool_exp_count
+}
+
+input event_categories_aggregate_bool_exp_count {
+    arguments: [event_categories_select_column!]
+    distinct: Boolean
+    filter: event_categories_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"event_categories\""
+input event_categories_aggregate_order_by {
+    avg: event_categories_avg_order_by
+    count: order_by
+    max: event_categories_max_order_by
+    min: event_categories_min_order_by
+    stddev: event_categories_stddev_order_by
+    stddev_pop: event_categories_stddev_pop_order_by
+    stddev_samp: event_categories_stddev_samp_order_by
+    sum: event_categories_sum_order_by
+    var_pop: event_categories_var_pop_order_by
+    var_samp: event_categories_var_samp_order_by
+    variance: event_categories_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"event_categories\""
+input event_categories_arr_rel_insert_input {
+    data: [event_categories_insert_input!]!
+    "upsert condition"
+    on_conflict: event_categories_on_conflict
+}
+
+"order by avg() on columns of table \"event_categories\""
+input event_categories_avg_order_by {
+    category_id: order_by
+    id: order_by
+}
+
 "Boolean expression to filter rows from the table \"event_categories\". All fields are combined with a logical 'AND'."
 input event_categories_bool_exp {
     _and: [event_categories_bool_exp!]
     _not: event_categories_bool_exp
     _or: [event_categories_bool_exp!]
+    category: events_categories_bool_exp
     category_id: Int_comparison_exp
+    event: events_bool_exp
     event_id: String_comparison_exp
     id: Int_comparison_exp
 }
@@ -3813,9 +5163,25 @@ input event_categories_inc_input {
 
 "input type for inserting data into table \"event_categories\""
 input event_categories_insert_input {
+    category: events_categories_obj_rel_insert_input
     category_id: Int
+    event: events_obj_rel_insert_input
     event_id: String
     id: Int
+}
+
+"order by max() on columns of table \"event_categories\""
+input event_categories_max_order_by {
+    category_id: order_by
+    event_id: order_by
+    id: order_by
+}
+
+"order by min() on columns of table \"event_categories\""
+input event_categories_min_order_by {
+    category_id: order_by
+    event_id: order_by
+    id: order_by
 }
 
 "on_conflict condition type for table \"event_categories\""
@@ -3827,7 +5193,9 @@ input event_categories_on_conflict {
 
 "Ordering options when selecting data from \"event_categories\"."
 input event_categories_order_by {
+    category: events_categories_order_by
     category_id: order_by
+    event: events_order_by
     event_id: order_by
     id: order_by
 }
@@ -3842,6 +5210,24 @@ input event_categories_set_input {
     category_id: Int
     event_id: String
     id: Int
+}
+
+"order by stddev() on columns of table \"event_categories\""
+input event_categories_stddev_order_by {
+    category_id: order_by
+    id: order_by
+}
+
+"order by stddev_pop() on columns of table \"event_categories\""
+input event_categories_stddev_pop_order_by {
+    category_id: order_by
+    id: order_by
+}
+
+"order by stddev_samp() on columns of table \"event_categories\""
+input event_categories_stddev_samp_order_by {
+    category_id: order_by
+    id: order_by
 }
 
 "Streaming cursor of the table \"event_categories\""
@@ -3859,6 +5245,12 @@ input event_categories_stream_cursor_value_input {
     id: Int
 }
 
+"order by sum() on columns of table \"event_categories\""
+input event_categories_sum_order_by {
+    category_id: order_by
+    id: order_by
+}
+
 input event_categories_updates {
     "increments the numeric columns with given value of the filtered values"
     _inc: event_categories_inc_input
@@ -3866,6 +5258,24 @@ input event_categories_updates {
     _set: event_categories_set_input
     "filter the rows which have to be updated"
     where: event_categories_bool_exp!
+}
+
+"order by var_pop() on columns of table \"event_categories\""
+input event_categories_var_pop_order_by {
+    category_id: order_by
+    id: order_by
+}
+
+"order by var_samp() on columns of table \"event_categories\""
+input event_categories_var_samp_order_by {
+    category_id: order_by
+    id: order_by
+}
+
+"order by variance() on columns of table \"event_categories\""
+input event_categories_variance_order_by {
+    category_id: order_by
+    id: order_by
 }
 
 input event_likes_aggregate_bool_exp {
@@ -4314,6 +5724,19 @@ input event_participations_variance_order_by {
     id: order_by
 }
 
+"Boolean expression to compare columns of type \"event_status\". All fields are combined with logical 'AND'."
+input event_status_comparison_exp {
+    _eq: event_status
+    _gt: event_status
+    _gte: event_status
+    _in: [event_status!]
+    _is_null: Boolean
+    _lt: event_status
+    _lte: event_status
+    _neq: event_status
+    _nin: [event_status!]
+}
+
 "Boolean expression to filter rows from the table \"event_tags\". All fields are combined with a logical 'AND'."
 input event_tags_bool_exp {
     _and: [event_tags_bool_exp!]
@@ -4343,6 +5766,501 @@ input event_tags_stream_cursor_value_input {
     tag: String
 }
 
+input event_ticketing_settings_aggregate_bool_exp {
+    count: event_ticketing_settings_aggregate_bool_exp_count
+}
+
+input event_ticketing_settings_aggregate_bool_exp_count {
+    arguments: [event_ticketing_settings_select_column!]
+    distinct: Boolean
+    filter: event_ticketing_settings_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"event_ticketing_settings\""
+input event_ticketing_settings_aggregate_order_by {
+    avg: event_ticketing_settings_avg_order_by
+    count: order_by
+    max: event_ticketing_settings_max_order_by
+    min: event_ticketing_settings_min_order_by
+    stddev: event_ticketing_settings_stddev_order_by
+    stddev_pop: event_ticketing_settings_stddev_pop_order_by
+    stddev_samp: event_ticketing_settings_stddev_samp_order_by
+    sum: event_ticketing_settings_sum_order_by
+    var_pop: event_ticketing_settings_var_pop_order_by
+    var_samp: event_ticketing_settings_var_samp_order_by
+    variance: event_ticketing_settings_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"event_ticketing_settings\""
+input event_ticketing_settings_arr_rel_insert_input {
+    data: [event_ticketing_settings_insert_input!]!
+    "upsert condition"
+    on_conflict: event_ticketing_settings_on_conflict
+}
+
+"order by avg() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_avg_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"Boolean expression to filter rows from the table \"event_ticketing_settings\". All fields are combined with a logical 'AND'."
+input event_ticketing_settings_bool_exp {
+    _and: [event_ticketing_settings_bool_exp!]
+    _not: event_ticketing_settings_bool_exp
+    _or: [event_ticketing_settings_bool_exp!]
+    event: events_bool_exp
+    event_id: String_comparison_exp
+    id: Int_comparison_exp
+    total_tickets_per_user: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"event_ticketing_settings\""
+input event_ticketing_settings_inc_input {
+    id: Int
+    total_tickets_per_user: bigint
+}
+
+"input type for inserting data into table \"event_ticketing_settings\""
+input event_ticketing_settings_insert_input {
+    event: events_obj_rel_insert_input
+    event_id: String
+    id: Int
+    total_tickets_per_user: bigint
+}
+
+"order by max() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_max_order_by {
+    event_id: order_by
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"order by min() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_min_order_by {
+    event_id: order_by
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"on_conflict condition type for table \"event_ticketing_settings\""
+input event_ticketing_settings_on_conflict {
+    constraint: event_ticketing_settings_constraint!
+    update_columns: [event_ticketing_settings_update_column!]! = []
+    where: event_ticketing_settings_bool_exp
+}
+
+"Ordering options when selecting data from \"event_ticketing_settings\"."
+input event_ticketing_settings_order_by {
+    event: events_order_by
+    event_id: order_by
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"primary key columns input for table: event_ticketing_settings"
+input event_ticketing_settings_pk_columns_input {
+    id: Int!
+}
+
+"input type for updating data in table \"event_ticketing_settings\""
+input event_ticketing_settings_set_input {
+    event_id: String
+    id: Int
+    total_tickets_per_user: bigint
+}
+
+"order by stddev() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_stddev_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"order by stddev_pop() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_stddev_pop_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"order by stddev_samp() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_stddev_samp_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"Streaming cursor of the table \"event_ticketing_settings\""
+input event_ticketing_settings_stream_cursor_input {
+    "Stream column input with initial value"
+    initial_value: event_ticketing_settings_stream_cursor_value_input!
+    "cursor ordering"
+    ordering: cursor_ordering
+}
+
+"Initial value of the column from where the streaming should start"
+input event_ticketing_settings_stream_cursor_value_input {
+    event_id: String
+    id: Int
+    total_tickets_per_user: bigint
+}
+
+"order by sum() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_sum_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+input event_ticketing_settings_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: event_ticketing_settings_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: event_ticketing_settings_set_input
+    "filter the rows which have to be updated"
+    where: event_ticketing_settings_bool_exp!
+}
+
+"order by var_pop() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_var_pop_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"order by var_samp() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_var_samp_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+"order by variance() on columns of table \"event_ticketing_settings\""
+input event_ticketing_settings_variance_order_by {
+    id: order_by
+    total_tickets_per_user: order_by
+}
+
+input event_tickets_aggregate_bool_exp {
+    count: event_tickets_aggregate_bool_exp_count
+}
+
+input event_tickets_aggregate_bool_exp_count {
+    arguments: [event_tickets_select_column!]
+    distinct: Boolean
+    filter: event_tickets_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"event_tickets\""
+input event_tickets_aggregate_order_by {
+    count: order_by
+    max: event_tickets_max_order_by
+    min: event_tickets_min_order_by
+}
+
+"input type for inserting array relation for remote table \"event_tickets\""
+input event_tickets_arr_rel_insert_input {
+    data: [event_tickets_insert_input!]!
+    "upsert condition"
+    on_conflict: event_tickets_on_conflict
+}
+
+"Boolean expression to filter rows from the table \"event_tickets\". All fields are combined with a logical 'AND'."
+input event_tickets_bool_exp {
+    _and: [event_tickets_bool_exp!]
+    _not: event_tickets_bool_exp
+    _or: [event_tickets_bool_exp!]
+    category: event_tickets_categories_bool_exp
+    category_id: String_comparison_exp
+    id: String_comparison_exp
+    owner_address: String_comparison_exp
+}
+
+input event_tickets_categories_aggregate_bool_exp {
+    count: event_tickets_categories_aggregate_bool_exp_count
+}
+
+input event_tickets_categories_aggregate_bool_exp_count {
+    arguments: [event_tickets_categories_select_column!]
+    distinct: Boolean
+    filter: event_tickets_categories_bool_exp
+    predicate: Int_comparison_exp!
+}
+
+"order by aggregate values of table \"event_tickets_categories\""
+input event_tickets_categories_aggregate_order_by {
+    avg: event_tickets_categories_avg_order_by
+    count: order_by
+    max: event_tickets_categories_max_order_by
+    min: event_tickets_categories_min_order_by
+    stddev: event_tickets_categories_stddev_order_by
+    stddev_pop: event_tickets_categories_stddev_pop_order_by
+    stddev_samp: event_tickets_categories_stddev_samp_order_by
+    sum: event_tickets_categories_sum_order_by
+    var_pop: event_tickets_categories_var_pop_order_by
+    var_samp: event_tickets_categories_var_samp_order_by
+    variance: event_tickets_categories_variance_order_by
+}
+
+"input type for inserting array relation for remote table \"event_tickets_categories\""
+input event_tickets_categories_arr_rel_insert_input {
+    data: [event_tickets_categories_insert_input!]!
+    "upsert condition"
+    on_conflict: event_tickets_categories_on_conflict
+}
+
+"order by avg() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_avg_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"Boolean expression to filter rows from the table \"event_tickets_categories\". All fields are combined with a logical 'AND'."
+input event_tickets_categories_bool_exp {
+    _and: [event_tickets_categories_bool_exp!]
+    _not: event_tickets_categories_bool_exp
+    _or: [event_tickets_categories_bool_exp!]
+    description: String_comparison_exp
+    end_date: timestamptz_comparison_exp
+    event: events_bool_exp
+    event_id: String_comparison_exp
+    id: String_comparison_exp
+    name: String_comparison_exp
+    start_date: timestamptz_comparison_exp
+    tickets: event_tickets_bool_exp
+    tickets_aggregate: event_tickets_aggregate_bool_exp
+    tickets_per_user: bigint_comparison_exp
+    total_tickets_available: bigint_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"event_tickets_categories\""
+input event_tickets_categories_inc_input {
+    tickets_per_user: bigint
+    total_tickets_available: bigint
+}
+
+"input type for inserting data into table \"event_tickets_categories\""
+input event_tickets_categories_insert_input {
+    description: String
+    end_date: timestamptz
+    event: events_obj_rel_insert_input
+    event_id: String
+    id: String
+    name: String
+    start_date: timestamptz
+    tickets: event_tickets_arr_rel_insert_input
+    tickets_per_user: bigint
+    total_tickets_available: bigint
+}
+
+"order by max() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_max_order_by {
+    description: order_by
+    end_date: order_by
+    event_id: order_by
+    id: order_by
+    name: order_by
+    start_date: order_by
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"order by min() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_min_order_by {
+    description: order_by
+    end_date: order_by
+    event_id: order_by
+    id: order_by
+    name: order_by
+    start_date: order_by
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"input type for inserting object relation for remote table \"event_tickets_categories\""
+input event_tickets_categories_obj_rel_insert_input {
+    data: event_tickets_categories_insert_input!
+    "upsert condition"
+    on_conflict: event_tickets_categories_on_conflict
+}
+
+"on_conflict condition type for table \"event_tickets_categories\""
+input event_tickets_categories_on_conflict {
+    constraint: event_tickets_categories_constraint!
+    update_columns: [event_tickets_categories_update_column!]! = []
+    where: event_tickets_categories_bool_exp
+}
+
+"Ordering options when selecting data from \"event_tickets_categories\"."
+input event_tickets_categories_order_by {
+    description: order_by
+    end_date: order_by
+    event: events_order_by
+    event_id: order_by
+    id: order_by
+    name: order_by
+    start_date: order_by
+    tickets_aggregate: event_tickets_aggregate_order_by
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"primary key columns input for table: event_tickets_categories"
+input event_tickets_categories_pk_columns_input {
+    id: String!
+}
+
+"input type for updating data in table \"event_tickets_categories\""
+input event_tickets_categories_set_input {
+    description: String
+    end_date: timestamptz
+    event_id: String
+    id: String
+    name: String
+    start_date: timestamptz
+    tickets_per_user: bigint
+    total_tickets_available: bigint
+}
+
+"order by stddev() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_stddev_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"order by stddev_pop() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_stddev_pop_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"order by stddev_samp() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_stddev_samp_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"Streaming cursor of the table \"event_tickets_categories\""
+input event_tickets_categories_stream_cursor_input {
+    "Stream column input with initial value"
+    initial_value: event_tickets_categories_stream_cursor_value_input!
+    "cursor ordering"
+    ordering: cursor_ordering
+}
+
+"Initial value of the column from where the streaming should start"
+input event_tickets_categories_stream_cursor_value_input {
+    description: String
+    end_date: timestamptz
+    event_id: String
+    id: String
+    name: String
+    start_date: timestamptz
+    tickets_per_user: bigint
+    total_tickets_available: bigint
+}
+
+"order by sum() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_sum_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+input event_tickets_categories_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: event_tickets_categories_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: event_tickets_categories_set_input
+    "filter the rows which have to be updated"
+    where: event_tickets_categories_bool_exp!
+}
+
+"order by var_pop() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_var_pop_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"order by var_samp() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_var_samp_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"order by variance() on columns of table \"event_tickets_categories\""
+input event_tickets_categories_variance_order_by {
+    tickets_per_user: order_by
+    total_tickets_available: order_by
+}
+
+"input type for inserting data into table \"event_tickets\""
+input event_tickets_insert_input {
+    category: event_tickets_categories_obj_rel_insert_input
+    category_id: String
+    id: String
+    owner_address: String
+}
+
+"order by max() on columns of table \"event_tickets\""
+input event_tickets_max_order_by {
+    category_id: order_by
+    id: order_by
+    owner_address: order_by
+}
+
+"order by min() on columns of table \"event_tickets\""
+input event_tickets_min_order_by {
+    category_id: order_by
+    id: order_by
+    owner_address: order_by
+}
+
+"on_conflict condition type for table \"event_tickets\""
+input event_tickets_on_conflict {
+    constraint: event_tickets_constraint!
+    update_columns: [event_tickets_update_column!]! = []
+    where: event_tickets_bool_exp
+}
+
+"Ordering options when selecting data from \"event_tickets\"."
+input event_tickets_order_by {
+    category: event_tickets_categories_order_by
+    category_id: order_by
+    id: order_by
+    owner_address: order_by
+}
+
+"primary key columns input for table: event_tickets"
+input event_tickets_pk_columns_input {
+    id: String!
+}
+
+"input type for updating data in table \"event_tickets\""
+input event_tickets_set_input {
+    category_id: String
+    id: String
+    owner_address: String
+}
+
+"Streaming cursor of the table \"event_tickets\""
+input event_tickets_stream_cursor_input {
+    "Stream column input with initial value"
+    initial_value: event_tickets_stream_cursor_value_input!
+    "cursor ordering"
+    ordering: cursor_ordering
+}
+
+"Initial value of the column from where the streaming should start"
+input event_tickets_stream_cursor_value_input {
+    category_id: String
+    id: String
+    owner_address: String
+}
+
+input event_tickets_updates {
+    "sets the columns of the filtered rows to the given values"
+    _set: event_tickets_set_input
+    "filter the rows which have to be updated"
+    where: event_tickets_bool_exp!
+}
+
 "append existing jsonb value of filtered columns with new jsonb value"
 input events_append_input {
     tags: jsonb
@@ -4355,6 +6273,8 @@ input events_bool_exp {
     _or: [events_bool_exp!]
     bonds: bonds_bool_exp
     bonds_aggregate: bonds_aggregate_bool_exp
+    categories: event_categories_bool_exp
+    categories_aggregate: event_categories_aggregate_bool_exp
     cover_picture_hash: images_hashes_bool_exp
     cover_picture_url: String_comparison_exp
     description: String_comparison_exp
@@ -4384,7 +6304,12 @@ input events_bool_exp {
     participations: event_participations_bool_exp
     participations_aggregate: event_participations_aggregate_bool_exp
     start_date: timestamptz_comparison_exp
+    status: event_status_comparison_exp
     tags: jsonb_comparison_exp
+    ticketing_setting: event_ticketing_settings_bool_exp
+    ticketing_setting_aggregate: event_ticketing_settings_aggregate_bool_exp
+    tickets_categories: event_tickets_categories_bool_exp
+    tickets_categories_aggregate: event_tickets_categories_aggregate_bool_exp
     website: String_comparison_exp
 }
 
@@ -4406,6 +6331,13 @@ input events_categories_inc_input {
 input events_categories_insert_input {
     id: Int
     name: String
+}
+
+"input type for inserting object relation for remote table \"events_categories\""
+input events_categories_obj_rel_insert_input {
+    data: events_categories_insert_input!
+    "upsert condition"
+    on_conflict: events_categories_on_conflict
 }
 
 "on_conflict condition type for table \"events_categories\""
@@ -4473,6 +6405,7 @@ input events_delete_key_input {
 "input type for inserting data into table \"events\""
 input events_insert_input {
     bonds: bonds_arr_rel_insert_input
+    categories: event_categories_arr_rel_insert_input
     cover_picture_hash: images_hashes_obj_rel_insert_input
     cover_picture_url: String
     description: String
@@ -4495,7 +6428,10 @@ input events_insert_input {
     organizers: event_organizers_arr_rel_insert_input
     participations: event_participations_arr_rel_insert_input
     start_date: timestamptz
+    status: event_status
     tags: jsonb
+    ticketing_setting: event_ticketing_settings_arr_rel_insert_input
+    tickets_categories: event_tickets_categories_arr_rel_insert_input
     website: String
 }
 
@@ -4516,6 +6452,7 @@ input events_on_conflict {
 "Ordering options when selecting data from \"events\"."
 input events_order_by {
     bonds_aggregate: bonds_aggregate_order_by
+    categories_aggregate: event_categories_aggregate_order_by
     cover_picture_hash: images_hashes_order_by
     cover_picture_url: order_by
     description: order_by
@@ -4541,7 +6478,10 @@ input events_order_by {
     participants_count: order_by
     participations_aggregate: event_participations_aggregate_order_by
     start_date: order_by
+    status: order_by
     tags: order_by
+    ticketing_setting_aggregate: event_ticketing_settings_aggregate_order_by
+    tickets_categories_aggregate: event_tickets_categories_aggregate_order_by
     website: order_by
 }
 
@@ -4574,6 +6514,7 @@ input events_set_input {
     location_locality: String
     name: String
     start_date: timestamptz
+    status: event_status
     tags: jsonb
     website: String
 }
@@ -4605,6 +6546,7 @@ input events_stream_cursor_value_input {
     location_locality: String
     name: String
     start_date: timestamptz
+    status: event_status
     tags: jsonb
     website: String
 }
@@ -5045,6 +6987,7 @@ input notifications_bool_exp {
     _or: [notifications_bool_exp!]
     additional_data: jsonb_comparison_exp
     body: String_comparison_exp
+    has_been_read: Boolean_comparison_exp
     id: String_comparison_exp
     image_url: String_comparison_exp
     timestamp: timestamptz_comparison_exp
@@ -5072,6 +7015,7 @@ input notifications_delete_key_input {
 input notifications_insert_input {
     additional_data: jsonb
     body: String
+    has_been_read: Boolean
     id: String
     image_url: String
     timestamp: timestamptz
@@ -5091,6 +7035,7 @@ input notifications_on_conflict {
 input notifications_order_by {
     additional_data: order_by
     body: order_by
+    has_been_read: order_by
     id: order_by
     image_url: order_by
     timestamp: order_by
@@ -5113,6 +7058,7 @@ input notifications_prepend_input {
 input notifications_set_input {
     additional_data: jsonb
     body: String
+    has_been_read: Boolean
     id: String
     image_url: String
     timestamp: timestamptz
@@ -5133,6 +7079,7 @@ input notifications_stream_cursor_input {
 input notifications_stream_cursor_value_input {
     additional_data: jsonb
     body: String
+    has_been_read: Boolean
     id: String
     image_url: String
     timestamp: timestamptz
@@ -5292,6 +7239,90 @@ input timestamptz_comparison_exp {
     _nin: [timestamptz!]
 }
 
+"Boolean expression to filter rows from the table \"user_contact_platforms\". All fields are combined with a logical 'AND'."
+input user_contact_platforms_bool_exp {
+    _and: [user_contact_platforms_bool_exp!]
+    _not: user_contact_platforms_bool_exp
+    _or: [user_contact_platforms_bool_exp!]
+    icon_url: String_comparison_exp
+    id: Int_comparison_exp
+    link_url_template: String_comparison_exp
+    name: String_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"user_contact_platforms\""
+input user_contact_platforms_inc_input {
+    id: Int
+}
+
+"input type for inserting data into table \"user_contact_platforms\""
+input user_contact_platforms_insert_input {
+    icon_url: String
+    id: Int
+    link_url_template: String
+    name: String
+}
+
+"input type for inserting object relation for remote table \"user_contact_platforms\""
+input user_contact_platforms_obj_rel_insert_input {
+    data: user_contact_platforms_insert_input!
+    "upsert condition"
+    on_conflict: user_contact_platforms_on_conflict
+}
+
+"on_conflict condition type for table \"user_contact_platforms\""
+input user_contact_platforms_on_conflict {
+    constraint: user_contact_platforms_constraint!
+    update_columns: [user_contact_platforms_update_column!]! = []
+    where: user_contact_platforms_bool_exp
+}
+
+"Ordering options when selecting data from \"user_contact_platforms\"."
+input user_contact_platforms_order_by {
+    icon_url: order_by
+    id: order_by
+    link_url_template: order_by
+    name: order_by
+}
+
+"primary key columns input for table: user_contact_platforms"
+input user_contact_platforms_pk_columns_input {
+    id: Int!
+}
+
+"input type for updating data in table \"user_contact_platforms\""
+input user_contact_platforms_set_input {
+    icon_url: String
+    id: Int
+    link_url_template: String
+    name: String
+}
+
+"Streaming cursor of the table \"user_contact_platforms\""
+input user_contact_platforms_stream_cursor_input {
+    "Stream column input with initial value"
+    initial_value: user_contact_platforms_stream_cursor_value_input!
+    "cursor ordering"
+    ordering: cursor_ordering
+}
+
+"Initial value of the column from where the streaming should start"
+input user_contact_platforms_stream_cursor_value_input {
+    icon_url: String
+    id: Int
+    link_url_template: String
+    name: String
+}
+
+input user_contact_platforms_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: user_contact_platforms_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: user_contact_platforms_set_input
+    "filter the rows which have to be updated"
+    where: user_contact_platforms_bool_exp!
+}
+
 "Boolean expression to filter rows from the table \"user_contacts\". All fields are combined with a logical 'AND'."
 input user_contacts_bool_exp {
     _and: [user_contacts_bool_exp!]
@@ -5300,10 +7331,15 @@ input user_contacts_bool_exp {
     creation_time: timestamptz_comparison_exp
     desmos_address: String_comparison_exp
     id: String_comparison_exp
-    platform: String_comparison_exp
+    platform: user_contact_platforms_bool_exp
+    platform_id: Int_comparison_exp
     shared_contacts: bond_shared_contacts_bool_exp
-    shared_contacts_aggregate: bond_shared_contacts_aggregate_bool_exp
     username: String_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"user_contacts\""
+input user_contacts_inc_input {
+    platform_id: Int
 }
 
 "input type for inserting data into table \"user_contacts\""
@@ -5311,8 +7347,9 @@ input user_contacts_insert_input {
     creation_time: timestamptz
     desmos_address: String
     id: String
-    platform: String
-    shared_contacts: bond_shared_contacts_arr_rel_insert_input
+    platform: user_contact_platforms_obj_rel_insert_input
+    platform_id: Int
+    shared_contacts: bond_shared_contacts_obj_rel_insert_input
     username: String
 }
 
@@ -5335,8 +7372,9 @@ input user_contacts_order_by {
     creation_time: order_by
     desmos_address: order_by
     id: order_by
-    platform: order_by
-    shared_contacts_aggregate: bond_shared_contacts_aggregate_order_by
+    platform: user_contact_platforms_order_by
+    platform_id: order_by
+    shared_contacts: bond_shared_contacts_order_by
     username: order_by
 }
 
@@ -5350,7 +7388,7 @@ input user_contacts_set_input {
     creation_time: timestamptz
     desmos_address: String
     id: String
-    platform: String
+    platform_id: Int
     username: String
 }
 
@@ -5367,13 +7405,91 @@ input user_contacts_stream_cursor_value_input {
     creation_time: timestamptz
     desmos_address: String
     id: String
-    platform: String
+    platform_id: Int
     username: String
 }
 
 input user_contacts_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: user_contacts_inc_input
     "sets the columns of the filtered rows to the given values"
     _set: user_contacts_set_input
     "filter the rows which have to be updated"
     where: user_contacts_bool_exp!
+}
+
+"Boolean expression to filter rows from the table \"users_events_categories_interests\". All fields are combined with a logical 'AND'."
+input users_events_categories_interests_bool_exp {
+    _and: [users_events_categories_interests_bool_exp!]
+    _not: users_events_categories_interests_bool_exp
+    _or: [users_events_categories_interests_bool_exp!]
+    category: events_categories_bool_exp
+    category_id: Int_comparison_exp
+    id: Int_comparison_exp
+    user_address: String_comparison_exp
+}
+
+"input type for incrementing numeric columns in table \"users_events_categories_interests\""
+input users_events_categories_interests_inc_input {
+    category_id: Int
+    id: Int
+}
+
+"input type for inserting data into table \"users_events_categories_interests\""
+input users_events_categories_interests_insert_input {
+    category: events_categories_obj_rel_insert_input
+    category_id: Int
+    id: Int
+    user_address: String
+}
+
+"on_conflict condition type for table \"users_events_categories_interests\""
+input users_events_categories_interests_on_conflict {
+    constraint: users_events_categories_interests_constraint!
+    update_columns: [users_events_categories_interests_update_column!]! = []
+    where: users_events_categories_interests_bool_exp
+}
+
+"Ordering options when selecting data from \"users_events_categories_interests\"."
+input users_events_categories_interests_order_by {
+    category: events_categories_order_by
+    category_id: order_by
+    id: order_by
+    user_address: order_by
+}
+
+"primary key columns input for table: users_events_categories_interests"
+input users_events_categories_interests_pk_columns_input {
+    id: Int!
+}
+
+"input type for updating data in table \"users_events_categories_interests\""
+input users_events_categories_interests_set_input {
+    category_id: Int
+    id: Int
+    user_address: String
+}
+
+"Streaming cursor of the table \"users_events_categories_interests\""
+input users_events_categories_interests_stream_cursor_input {
+    "Stream column input with initial value"
+    initial_value: users_events_categories_interests_stream_cursor_value_input!
+    "cursor ordering"
+    ordering: cursor_ordering
+}
+
+"Initial value of the column from where the streaming should start"
+input users_events_categories_interests_stream_cursor_value_input {
+    category_id: Int
+    id: Int
+    user_address: String
+}
+
+input users_events_categories_interests_updates {
+    "increments the numeric columns with given value of the filtered values"
+    _inc: users_events_categories_interests_inc_input
+    "sets the columns of the filtered rows to the given values"
+    _set: users_events_categories_interests_set_input
+    "filter the rows which have to be updated"
+    where: users_events_categories_interests_bool_exp!
 }

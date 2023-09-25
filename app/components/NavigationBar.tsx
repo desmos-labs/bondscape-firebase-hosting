@@ -17,17 +17,14 @@ const NavigationBar = ({
 }) => {
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
-  const [isMobile, isMd, isLg, isXl, isBreakpointReady] = useBreakpoints();
+  const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
+    useBreakpoints();
   const pathname = usePathname();
   const { user } = useUser();
   const handleScroll = useCallback(() => {
     if (window.scrollY >= 60 && (isMobile || isMd)) {
       setNavbarBgVisible(true);
-    } else if (
-      window.scrollY >= 80 &&
-      (isLg || isXl) &&
-      !disableNavbarBgInDesktop
-    ) {
+    } else if (window.scrollY >= 80 && isDesktop && !disableNavbarBgInDesktop) {
       setNavbarBgVisible(true);
     } else if (window.scrollY > 0 && forceNavbarBgVisible) {
       setNavbarBgVisible(true);
@@ -37,10 +34,9 @@ const NavigationBar = ({
   }, [
     disableNavbarBgInDesktop,
     forceNavbarBgVisible,
-    isLg,
+    isDesktop,
     isMd,
     isMobile,
-    isXl,
   ]);
 
   useEffect(() => {
@@ -55,7 +51,7 @@ const NavigationBar = ({
     ) {
       return;
     }
-    if (!user) {
+    if (!user || !isDesktop) {
       return;
     }
     return user.profile ? (
@@ -67,7 +63,7 @@ const NavigationBar = ({
         </div>
       </Link>
     );
-  }, [pathname, user]);
+  }, [isDesktop, pathname, user]);
 
   return (
     <nav

@@ -19,6 +19,8 @@ const useBreakpoints = () => {
     query: `(min-width: ${ContentWidth.xl})`,
   });
 
+  const isDesktop = isLg || isXl;
+
   useEffect(() => {
     if (isBreakpointReady || !(isMobile || isMd || isLg || isXl)) {
       return;
@@ -26,7 +28,7 @@ const useBreakpoints = () => {
     setIsBreakpointReady(true);
   }, [isMobile, isMd, isLg, isXl, isBreakpointReady]);
 
-  return [isMobile, isMd, isLg, isXl, isBreakpointReady];
+  return [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady];
 };
 
 export default useBreakpoints;

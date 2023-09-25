@@ -15,13 +15,14 @@ const EventComponent = ({ event, index }: Props) => {
     <div
       className={`flex flex-col p-[24px] rounded-[24px] bg-bondscape-surface gap-[1rem] bondscape-box-shadow-event-card`}
     >
-      <div className="relative w-full h-[16.5rem]">
+      <div className="relative w-full h-[16.5rem] xl:h-[23.5rem]">
         <Image
           key={event.id}
           alt={"Event image"}
           src={event.coverPic}
           fill
-          className="rounded-[12px] w-full h-full top-0 left-0 object-cover"
+          style={{ objectFit: "cover" }}
+          className="rounded-[12px] w-full h-full top-0 left-0"
         />
       </div>
       <div className="flex flex-col gap-[0.25rem]">

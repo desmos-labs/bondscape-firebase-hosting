@@ -1,16 +1,18 @@
 "use client";
 import MainLayout from "../../layouts/MainLayout";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import bgOverlay from "../../../public/eventsBgOverlay.png";
 import Tabs from "@/components/Tabs";
 import EventsHeader from "@/components/EventsHeader";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import EventsTabs from "@/creator/events/EventsTabs";
 import { PuffLoader } from "react-spinners";
+import useHooks from "@/creator/events/useHooks";
 
 export default function Events() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobile, isMd] = useBreakpoints();
+  const { data, loading } = useHooks(activeTab);
 
   if (isMobile || isMd) {
     return (
@@ -28,21 +30,19 @@ export default function Events() {
       backgroundOverlay={bgOverlay}
       forceNavbarBgVisible={true}
     >
-      <div className=" lg:px-xLg xl:px-xXl">
-        <div className="relative flex flex-col w-full gap-[24px]">
+      <div className="lg:px-xLg xl:px-[240px]">
+        <div className="relative flex flex-col gap-[24px]">
           <EventsHeader
             onPressCreateEvent={() => console.log("create event")}
           />
           <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-          <Suspense
-            fallback={
-              <div className="flex justify-center items-center mt-48">
-                <PuffLoader size={100} color={"white"} />
-              </div>
-            }
-          >
-            <EventsTabs activeTab={activeTab} />
-          </Suspense>
+          {loading ? (
+            <div className="flex justify-center items-center mt-48">
+              <PuffLoader size={100} color={"white"} />
+            </div>
+          ) : (
+            <EventsTabs activeTab={activeTab} events={data?.events} />
+          )}
         </div>
       </div>
     </MainLayout>

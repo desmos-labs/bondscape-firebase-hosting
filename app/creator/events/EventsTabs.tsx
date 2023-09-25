@@ -1,25 +1,14 @@
 "use client";
-import React, { useMemo, useRef } from "react";
-import { useSuspenseQuery } from "@apollo/client";
+import React, { useMemo } from "react";
 import EventComponent from "@/components/EventComponent";
-import useUser from "@/hooks/user/useUser";
-import GetMyPastEvents from "@/services/graphql/queries/bondscape/GetMyPastEvents";
-import { GQLEventsResult } from "@/types/event";
-import GetMyUpcomingEvents from "@/services/graphql/queries/bondscape/GetMyUpcomingEvents";
+import { Event } from "@/types/event";
 
-export default function EventsTabs({ activeTab }: { activeTab: number }) {
-  const now = useRef(new Date());
-  const { user } = useUser();
-  const currentQuery = useMemo(() => {
-    switch (activeTab) {
-      case 0:
-        return GetMyUpcomingEvents;
-      case 1:
-        return GetMyPastEvents;
-      default:
-        return GetMyUpcomingEvents;
-    }
-  }, [activeTab]);
+interface Props {
+  readonly activeTab: number;
+  readonly events: Event[] | undefined;
+}
+
+export default function EventsTabs({ activeTab, events }: Props) {
   const emptyText = useMemo(() => {
     switch (activeTab) {
       case 0:
@@ -30,16 +19,8 @@ export default function EventsTabs({ activeTab }: { activeTab: number }) {
         return "No events";
     }
   }, [activeTab]);
-  const { data } = useSuspenseQuery<GQLEventsResult>(currentQuery, {
-    variables: {
-      creatorAddress: user?.profile?.address || "",
-      currentDate: now.current.toISOString(),
-      offset: 0,
-      limit: 4,
-    },
-  });
 
-  if (data.events.length === 0) {
+  if (events?.length === 0) {
     return (
       <div className="flex flex-1 flex-col justify-center items-center mt-48 gap-6">
         <div>
@@ -88,9 +69,9 @@ export default function EventsTabs({ activeTab }: { activeTab: number }) {
 
   return (
     <div className="grid grid-cols-2 justify-center gap-[40px]">
-      {data?.events.map((event, index) => (
-        <EventComponent key={event.id} event={event} index={index} />
-      ))}
+      {events?.map((event, index) => {
+        return <EventComponent key={index} event={event} index={index} />;
+      })}
     </div>
   );
 }
