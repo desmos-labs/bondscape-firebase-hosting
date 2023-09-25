@@ -13,7 +13,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "ipfs.desmos.network",
+        hostname: "**",
         port: "",
       },
     ],
