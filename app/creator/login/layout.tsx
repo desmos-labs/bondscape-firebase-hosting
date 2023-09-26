@@ -3,8 +3,7 @@ import "../../globals.css";
 import DefaultSEO from "../../seo";
 
 export const metadata = {
-  ...DefaultSEO,
-  title: "Login | Bondscape",
+  title: "Login",
 };
 
 export default function RootLayout({
