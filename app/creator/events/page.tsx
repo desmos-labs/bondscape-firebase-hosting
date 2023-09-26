@@ -8,10 +8,12 @@ import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import EventsTabs from "@/creator/events/EventsTabs";
 import { PuffLoader } from "react-spinners";
 import useHooks from "@/creator/events/useHooks";
+import { useRouter } from "next/navigation";
 
 export default function Events() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobile, isMd] = useBreakpoints();
+  const router = useRouter();
   const { data, loading, fetchingMore, lastElementRef } = useHooks(activeTab);
 
   if (isMobile || isMd) {
@@ -33,7 +35,7 @@ export default function Events() {
       <div className="lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto">
         <div className="relative flex flex-col gap-[24px]">
           <EventsHeader
-            onPressCreateEvent={() => console.log("create event")}
+            onPressCreateEvent={() => router.push("/creator/create")}
           />
           <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
           {loading ? (
