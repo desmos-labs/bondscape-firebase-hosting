@@ -1,4 +1,5 @@
 import React from "react";
+import { Field } from "formik";
 
 interface Props {
   readonly title: string;
@@ -27,7 +28,8 @@ const BigTextInput = ({
         </label>
         {required && <span className="text-[#FF8686]">*</span>}
       </div>
-      <textarea
+      <Field
+        as="textarea"
         className={`${inputClassName} text-[14px] text-bondscape-text_neutral_900 placeholder:text-bondscape-text_neutral_600 placeholder:text-[14px] placeholder:font-normal bg-bondscape-text_neutral_100 focus:outline-none`}
         name={inputName}
         rows={rows}
