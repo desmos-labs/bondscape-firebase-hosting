@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import heroImage from "../../public/bondscape-home-bg-masked.png";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import NavigationBar from "../components/NavigationBar";
@@ -12,6 +12,10 @@ export interface MainLayoutProps {
   readonly backgroundOverlay?: StaticImport;
   readonly children: React.ReactNode;
   readonly isLoading?: boolean;
+  readonly disableNavbarBgInDesktop?: boolean;
+  readonly forceNavbarBgVisible?: boolean;
+  readonly customClasses?: string;
+  readonly fullScreenHeightOption?: "always" | "onlyDesktop" | "never";
 }
 
 const MainLayout = (props: MainLayoutProps) => {
@@ -21,7 +25,28 @@ const MainLayout = (props: MainLayoutProps) => {
     backgroundImageSrc,
     backgroundOverlay,
     isLoading,
+    disableNavbarBgInDesktop,
+    forceNavbarBgVisible,
+    customClasses,
+    fullScreenHeightOption,
   } = props;
+  const [sectionHeight, setSectionHeight] = useState("h-auto");
+
+  useEffect(() => {
+    if (fullScreenHeightOption) {
+      switch (fullScreenHeightOption) {
+        case "always":
+          setSectionHeight("h-screen");
+          break;
+        case "onlyDesktop":
+          setSectionHeight("h-auto lg:h-screen");
+          break;
+        case "never":
+          setSectionHeight("h-auto");
+          break;
+      }
+    }
+  }, [fullScreenHeightOption]);
 
   return (
     <LoadingOverlay
@@ -36,10 +61,15 @@ const MainLayout = (props: MainLayoutProps) => {
         }),
       }}
     >
-      <div className={"relative"}>
+      <div
+        className={`${customClasses} relative ${sectionHeight} min-h-screen`}
+      >
         <div className={`sticky top-0 w-full z-10`}>
           <div className="relative w-full min-w-[375px]">
-            <NavigationBar />
+            <NavigationBar
+              disableNavbarBgInDesktop={disableNavbarBgInDesktop}
+              forceNavbarBgVisible={forceNavbarBgVisible}
+            />
           </div>
         </div>
         {backgroundImage && (

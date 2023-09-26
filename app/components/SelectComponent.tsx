@@ -34,10 +34,11 @@ export default function SelectComponent({
             alt={"Profile picture"}
             src={profile.profilePicture || "/defaultProfilePicture.png"}
             fill
+            sizes={"(max-width: 1920px) 10vw"}
             className="rounded-[20px] object-cover bg-bondscape-surface"
           />
         </div>
-        <div className="text-bondscape-text_neutral_100 hover:text-bondscape-text_neutral_400 transition ease-in-out text-[16px] font-normal leading-normal">
+        <div className="text-bondscape-text_neutral_900 hover:text-bondscape-text_neutral_700 transition ease-in-out text-[16px] font-normal leading-normal">
           {profile?.nickname || profile?.dTag}
         </div>
       </button>
@@ -61,7 +62,7 @@ export default function SelectComponent({
                 width={24}
                 height={24}
               />
-              <div className="text-bondscape-text_neutral_100 hover:text-bondscape-text_neutral_400 transition ease-in-out text-[16px] font-normal leading-normal">
+              <div className="text-bondscape-text_neutral_900 hover:text-bondscape-text_neutral_700 transition ease-in-out text-[16px] font-normal leading-normal">
                 My Events
               </div>
             </Link>
@@ -75,7 +76,7 @@ export default function SelectComponent({
                 width={24}
                 height={24}
               />
-              <div className="text-bondscape-text_neutral_100 hover:text-bondscape-text_neutral_400 transition ease-in-out text-[16px] font-normal leading-normal">
+              <div className="text-bondscape-text_neutral_900 hover:text-bondscape-text_neutral_700 transition ease-in-out text-[16px] font-normal leading-normal">
                 Logout
               </div>
             </button>

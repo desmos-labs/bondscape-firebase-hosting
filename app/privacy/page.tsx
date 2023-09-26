@@ -8,16 +8,14 @@ export const metadata = {
 export default function Privacy() {
   return (
     <MainLayout backgroundImage={false}>
-      <div className="w-full min-h-mobile md:min-h-md lg:min-h-lg xl:min-h-xl">
-        <div className="flex flex-col text-bondscape-text_neutral_500 px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile text-[16px] leading-loose">
+      <div className="w-full">
+        <div className="flex flex-col text-[#B3B3B3] px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile md:py-yMd lg:py-yLg xl:py-yXl text-[16px] leading-loose">
           {/* Title */}
-          <h1 className="text-2xl md:text-4xl font-semibold leading-9 text-bondscape-text_neutral_400 pb-[32px]">
+          <h1 className="text-2xl md:text-4xl font-semibold leading-9 text-[#CDCDCD] pb-[32px]">
             Privacy Policy
           </h1>
           <p className="pb-[32px]">
-            <strong className="text-bondscape-text_neutral_400">
-              Last updated: 2 Jun 2023
-            </strong>
+            <strong className="text-[#B3B3B3]">Last updated: 2 Jun 2023</strong>
           </p>
           <p>
             This policy describes the privacy practices of Bondscape and related
@@ -27,13 +25,13 @@ export default function Privacy() {
             “users“ or “you“.
           </p>
           <p>
-            <strong className="text-bondscape-text_neutral_400">
+            <strong className="text-[#CDCDCD]">
               Please read this policy and the Bondscape Terms of Service
               carefully before engaging with the Platform or using the Services.
             </strong>
           </p>
           <p>
-            <strong className="text-bondscape-text_neutral_400">
+            <strong className="text-[#CDCDCD]">
               If you are uncomfortable with the immutable, permanent, and
               transparent nature of entries on a blockchain, you should not
               engage with the Platform or use the Services.
@@ -49,15 +47,12 @@ export default function Privacy() {
           <p>
             If you have any questions about this policy or any privacy issues
             related to your use of our Services, please contact us by email to{" "}
-            <strong className="text-bondscape-text_neutral_400">
-              privacy@desmos.network
-            </strong>
-            .
+            <strong className="text-[#CDCDCD]">privacy@desmos.network</strong>.
           </p>
 
           {/* About Us */}
           <h2
-            className="text-sm md:text-xl font-semibold leading-9 text-bondscape-text_neutral_400 py-[32px]"
+            className="text-sm md:text-xl font-semibold leading-9 text-[#CDCDCD] py-[32px]"
             id="about"
           >
             About us
@@ -84,25 +79,23 @@ export default function Privacy() {
 
           {/* Data Collection and Data Retention */}
           <h2
-            className="text-sm md:text-xl font-semibold leading-9 text-bondscape-text_neutral_400 py-[32px]"
+            className="text-sm md:text-xl font-semibold leading-9 text-[#CDCDCD] py-[32px]"
             id="data-collection-and-retention"
           >
             Data Collection and Data Retention
           </h2>
           <p>
             For the purpose of this policy, “
-            <strong className="text-bondscape-text_neutral_400">
-              personal data
-            </strong>
-            “ refers to any information which is related to an identified or
-            identifiable natural person. “Personal data“ and “personal
-            information“ are used interchangeably.
+            <strong className="text-[#CDCDCD]">personal data</strong>“ refers to
+            any information which is related to an identified or identifiable
+            natural person. “Personal data“ and “personal information“ are used
+            interchangeably.
           </p>
           {/* Add the rest of the content similarly */}
 
           {/* Changes to This Privacy Policy */}
           <h2
-            className="text-sm md:text-xl font-semibold leading-9 text-bondscape-text_neutral_400 py-[32px]"
+            className="text-sm md:text-xl font-semibold leading-9 text-[#CDCDCD] py-[32px]"
             id="changes"
           >
             Changes to This Privacy Policy
@@ -119,7 +112,7 @@ export default function Privacy() {
 
           {/* Contact Us */}
           <h2
-            className="text-sm md:text-xl font-semibold leading-9 text-bondscape-text_neutral_400 py-[32px]"
+            className="text-sm md:text-xl font-semibold leading-9 text-[#CDCDCD] py-[32px]"
             id="contacts"
           >
             Contact Us

@@ -50,8 +50,9 @@ export default function Login() {
       backgroundImageSrc={heroImage}
       backgroundOverlay={overlay}
       isLoading={loginLoading}
+      disableNavbarBgInDesktop={true}
     >
-      <div className="relative w-full h-screen flex justify-center">
+      <div className="relative w-full flex justify-center">
         <div className="flex justify-center">
           <div className="w-[27rem] flex flex-col items-center gap-8 mt-48">
             <Image
@@ -75,7 +76,7 @@ export default function Login() {
                   width={40}
                   height={40}
                 />
-                <p className="text-bondscape-text_neutral_800 font-semibold text-[16px] leading-[24px]">
+                <p className="text-[#3B3B3B] font-semibold text-[16px] leading-[24px]">
                   Continue with Google
                 </p>
               </button>
@@ -89,7 +90,7 @@ export default function Login() {
                   width={40}
                   height={40}
                 />
-                <p className="text-bondscape-text_neutral_800 font-semibold text-[16px] leading-[24px]">
+                <p className="text-[#3B3B3B] font-semibold text-[16px] leading-[24px]">
                   Continue with Apple
                 </p>
               </button>

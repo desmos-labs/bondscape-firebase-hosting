@@ -8,45 +8,67 @@ import useUser from "@/hooks/user/useUser";
 import SelectComponent from "@/components/SelectComponent";
 import { AnimatePresence, motion } from "framer-motion";
 
-const NavigationBar = () => {
+const NavigationBar = ({
+  disableNavbarBgInDesktop,
+  forceNavbarBgVisible,
+}: {
+  forceNavbarBgVisible?: boolean;
+  disableNavbarBgInDesktop?: boolean;
+}) => {
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
-  const [isMobile, isMd, isBreakpointReady] = useBreakpoints();
+  const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
+    useBreakpoints();
   const pathname = usePathname();
   const { user } = useUser();
   const handleScroll = useCallback(() => {
-    const currentScrollPos = window.scrollY;
-    if (currentScrollPos >= 20 && (isMobile || isMd)) {
+    if (window.scrollY >= 60 && (isMobile || isMd)) {
       setNavbarBgVisible(true);
+    } else if (window.scrollY >= 80 && isDesktop && !disableNavbarBgInDesktop) {
+      setNavbarBgVisible(true);
+    } else if (window.scrollY > 0 && forceNavbarBgVisible) {
+      setNavbarBgVisible(true);
+    } else {
+      setNavbarBgVisible(false);
     }
-  }, [isMd, isMobile]);
+  }, [
+    disableNavbarBgInDesktop,
+    forceNavbarBgVisible,
+    isDesktop,
+    isMd,
+    isMobile,
+  ]);
 
   useEffect(() => {
-    handleScroll();
+    window.addEventListener("scroll", handleScroll);
   }, [handleScroll, isBreakpointReady]);
 
   const RightButton = useMemo(() => {
-    if (!user) {
+    if (
+      pathname === "/creator/login" ||
+      pathname === "/creator/privacy" ||
+      pathname === "/creator/terms"
+    ) {
       return;
     }
-    return (
-      pathname !== "/creator/login" &&
-      (user.profile ? (
-        <SelectComponent profile={user.profile} />
-      ) : (
-        <Link href={"/creator/login"}>
-          <div className="text-white font-semibold">
-            <button>Login</button>
-          </div>
-        </Link>
-      ))
+    if (!user || !isDesktop) {
+      return;
+    }
+    return user.profile ? (
+      <SelectComponent profile={user.profile} />
+    ) : (
+      <Link href={"/creator/login"}>
+        <div className="text-white font-semibold">
+          <button>Login</button>
+        </div>
+      </Link>
     );
-  }, [pathname, user]);
+  }, [isDesktop, pathname, user]);
 
   return (
     <nav
       className={`${
-        navbarBgVisible ? "bg-bondscape-background-primary" : "bg-transparent"
+        navbarBgVisible ? "backdrop-blur-lg" : "bg-transparent"
       } transition-colors ease-in-out sticky flex justify-between items-center w-full h-navbar-mobile md:h-navbar-md lg:h-navbar-lg xl:h-navbar-xl px-xMobile md:px-xMd lg:px-xLg xl:px-xXl`}
     >
       <Link href="/">

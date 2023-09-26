@@ -1,5 +1,5 @@
 "use client";
-import { ApolloLink, createHttpLink } from "@apollo/client";
+import { ApolloLink, concat, createHttpLink } from "@apollo/client";
 import {
   NextSSRApolloClient,
   NextSSRInMemoryCache,
@@ -7,7 +7,6 @@ import {
 } from "@apollo/experimental-nextjs-app-support/ssr";
 import { MultiAPILink } from "@habx/apollo-multi-endpoint-link";
 import { WebSocketLink } from "@apollo/client/link/ws";
-import { setContext } from "@apollo/client/link/context";
 import { parseCookies } from "nookies";
 
 const multiApiLink = ApolloLink.from([
@@ -30,16 +29,20 @@ const multiApiLink = ApolloLink.from([
   }),
 ]);
 
-function makeClient() {
+const authMiddleware = new ApolloLink((operation, forward) => {
   const bearerToken = parseCookies().bearer_token;
-  const authLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: bearerToken ? `Bearer ${bearerToken}` : "",
-      },
-    };
-  });
+  console.log("bearerToken", bearerToken);
+  operation.setContext(({ headers = {} }) => ({
+    headers: {
+      ...headers,
+      authorization: bearerToken ? `Bearer ${bearerToken}` : "",
+    },
+  }));
+
+  return forward(operation);
+});
+
+function makeClient() {
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
     link:
@@ -51,9 +54,10 @@ function makeClient() {
             new SSRMultipartLink({
               stripDefer: true,
             }),
-            multiApiLink.concat(authLink),
+            multiApiLink,
+            authMiddleware,
           ])
-        : multiApiLink.concat(authLink),
+        : concat(authMiddleware, multiApiLink),
     connectToDevTools: true,
   });
 }
