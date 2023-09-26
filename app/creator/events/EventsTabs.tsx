@@ -6,9 +6,14 @@ import { Event } from "@/types/event";
 interface Props {
   readonly activeTab: number;
   readonly events: Event[] | undefined;
+  readonly lastElementRef: any;
 }
 
-export default function EventsTabs({ activeTab, events }: Props) {
+export default function EventsTabs({
+  activeTab,
+  events,
+  lastElementRef,
+}: Props) {
   const emptyText = useMemo(() => {
     switch (activeTab) {
       case 0:
@@ -68,9 +73,15 @@ export default function EventsTabs({ activeTab, events }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 justify-center gap-[40px]">
-      {events?.map((event, index) => {
-        return <EventComponent key={index} event={event} index={index} />;
+    <div className="grid grid-cols-2 gap-[40px]">
+      {events?.map((event, index, events) => {
+        return (
+          <EventComponent
+            key={event.id}
+            event={event}
+            lastItemRef={events.length - 1 === index ? lastElementRef : null}
+          />
+        );
       })}
     </div>
   );

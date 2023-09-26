@@ -12,7 +12,7 @@ import useHooks from "@/creator/events/useHooks";
 export default function Events() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobile, isMd] = useBreakpoints();
-  const { data, loading } = useHooks(activeTab);
+  const { data, loading, fetchingMore, lastElementRef } = useHooks(activeTab);
 
   if (isMobile || isMd) {
     return (
@@ -30,18 +30,29 @@ export default function Events() {
       backgroundOverlay={bgOverlay}
       forceNavbarBgVisible={true}
     >
-      <div className="lg:px-xLg xl:px-[240px]">
+      <div className="lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto">
         <div className="relative flex flex-col gap-[24px]">
           <EventsHeader
             onPressCreateEvent={() => console.log("create event")}
           />
           <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
           {loading ? (
-            <div className="flex justify-center items-center mt-48">
+            <div className="flex justify-center items-center mt-12">
               <PuffLoader size={100} color={"white"} />
             </div>
           ) : (
-            <EventsTabs activeTab={activeTab} events={data?.events} />
+            <>
+              <EventsTabs
+                activeTab={activeTab}
+                events={data?.events}
+                lastElementRef={lastElementRef}
+              />
+              {fetchingMore && (
+                <div className="flex justify-center items-center mt-12">
+                  <PuffLoader size={100} color={"white"} />
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

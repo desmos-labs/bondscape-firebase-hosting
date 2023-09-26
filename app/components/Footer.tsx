@@ -5,13 +5,13 @@ const Footer = () => {
   return (
     <div className="flex bg-bondscape-background-primary px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile lg:py-[30px]">
       <div className="flex flex-1 flex-col lg:flex-row lg:items-center">
-        <span className="text-bondscape-text_neutral_600 text-[14px] font-light leading-none pb-2 lg:pb-0 lg:pr-[40px]">
+        <span className="text-[#8F8F8F] text-[14px] font-light leading-none pb-2 lg:pb-0 lg:pr-[40px]">
           Copyright © Desmos Labs {new Date().getFullYear()}
         </span>
         <div className="flex flex-row lg:flex-1 justify-between items-center">
           <div className="flex flex-row text-[14px] font-light">
             <Link
-              className="text-bondscape-text_neutral_400 leading-tight hover:text-bondscape-hover hover:underline transition-colors ease-in-out duration-300 cursor-pointer"
+              className="text-[#CDCDCD] leading-tight hover:text-[#8F8F8F] hover:underline transition-colors ease-in-out duration-300 cursor-pointer"
               href={"/terms"}
             >
               Terms of Service
@@ -20,7 +20,7 @@ const Footer = () => {
               |
             </span>
             <Link
-              className="text-bondscape-text_neutral_400 leading-tight hover:text-bondscape-hover hover:underline transition-colors ease-in-out duration-300 cursor-pointer"
+              className="text-[#CDCDCD] leading-tight hover:text-[#8F8F8F] hover:underline transition-colors ease-in-out duration-300 cursor-pointer"
               href={"/privacy"}
             >
               Privacy Policy
@@ -33,7 +33,7 @@ const Footer = () => {
               height="28"
               viewBox="0 0 28 28"
               fill="none"
-              className="fill-bondscape-text_neutral_500 hover:fill-bondscape-hover transition-colors ease-in-out duration-300 cursor-pointer"
+              className="fill-[#B3B3B3] hover:fill-[#E8E8E8] transition-colors ease-in-out duration-300 cursor-pointer"
             >
               <g clipPath="url(#clip0_457_125)">
                 <path

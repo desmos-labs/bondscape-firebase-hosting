@@ -11,19 +11,17 @@ export default function Terms() {
   return (
     <MainLayout backgroundImage={false}>
       <div className="w-full">
-        <div className="flex flex-col text-bondscape-text_neutral_500 px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile md:py-yMd lg:py-yLg xl:py-yXl text-[16px] leading-loose">
-          <h1 className="text-2xl md:text-4xl font-semibold leading-9 text-bondscape-text_neutral_400 pb-[32px]">
+        <div className="flex flex-col text-[#B3B3B3] px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile md:py-yMd lg:py-yLg xl:py-yXl text-[16px] leading-loose">
+          <h1 className="text-2xl md:text-4xl font-semibold leading-9 text-[#CDCDCD] pb-[32px]">
             Terms of Service
           </h1>
           <p className="pb-4">
             The following terms and conditions govern your access to and use of
             the Bondscape application, and any related content, products, and
             services offered by Desmos Labs Limited (collectively, the “
-            <strong className="text-bondscape-text_neutral_400">
-              Platform
-            </strong>
+            <strong className="text-[#CDCDCD]">Platform</strong>
             ”).
-            <strong className="text-bondscape-text_neutral_400">
+            <strong className="text-[#CDCDCD]">
               Please read these terms and conditions carefully before using our
               Platform.
             </strong>
@@ -33,18 +31,14 @@ export default function Terms() {
             incorporated in Hong Kong with company registration number 3210522,
             having its registered office at Flat 3B, Tontex Industrial Building,
             2-4 Sheung Hei Street, San Po Kong, Kowloon, Hong Kong (“
-            <strong className="text-bondscape-text_neutral_400">
-              Desmos Labs
-            </strong>
+            <strong className="text-[#CDCDCD]">Desmos Labs</strong>
             ”, “we” or “us”). Users of our services are referred to as “
-            <strong className="text-bondscape-text_neutral_400">users</strong>”
-            or “you”.
+            <strong className="text-[#CDCDCD]">users</strong>” or “you”.
           </p>
           <p>
             By using our Platform, you agree to be legally bound by these terms
             and conditions, as they may be modified or supplemented from time to
-            time (these “
-            <strong className="text-bondscape-text_neutral_400">Terms</strong>
+            time (these “<strong className="text-[#CDCDCD]">Terms</strong>
             ”). If you are accessing or using our Platform as a representative
             of an organization, you are agreeing to these Terms on their behalf.
             Desmos Labs and users are referred to as “parties” in these Terms.
@@ -53,7 +47,7 @@ export default function Terms() {
           {/* Our Platform */}
           <h2
             id="platform"
-            className="text-sm md:text-xl font-semibold leading-9 text-bondscape-text_neutral_400 py-[32px]"
+            className="text-sm md:text-xl font-semibold leading-9 text-[#CDCDCD] py-[32px]"
           >
             Our Platform
           </h2>
@@ -76,7 +70,7 @@ export default function Terms() {
           {/* Changes to the Terms */}
           <h1
             id="changes"
-            className="text-sm md:text-xl font-semibold leading-9 text-bondscape-text_neutral_400 py-[32px]"
+            className="text-sm md:text-xl font-semibold leading-9 text-[#CDCDCD] py-[32px]"
           >
             Changes to the Terms
           </h1>
@@ -91,7 +85,7 @@ export default function Terms() {
           {/* Contact Us */}
           <h1
             id="contacts"
-            className="text-sm md:text-xl font-semibold leading-9 text-bondscape-text_neutral_400 py-[32px]"
+            className="text-sm md:text-xl font-semibold leading-9 text-[#CDCDCD] py-[32px]"
           >
             Contact Us
           </h1>

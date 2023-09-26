@@ -21,7 +21,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </Head>
       {/* Main content */}
-      <body className="bg-bondscape-background-primary">
+      <body
+        className="bg-bondscape-background-primary"
+        suppressHydrationWarning={true}
+      >
         <div className="relative mx-auto w-full min-w-[375px]">
           <RecoilContextProvider>
             <ApolloWrapper>

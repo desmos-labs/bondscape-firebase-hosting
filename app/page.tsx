@@ -24,6 +24,7 @@ export default function Home() {
               quality={100}
               alt={"phone mockup"}
               fill
+              sizes={"(max-width: 768px) 50vw, (max-width: 1200px) 40vw"}
               src={mockupImage}
               style={{ objectFit: "cover" }}
             />
@@ -32,7 +33,7 @@ export default function Home() {
             <h5 className="md:hidden text-center text-2xl leading-9 font-semibold text-transparent bg-clip-text bondscape-text-gradient">
               Create real bonds with <br /> engaging event <br /> experiences
             </h5>
-            <div className="md: hidden mt-[24px] text-center text-bondscape-text_neutral_300 text-sm font-light leading-[21px]">
+            <div className="md: hidden mt-[24px] text-center text-[#E8E8E8] text-sm font-light leading-[21px]">
               We simplify event management and boost engagement, empowering
               users with social <br /> features to connect, share moments, and{" "}
               <br />
@@ -41,7 +42,7 @@ export default function Home() {
             <h1 className="hidden md:block lg:hidden text-center text-2xl md:text-4xl leading-9 font-semibold text-transparent bg-clip-text bondscape-text-gradient">
               Create real bonds with <br /> engaging event experiences
             </h1>
-            <div className="hidden md:block lg:hidden mt-[24px] text-center text-bondscape-text_neutral_300 text-sm font-light leading-[21px]">
+            <div className="hidden md:block lg:hidden mt-[24px] text-center text-[#E8E8E8] text-sm font-light leading-[21px]">
               We simplify event management and boost engagement, empowering
               users with <br /> social features to connect, share moments, and
               deepen their bonds.
@@ -49,7 +50,7 @@ export default function Home() {
             <h1 className="hidden lg:block text-left text-5xl leading-[70px] font-semibold text-transparent bg-clip-text bondscape-text-gradient">
               Create real bonds with <br /> engaging event <br /> experiences
             </h1>
-            <div className="hidden lg:block mt-[24px] text-left text-bondscape-text_neutral_300 text-[18px] font-light leading-relaxed">
+            <div className="hidden lg:block mt-[24px] text-left text-[#E8E8E8] text-[18px] font-light leading-relaxed">
               We simplify event management and boost engagement empowering users{" "}
               <br /> with social features to connect, share moments, and deepen
               their bonds.
@@ -61,6 +62,7 @@ export default function Home() {
                     alt={"App Store Icon"}
                     src={"/app-store-icon.png"}
                     fill
+                    sizes={"(max-width: 768px) 10vw, (max-width: 1200px) 15vw"}
                   />
                 </div>
               </Link>
@@ -75,6 +77,7 @@ export default function Home() {
                     alt={"Google Play Icon"}
                     src={"/google-play-icon.png"}
                     fill
+                    sizes={"(max-width: 768px) 10vw, (max-width: 1200px) 15vw"}
                   />
                 </div>
               </Link>
