@@ -4,7 +4,7 @@ import DefaultSEO from "../../seo";
 
 export const metadata = {
   ...DefaultSEO,
-  title: "Events | Bondscape",
+  title: "Events",
 };
 
 export default function RootLayout({
