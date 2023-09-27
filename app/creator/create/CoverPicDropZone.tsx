@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
+import { BondscapePreviewImage } from "@/types/image";
 
 interface Props {
-  coverPic: { preview: string };
+  coverPic: BondscapePreviewImage;
   setCoverPic: (coverPic: { preview: string }) => void;
 }
 
@@ -35,7 +36,7 @@ const CoverPicDropZone = ({ coverPic, setCoverPic }: Props) => {
   return (
     <div className="flex">
       <div
-        className="flex relative w-full h-[17.25rem] items-center justify-center bg-bondscape-text_neutral_100 rounded-[16px]"
+        className="flex relative w-full h-[17.25rem] xl:h-[22.5rem] items-center justify-center bg-bondscape-text_neutral_100 rounded-[16px]"
         {...getRootProps()}
       >
         <input {...getInputProps()} />
@@ -72,13 +73,13 @@ const CoverPicDropZone = ({ coverPic, setCoverPic }: Props) => {
               />
             </svg>
             <div className="self-stretch h-16 flex-col justify-start items-center gap-2 flex">
-              <button className="w-32 h-8 bg-violet-400 rounded-lg justify-start items-start inline-flex">
+              <div className="w-32 h-8 bg-violet-400 rounded-lg justify-start items-start inline-flex">
                 <div className="grow self-stretch py-3 bg-violet-400 rounded-lg justify-center items-center gap-2 flex">
                   <div className="text-center text-white text-sm font-semibold leading-tight">
                     Upload Image
                   </div>
                 </div>
-              </button>
+              </div>
               <div className="text-center text-white text-sm font-normal leading-tight">
                 Or drop an image
               </div>

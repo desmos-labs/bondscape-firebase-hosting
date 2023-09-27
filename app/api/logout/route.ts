@@ -1,6 +1,5 @@
 import { createResponse, getSession } from "@/lib/session";
 import { NextRequest } from "next/server";
-import axiosInstance from "@/services/axios";
 import { destroyCookie } from "nookies";
 
 /**
@@ -14,9 +13,6 @@ export async function POST(request: NextRequest) {
   const session = await getSession(request, response);
   // Clear axios authorization header
   destroyCookie(null, "bearer_token");
-  axiosInstance.defaults.headers.common = {
-    Authorization: "",
-  };
   // Destroy the session
   await session.destroy();
   return createResponse(

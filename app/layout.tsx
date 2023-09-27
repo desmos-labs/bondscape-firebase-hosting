@@ -5,6 +5,7 @@ import "./globals.css";
 import BondscapeWrapper from "./components/BondscapeWrapper";
 import RecoilContextProvider from "./components/RecoilContextProvider";
 import { ApolloWrapper } from "./components/ApolloWrapper";
+import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -25,6 +26,11 @@ export default function RootLayout({
         className="bg-bondscape-background-primary"
         suppressHydrationWarning={true}
       >
+        <Script
+          id="google-maps"
+          type="text/javascript"
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=getPlaces`}
+        />
         <div className="relative mx-auto w-full min-w-[375px]">
           <RecoilContextProvider>
             <ApolloWrapper>

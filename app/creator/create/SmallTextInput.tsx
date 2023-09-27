@@ -7,38 +7,31 @@ interface Props {
   readonly placeholder: string;
   readonly required: boolean;
   readonly inputClassName?: string;
-  readonly maxLength?: number;
-  readonly rows?: number;
 }
 
-const BigTextInput = ({
+const SmallTextInput = ({
   title,
   inputName,
   placeholder,
   required,
   inputClassName,
-  maxLength,
-  rows,
 }: Props) => {
   return (
-    <div className="flex flex-1 flex-col bg-bondscape-text_neutral_100 gap-[0.75rem] p-[1rem] rounded-[16px]">
-      <div className="flex gap-1">
+    <div className="flex flex-1 flex-row bg-bondscape-text_neutral_100 gap-2 px-[1rem] rounded-[16px] items-center">
+      <div className="flex w-[110px]">
         <label className="text-[16px] text-bondscape-text_neutral_900">
           {title}
         </label>
         {required && <span className="text-[#FF8686]">*</span>}
       </div>
       <Field
-        id={inputName}
-        as="textarea"
-        className={`${inputClassName} text-[14px] text-bondscape-text_neutral_900 placeholder:text-bondscape-text_neutral_600 placeholder:text-[14px] placeholder:font-normal bg-bondscape-text_neutral_100 focus:outline-none`}
+        className={`${inputClassName} flex flex-1 bg-bondscape-text_neutral_200 rounded-[8px] p-[0.75rem] text-[14px] text-bondscape-text_neutral_900 placeholder:text-bondscape-text_neutral_600 placeholder:text-[14px] placeholder:font-normal focus:outline-none`}
         name={inputName}
-        rows={rows}
-        maxLength={maxLength}
+        id={inputName}
         placeholder={placeholder}
       />
     </div>
   );
 };
 
-export default BigTextInput;
+export default SmallTextInput;

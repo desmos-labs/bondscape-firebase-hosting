@@ -21,6 +21,7 @@ const GetMyUpcomingEvents = gql`
         _and: [
           { organizers: { organizer_address: { _eq: $creatorAddress } } }
           { start_date: { _gte: $currentDate } }
+          { status: { _eq: "published" } }
         ]
       }
     ) {

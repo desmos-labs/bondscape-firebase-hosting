@@ -21,6 +21,7 @@ const GetMyPastEvents = gql`
         _and: [
           { organizers: { organizer_address: { _eq: $creatorAddress } } }
           { start_date: { _lt: $currentDate } }
+          { status: { _eq: "published" } }
         ]
       }
     ) {

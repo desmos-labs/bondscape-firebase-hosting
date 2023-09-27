@@ -20,7 +20,7 @@ const EventComponent = ({ event, lastItemRef }: Props) => {
         <Image
           key={event.id}
           alt={"Event image"}
-          src={event.coverPic}
+          src={event.coverPic ?? "/cover.png"}
           fill
           sizes="(max-width: 1920px) 50vw, (max-width: 1200px) 40vw, 33vw"
           className="rounded-[12px] w-full h-full top-0 left-0 transition-opacity opacity-[0] duration-[1s] object-cover"

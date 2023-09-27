@@ -73,12 +73,16 @@ export interface GQLEventResult {
 }
 
 export interface EventCategory {
-  category: {
-    id: string;
-    name: string;
-  };
+  id: number;
+  name: string;
 }
 
 export interface GQLEventCategoriesResult {
-  event_categories: EventCategory[];
+  events_categories: EventCategory[];
+}
+
+export interface GQLEventTagsResult {
+  event_tags: {
+    tag: string;
+  }[];
 }
