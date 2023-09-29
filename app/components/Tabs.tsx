@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useCallback } from "react";
 
 interface Props {
   activeTab: number;
@@ -7,11 +7,19 @@ interface Props {
 }
 
 const MyComponent = ({ activeTab, setActiveTab }: Props) => {
+  const setActiveTabAndScrollToTop = useCallback(
+    (tab: number) => {
+      setActiveTab(tab);
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    },
+    [setActiveTab],
+  );
+
   return (
     <div className="w-64 h-11 py-2 justify-start items-start gap-12 inline-flex">
       <button
         className="flex-col justify-start items-center gap-1 inline-flex"
-        onClick={() => setActiveTab(0)}
+        onClick={() => setActiveTabAndScrollToTop(0)}
       >
         <div
           className={` ${
@@ -26,7 +34,7 @@ const MyComponent = ({ activeTab, setActiveTab }: Props) => {
       </button>
       <button
         className="flex-col justify-start items-center gap-1 inline-flex"
-        onClick={() => setActiveTab(1)}
+        onClick={() => setActiveTabAndScrollToTop(1)}
       >
         <div
           className={` ${
@@ -41,7 +49,7 @@ const MyComponent = ({ activeTab, setActiveTab }: Props) => {
       </button>
       <button
         className="flex-col justify-start items-center gap-1 inline-flex"
-        onClick={() => setActiveTab(2)}
+        onClick={() => setActiveTabAndScrollToTop(2)}
       >
         <div
           className={` ${

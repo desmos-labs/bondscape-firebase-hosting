@@ -1,10 +1,10 @@
 "use client";
 import React, { useCallback, useId, useState } from "react";
-import AsyncSelect from "react-select/async";
 import { components } from "react-select";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import { GQLEventTagsResult } from "@/types/event";
 import GetTags from "@/services/graphql/queries/bondscape/GetTags";
+import AsyncCreatableSelect from "react-select/async-creatable";
 
 interface Props {
   readonly required: boolean;
@@ -18,21 +18,28 @@ const BondscapeSelectTags = ({ required, onChange }: Props) => {
     fetchPolicy: "network-only",
   });
 
-  const loadOptions = useCallback(async () => {
-    setLoading(true);
-    const data = await getLazyData();
-    setLoading(false);
-    if (!data) return [];
-    return data.event_tags
-      .map((res: { tag: string }) => {
-        return {
-          id: res.tag,
-          value: res.tag,
-          label: res.tag,
-        };
-      })
-      .filter((tag) => tag.id !== "");
-  }, [getLazyData]);
+  const loadOptions = useCallback(
+    async (input: string) => {
+      setLoading(true);
+      const data = await getLazyData({
+        variables: {
+          tag: input,
+        },
+      });
+      setLoading(false);
+      if (!data) return [];
+      return data.event_tags
+        .map((res: { tag: string }) => {
+          return {
+            id: res.tag,
+            value: res.tag,
+            label: res.tag,
+          };
+        })
+        .filter((tag) => tag.id !== "");
+    },
+    [getLazyData],
+  );
 
   return (
     <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] px-[1rem]">
@@ -44,7 +51,7 @@ const BondscapeSelectTags = ({ required, onChange }: Props) => {
           {required && <span className="text-[#FF8686]">*</span>}
         </div>
         <div className="flex flex-1">
-          <AsyncSelect
+          <AsyncCreatableSelect
             instanceId={useId()}
             defaultOptions={true}
             isMulti={true}
@@ -53,7 +60,7 @@ const BondscapeSelectTags = ({ required, onChange }: Props) => {
             loadOptions={loadOptions}
             onChange={(tags) => {
               if (tags) {
-                onChange(tags.map((tag) => tag.id));
+                onChange(tags.map((tag) => tag.value));
               } else {
                 onChange([]);
               }
@@ -98,9 +105,18 @@ const BondscapeSelectTags = ({ required, onChange }: Props) => {
               ),
             }}
             styles={{
-              input: (baseStyles) => ({
-                ...baseStyles,
-                color: "transparent",
+              menuList: (base) => ({
+                ...base,
+                "::-webkit-scrollbar": {
+                  width: "12px",
+                },
+                "::-webkit-scrollbar-track": {
+                  background: "#4B4A58",
+                },
+                "::-webkit-scrollbar-thumb": {
+                  background: "#73708A",
+                  borderRadius: "20px",
+                },
               }),
             }}
             className="w-full rounded-[8px] bg-bondscape-text_neutral_200 px-[0.75rem] font-[Poppins] leading-[1.3rem]"

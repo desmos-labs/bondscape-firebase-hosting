@@ -88,6 +88,11 @@ const config: Config = {
           inactiveTab: "#9B99A9",
           background: { primary: "#020014" },
         },
+        feedback: {
+          success: "#14BD80",
+          warning: "#F9A72D",
+          error: "#E44A4A",
+        },
       },
       backgroundImage: {
         "bondscape-home-bg-mobile":

@@ -1,4 +1,5 @@
 import { DesmosProfile } from "@/types/desmos";
+import { BondscapePreviewImage } from "@/types/image";
 
 export interface Organizer {
   /**
@@ -62,6 +63,53 @@ export interface Event {
    * Event tags.
    */
   tags: string[];
+}
+
+export interface CreateEventValues {
+  /**
+   * Event status.
+   */
+  status: "published" | "draft";
+  /**
+   * Event cover picture.
+   */
+  coverPic: BondscapePreviewImage;
+  /**
+   * Event name.
+   */
+  eventName: string;
+  /**
+   * Event details.
+   */
+  eventDetails: string;
+  /**
+   * Event start date.
+   */
+  startDate?: string;
+  /**
+   * Event end date.
+   */
+  endDate?: string;
+  /**
+   * Event categories.
+   */
+  categoriesIds?: number[];
+  /**
+   * Event website.
+   */
+  website?: string;
+  /**
+   * Event place id (Google Maps).
+   */
+  placeId?: string;
+  /**
+   * Event organizers, creator + co-hosts.
+   */
+  organizers: string[];
+  /**
+   * Event tags.
+   */
+  tags?: string[];
 }
 
 export interface GQLEventsResult {

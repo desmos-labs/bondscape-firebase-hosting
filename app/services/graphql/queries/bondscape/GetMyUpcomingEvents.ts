@@ -20,7 +20,12 @@ const GetMyUpcomingEvents = gql`
       where: {
         _and: [
           { organizers: { organizer_address: { _eq: $creatorAddress } } }
-          { start_date: { _gte: $currentDate } }
+          {
+            _or: [
+              { end_date: { _gte: $currentDate } }
+              { end_date: { _is_null: true } }
+            ]
+          }
           { status: { _eq: "published" } }
         ]
       }

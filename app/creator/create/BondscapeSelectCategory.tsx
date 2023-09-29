@@ -103,6 +103,19 @@ const BondscapeSelectCategory = ({ required, onChange }: Props) => {
                 ...baseStyles,
                 color: "transparent",
               }),
+              menuList: (base) => ({
+                ...base,
+                "::-webkit-scrollbar": {
+                  width: "12px",
+                },
+                "::-webkit-scrollbar-track": {
+                  background: "#4B4A58",
+                },
+                "::-webkit-scrollbar-thumb": {
+                  background: "#73708A",
+                  borderRadius: "20px",
+                },
+              }),
             }}
             className="w-full rounded-[8px] bg-bondscape-text_neutral_200 px-[0.75rem] font-[Poppins] leading-[1.3rem]"
             classNames={{

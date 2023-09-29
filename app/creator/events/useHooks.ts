@@ -6,8 +6,10 @@ import GetMyPastEvents from "@/services/graphql/queries/bondscape/GetMyPastEvent
 import GetMyDraftEvents from "@/services/graphql/queries/bondscape/GetMyDraftEvents";
 import GetMyUpcomingEvents from "@/services/graphql/queries/bondscape/GetMyUpcomingEvents";
 import { useInView } from "react-intersection-observer";
+import { useActiveTab } from "@/recoil/activeTab";
 
-export const useHooks = (activeTab: number) => {
+export const useHooks = () => {
+  const activeTab = useActiveTab();
   const [fetchingMore, setFetchingMore] = useState(false);
   const now = useRef(new Date());
   const { ref: lastElementRef, inView } = useInView();
@@ -32,11 +34,12 @@ export const useHooks = (activeTab: number) => {
       offset: 0,
       limit: 6,
     },
+    fetchPolicy: "no-cache",
   });
 
   useEffect(() => {
     if (!data) return;
-    if (inView) {
+    if (inView && data.events.length > 6) {
       setFetchingMore(true);
       fetchMore({
         variables: { offset: data.events.length },

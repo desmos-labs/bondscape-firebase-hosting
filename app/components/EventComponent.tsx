@@ -18,6 +18,7 @@ const EventComponent = ({ event, lastItemRef }: Props) => {
     >
       <div className="relative w-full h-[16.5rem] xl:h-[23.5rem]">
         <Image
+          id={event.id}
           key={event.id}
           alt={"Event image"}
           src={event.coverPic ?? "/cover.png"}

@@ -72,10 +72,10 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
                 onChange([]);
               }
             }}
-            placeholder={"Add dtag"}
+            placeholder={"Add a dtag or a nickname"}
             components={{
               MultiValueContainer: (props) => (
-                <div className="flex flex-1 items-center my-1 mr-0.5">
+                <div className="flex justify-center my-1 mr-0.5">
                   <components.MultiValueContainer {...props} />
                 </div>
               ),
@@ -130,10 +130,10 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
                       />
                     </div>
                     <div className="flex flex-col justify-center">
-                      <div className="text-[16px] text-bondscape-text_neutral_600">
+                      <div className="text-[16px] font-semibold text-bondscape-text_neutral_900">
                         {props.data.nickname || ""}
                       </div>
-                      <div className="text-[16px] text-bondscape-text_neutral_900">
+                      <div className="text-[14px] text-bondscape-text_neutral_800">
                         @{props.data.dtag}
                       </div>
                     </div>
@@ -145,6 +145,20 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
               input: (baseStyles) => ({
                 ...baseStyles,
                 color: "white",
+                cursor: "text",
+              }),
+              menuList: (base) => ({
+                ...base,
+                "::-webkit-scrollbar": {
+                  width: "8px",
+                },
+                "::-webkit-scrollbar-track": {
+                  background: "#4B4A58",
+                },
+                "::-webkit-scrollbar-thumb": {
+                  background: "#73708A",
+                  borderRadius: "20px",
+                },
               }),
             }}
             className="w-full rounded-[8px] bg-bondscape-text_neutral_200 px-[0.75rem] font-[Poppins] leading-[1.3rem]"

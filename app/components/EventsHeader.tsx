@@ -6,7 +6,7 @@ interface Props {
 
 const EventsHeader = ({ onPressCreateEvent }: Props) => {
   return (
-    <div className="inline-flex justify-between items-center gap-96">
+    <div className="flex flex-row flex-1 justify-between items-center">
       <div className="text-neutral-100 text-3xl font-semibold font-['Poppins'] leading-10">
         My Events
       </div>

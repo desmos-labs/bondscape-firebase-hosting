@@ -2,6 +2,7 @@ import { ResultAsync } from "neverthrow";
 import axiosInstance from "../../index";
 
 export interface CreateEventParams {
+  status: string;
   eventName: string;
   eventDetails: string;
   coverPicUrl?: string;
@@ -15,6 +16,7 @@ export interface CreateEventParams {
 }
 
 const PostImage = ({
+  status,
   coverPicUrl,
   eventName,
   eventDetails,
@@ -28,7 +30,7 @@ const PostImage = ({
 }: CreateEventParams): ResultAsync<any, Error> => {
   return ResultAsync.fromPromise(
     axiosInstance.post("/events", {
-      status: "draft",
+      status,
       name: eventName,
       description: eventDetails,
       cover_picture_url: coverPicUrl,

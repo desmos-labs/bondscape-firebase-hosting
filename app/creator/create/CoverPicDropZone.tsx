@@ -34,7 +34,7 @@ const CoverPicDropZone = ({ coverPic, setCoverPic }: Props) => {
   }, [coverPic.preview]);
 
   return (
-    <div className="flex">
+    <div className="flex cursor-pointer">
       <div
         className="flex relative w-full h-[17.25rem] xl:h-[22.5rem] items-center justify-center bg-bondscape-text_neutral_100 rounded-[16px]"
         {...getRootProps()}
