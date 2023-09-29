@@ -56,7 +56,9 @@ export default function Home() {
               their bonds.
             </div>
             <div className="flex flex-row mt-[40px] justify-center lg:justify-start">
-              <Link href={"https://testflight.apple.com/join/hVfWxAr0"}>
+              <Link
+                href={"https://apps.apple.com/us/app/bondscape/id6449780653"}
+              >
                 <div className="relative w-[160px] md:w-[202px] h-[48px] md:h-[60px]">
                   <Image
                     alt={"App Store Icon"}
