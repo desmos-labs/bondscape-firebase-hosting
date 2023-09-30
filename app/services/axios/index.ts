@@ -23,10 +23,11 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === HttpStatusCode.Unauthorized) {
-      console.log("[AXIOS]: Unauthorized response");
+      console.warn("[AXIOS]: Unauthorized response");
     }
-    console.log(JSON.stringify(error.response));
-    return Promise.reject(error);
+    const errorMsg =
+      error.response?.data?.error ?? error.response?.data ?? "Unknown error";
+    return Promise.reject(new Error(errorMsg));
   },
 );
 

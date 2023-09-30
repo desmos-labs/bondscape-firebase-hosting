@@ -25,7 +25,7 @@ export const useCreateEvent = () => {
         if (result.isOk()) {
           coverPicUrl = result.value.url;
         } else {
-          toast.error("Error uploading cover picture, please try again.");
+          toast.error(result.error.message);
           return;
         }
       }
@@ -49,7 +49,7 @@ export const useCreateEvent = () => {
         toast.success("Event created successfully");
         router.replace(`/creator/events`);
       } else {
-        toast.error("Error creating event, please try again.");
+        toast.error(eventCreationResult.error.message);
       }
     },
     [router, user],
