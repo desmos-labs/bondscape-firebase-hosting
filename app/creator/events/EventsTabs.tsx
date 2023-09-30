@@ -6,19 +6,23 @@ import { Event } from "@/types/event";
 interface Props {
   readonly activeTab: number;
   readonly events: Event[] | undefined;
+  readonly tabRef: any;
   readonly lastElementRef: any;
 }
 
 export default function EventsTabs({
   activeTab,
   events,
+  tabRef,
   lastElementRef,
 }: Props) {
   const emptyText = useMemo(() => {
     switch (activeTab) {
       case 0:
-        return "No upcoming events";
+        return "No live events";
       case 1:
+        return "No upcoming events";
+      case 2:
         return "No past events";
       default:
         return "No events";
@@ -27,7 +31,7 @@ export default function EventsTabs({
 
   if (events?.length === 0) {
     return (
-      <div className="flex flex-1 flex-col justify-center items-center mt-48 gap-6">
+      <div className="flex flex-1 flex-col justify-center items-center mt-24 gap-6">
         <div>
           <svg
             width="201"
@@ -73,12 +77,13 @@ export default function EventsTabs({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-[40px]">
+    <div className="grid grid-cols-2 gap-[40px]" ref={tabRef}>
       {events?.map((event, index, events) => {
         return (
           <EventComponent
             key={event.id}
             event={event}
+            isLive={activeTab === 0}
             lastItemRef={events.length - 1 === index ? lastElementRef : null}
           />
         );

@@ -11,7 +11,14 @@ import { useActiveTab } from "@/recoil/activeTab";
 export default function Events() {
   const activeTab = useActiveTab();
   const [isMobile, isMd] = useBreakpoints();
-  const { data, loading, fetchingMore, lastElementRef } = useHooks();
+  const {
+    data,
+    isActuallyLoading,
+    networkStatus,
+    fetchingMore,
+    lastElementRef,
+    tabRef,
+  } = useHooks();
 
   if (isMobile || isMd) {
     return (
@@ -31,7 +38,7 @@ export default function Events() {
     >
       <div className="lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto mt-[32px]">
         <div className="relative flex flex-1 flex-col">
-          {loading ? (
+          {isActuallyLoading ? (
             <div className="flex justify-center items-center mt-12">
               <PuffLoader size={100} color={"white"} />
             </div>
@@ -40,6 +47,7 @@ export default function Events() {
               <EventsTabs
                 activeTab={activeTab}
                 events={data?.events}
+                tabRef={tabRef}
                 lastElementRef={lastElementRef}
               />
               {fetchingMore && (

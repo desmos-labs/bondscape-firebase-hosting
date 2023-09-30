@@ -3,11 +3,11 @@ import EventsFields from "./fragments/EventsFields";
 import ProfileFields from "../desmos/fragments/ProfilesFields";
 import ImageHashFields from "./fragments/ImageHashFields";
 
-const GetMyUpcomingEvents = gql`
+const GetMyLiveEvents = gql`
   ${EventsFields}
   ${ProfileFields}
   ${ImageHashFields}
-  query GetMyUpcomingEvents(
+  query GetMyLiveEvents(
     $creatorAddress: String
     $currentDate: timestamptz!
     $offset: Int!
@@ -20,7 +20,8 @@ const GetMyUpcomingEvents = gql`
       where: {
         _and: [
           { organizers: { organizer_address: { _eq: $creatorAddress } } }
-          { start_date: { _gt: $currentDate } }
+          { end_date: { _lte: $currentDate } }
+          { start_date: { _gte: $currentDate } }
           { status: { _eq: "published" } }
         ]
       }
@@ -30,4 +31,4 @@ const GetMyUpcomingEvents = gql`
   }
 `;
 
-export default GetMyUpcomingEvents;
+export default GetMyLiveEvents;

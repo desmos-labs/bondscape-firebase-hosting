@@ -6,10 +6,11 @@ import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
 
 interface Props {
   event: Event;
+  isLive?: boolean;
   lastItemRef: any;
 }
 
-const EventComponent = ({ event, lastItemRef }: Props) => {
+const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
   const { getEventPeriod } = useFormatDateToTZ();
 
   const CoverPictureComponent = useMemo(() => {
@@ -36,13 +37,23 @@ const EventComponent = ({ event, lastItemRef }: Props) => {
       <div className="relative w-full h-[16.5rem] xl:h-[23.5rem]">
         {CoverPictureComponent}
       </div>
-      <div className="flex flex-col gap-[0.25rem]">
-        <div className="text-[20px] font-semibold text-bondscape-text_neutral_900 leading-[1.75rem]">
-          {event.name}
+      <div className="flex flex-1 flex-row justify-between items-center">
+        <div className="flex flex-col gap-[0.25rem]">
+          <div className="text-[20px] font-semibold text-bondscape-text_neutral_900 leading-[1.75rem]">
+            {event.name}
+          </div>
+          <div className="text-[14px] font-semibold text-bondscape-primary leading-[1.3rem]">
+            {getEventPeriod(event.startDate, event.endDate)}
+          </div>
         </div>
-        <div className="text-[14px] font-semibold text-bondscape-primary leading-[1.3rem]">
-          {getEventPeriod(event.startDate, event.endDate)}
-        </div>
+        {isLive && (
+          <div className="flex flex-row items-center gap-1">
+            <div className="w-[10px] h-[10px] rounded-[5px] bg-feedback-success" />
+            <div className="text-[14px] font-semibold text-feedback-success">
+              LIVE
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
