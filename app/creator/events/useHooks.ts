@@ -14,7 +14,6 @@ export const useHooks = () => {
   const [fetchingMore, setFetchingMore] = useState(false);
   const now = useRef(new Date());
   const { ref: lastElementRef, inView: lastElementInView } = useInView();
-  const { ref: tabRef, inView: tabInView } = useInView();
   const { user } = useUser();
   const currentQuery = useMemo(() => {
     switch (activeTab) {
@@ -82,7 +81,6 @@ export const useHooks = () => {
     networkStatus,
     fetchingMore,
     lastElementRef,
-    tabRef,
   };
 };
 

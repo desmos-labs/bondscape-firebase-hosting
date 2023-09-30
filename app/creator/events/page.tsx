@@ -11,14 +11,7 @@ import { useActiveTab } from "@/recoil/activeTab";
 export default function Events() {
   const activeTab = useActiveTab();
   const [isMobile, isMd] = useBreakpoints();
-  const {
-    data,
-    isActuallyLoading,
-    networkStatus,
-    fetchingMore,
-    lastElementRef,
-    tabRef,
-  } = useHooks();
+  const { data, isActuallyLoading, fetchingMore, lastElementRef } = useHooks();
 
   if (isMobile || isMd) {
     return (
@@ -47,7 +40,6 @@ export default function Events() {
               <EventsTabs
                 activeTab={activeTab}
                 events={data?.events}
-                tabRef={tabRef}
                 lastElementRef={lastElementRef}
               />
               {fetchingMore && (
