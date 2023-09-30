@@ -1,10 +1,9 @@
 "use client";
-
 import React from "react";
 import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
 import type Entity from "@ant-design/cssinjs/es/Cache";
 import { useServerInsertedHTML } from "next/navigation";
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider } from "antd";
 
 const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
   const cache = React.useMemo<Entity>(() => createCache(), []);
@@ -14,8 +13,6 @@ const StyledComponentsRegistry = ({ children }: React.PropsWithChildren) => {
       dangerouslySetInnerHTML={{ __html: extractStyle(cache, true) }}
     />
   ));
-
-  const { defaultAlgorithm } = theme;
 
   return (
     <StyleProvider cache={cache}>
