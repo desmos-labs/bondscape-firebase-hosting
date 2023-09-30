@@ -57,7 +57,7 @@ const NavigationBar = ({
     ) {
       return;
     }
-    if (!user || !isDesktop) {
+    if (!user || !isDesktop || process.env.NODE_ENV === "production") {
       return;
     }
     return user.profile ? (
