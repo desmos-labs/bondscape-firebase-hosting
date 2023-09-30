@@ -20,8 +20,8 @@ const GetMyLiveEvents = gql`
       where: {
         _and: [
           { organizers: { organizer_address: { _eq: $creatorAddress } } }
-          { end_date: { _lte: $currentDate } }
-          { start_date: { _gte: $currentDate } }
+          { start_date: { _lte: $currentDate } }
+          { end_date: { _gte: $currentDate } }
           { status: { _eq: "published" } }
         ]
       }
