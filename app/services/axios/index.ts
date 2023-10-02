@@ -3,7 +3,7 @@ import { parseCookies } from "nookies";
 
 const axiosInstance = axios.create({
   baseURL: "https://api-bondscape.mainnet.desmos.network",
-  timeout: 60000,
+  timeout: 20000,
 });
 
 // Request interceptor

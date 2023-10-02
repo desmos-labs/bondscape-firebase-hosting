@@ -36,7 +36,7 @@ export default function CreateEvent() {
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
   const params = useParams();
-  const { createEvent } = useCreateEvent();
+  const { uploadPictureAndCreateEvent } = useCreateEvent();
   const [getLazyData] = useCustomLazyQuery<GQLEventsResult>(GetEventById, {
     fetchPolicy: "network-only",
   });
@@ -99,7 +99,7 @@ export default function CreateEvent() {
         validateOnChange={true}
         validateOnMount={false}
         initialValues={initialValues}
-        onSubmit={(values) => createEvent(values)}
+        onSubmit={(values) => uploadPictureAndCreateEvent(values)}
       >
         {(formikProps) => {
           const { values, setFieldValue, isSubmitting } = formikProps;

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import PostImage from "@/services/axios/requests/PostImage";
 import { toast } from "react-toastify";
-import PostEvent from "@/services/axios/requests/PostEvent";
+import CreateEvent from "../../services/axios/requests/CreateEvent";
 import useUser from "@/hooks/user/useUser";
 import { useRouter } from "next/navigation";
 import { CreateEventValues } from "@/types/event";
@@ -10,7 +10,7 @@ export const useCreateEvent = () => {
   const { user } = useUser();
   const router = useRouter();
 
-  const createEvent = useCallback(
+  const uploadPictureAndCreateEvent = useCallback(
     async (values: CreateEventValues) => {
       // If the user is not logged in, we can't create an event
       if (!user || !user.profile) return;
@@ -30,7 +30,7 @@ export const useCreateEvent = () => {
         }
       }
       // Create the event
-      const eventCreationResult = await PostEvent({
+      const eventCreationResult = await CreateEvent({
         status: values.status,
         coverPicUrl,
         eventName: values.eventName,
@@ -56,7 +56,7 @@ export const useCreateEvent = () => {
   );
 
   return {
-    createEvent,
+    uploadPictureAndCreateEvent,
   };
 };
 

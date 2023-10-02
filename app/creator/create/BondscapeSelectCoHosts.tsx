@@ -3,7 +3,7 @@ import React, { useCallback, useId, useState } from "react";
 import AsyncSelect from "react-select/async";
 import { components } from "react-select";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
-import GetProfileForDtagAndNickname from "@/services/graphql/queries/desmos/GetProfileForDtagAndNickname";
+import GetProfile from "@/services/graphql/queries/desmos/GetProfile";
 import { DesmosProfile, GQLProfileResult } from "@/types/desmos";
 import Image from "next/image";
 
@@ -15,19 +15,16 @@ interface Props {
 const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
   const [loading, setLoading] = useState(false);
 
-  const [getLazyData] = useCustomLazyQuery<GQLProfileResult>(
-    GetProfileForDtagAndNickname,
-    {
-      fetchPolicy: "network-only",
-    },
-  );
+  const [getLazyData] = useCustomLazyQuery<GQLProfileResult>(GetProfile, {
+    fetchPolicy: "network-only",
+  });
 
   const loadOptions = useCallback(
     async (input: string) => {
       setLoading(true);
       const data = await getLazyData({
         variables: {
-          input: `%${input}%`,
+          search: `%${input}%`,
         },
       });
       setLoading(false);
@@ -76,7 +73,9 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
             components={{
               MultiValueContainer: (props) => (
                 <div className="flex justify-center my-1 mr-0.5">
-                  <components.MultiValueContainer {...props} />
+                  <components.MultiValueContainer {...props}>
+                    {props.children}
+                  </components.MultiValueContainer>
                 </div>
               ),
               MultiValueLabel: (props) => (

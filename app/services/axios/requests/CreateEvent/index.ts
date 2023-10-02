@@ -15,7 +15,7 @@ export interface CreateEventParams {
   tags?: string[];
 }
 
-const PostImage = ({
+const CreateEvent = ({
   status,
   coverPicUrl,
   eventName,
@@ -46,4 +46,4 @@ const PostImage = ({
   ).map((response) => response.data);
 };
 
-export default PostImage;
+export default CreateEvent;
