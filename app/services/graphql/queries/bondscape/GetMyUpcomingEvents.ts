@@ -1,12 +1,8 @@
 import { gql } from "@apollo/client";
 import EventsFields from "./fragments/EventsFields";
-import ProfileFields from "../desmos/fragments/ProfilesFields";
-import ImageHashFields from "./fragments/ImageHashFields";
 
 const GetMyUpcomingEvents = gql`
   ${EventsFields}
-  ${ProfileFields}
-  ${ImageHashFields}
   query GetMyUpcomingEvents(
     $creatorAddress: String
     $currentDate: timestamptz!

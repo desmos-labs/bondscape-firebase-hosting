@@ -1,10 +1,9 @@
 "use client";
-import MainLayout from "../../layouts/MainLayout";
-import React from "react";
-import bgOverlay from "../../../public/eventsBgOverlay.png";
+import MainLayout from "../../../layouts/MainLayout";
+import React, { useCallback, useEffect, useState } from "react";
+import bgOverlay from "../../../../public/eventsBgOverlay.png";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import CreateEventHeader from "@/components/CreateEventHeader";
-import { useRouter } from "next/navigation";
 import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
 import BigTextInput from "@/creator/create/BigTextInput";
 import { ErrorMessage, Form, Formik, FormikProps } from "formik";
@@ -16,23 +15,15 @@ import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
 import BondscapeSelectTags from "@/creator/create/BondscapeSelectTags";
 import * as Yup from "yup";
 import BondscapeButton from "@/components/BondscapeButton";
-import { CreateEventValues } from "@/types/event";
+import { CreateEventValues, GQLEventsResult } from "@/types/event";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
 import { BondscapePreviewImage } from "@/types/image";
+import { useParams, useRouter } from "next/navigation";
+import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
+import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 
 export default function CreateEvent() {
-  const [isMobile, isMd] = useBreakpoints();
-  const router = useRouter();
-  const { createEvent } = useCreateEvent();
-
-  const handleButtonClick = async (
-    formikProps: FormikProps<CreateEventValues>,
-  ) => {
-    const { submitForm } = formikProps;
-    await submitForm();
-  };
-
-  const initialValues: CreateEventValues = {
+  const [initialValues, setInitialValues] = useState<CreateEventValues>({
     status: "draft",
     coverPic: {
       preview: "",
@@ -40,6 +31,45 @@ export default function CreateEvent() {
     eventName: "",
     eventDetails: "",
     organizers: [],
+  });
+
+  const [isMobile, isMd] = useBreakpoints();
+  const router = useRouter();
+  const params = useParams();
+  const { createEvent } = useCreateEvent();
+  const [getLazyData] = useCustomLazyQuery<GQLEventsResult>(GetEventById, {
+    fetchPolicy: "network-only",
+  });
+
+  const setInitialValuesFromQuery = useCallback(async () => {
+    if (!params) return;
+    const result = await getLazyData({
+      variables: {
+        eventId: params.id[0],
+      },
+    });
+    if (!result?.events) return;
+    const event = result.events[0];
+    setInitialValues({
+      ...initialValues,
+      eventName: event.name,
+      eventDetails: event.name,
+      startDate: event.startDate,
+      endDate: event.endDate,
+      website: event.website,
+      organizers: event.organizers.map((o) => o.organizerAddress),
+    });
+  }, []);
+
+  useEffect(() => {
+    setInitialValuesFromQuery();
+  }, [setInitialValuesFromQuery]);
+
+  const handleButtonClick = async (
+    formikProps: FormikProps<CreateEventValues>,
+  ) => {
+    const { submitForm } = formikProps;
+    await submitForm();
   };
 
   const validateSchema = Yup.object().shape({
@@ -64,6 +94,7 @@ export default function CreateEvent() {
       forceNavbarBgVisible={true}
     >
       <Formik
+        enableReinitialize={true}
         validationSchema={validateSchema}
         validateOnChange={true}
         validateOnMount={false}

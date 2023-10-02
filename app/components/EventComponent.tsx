@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { Event } from "@/types/event";
 import Image from "next/image";
 import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
+import { useRouter } from "next/navigation";
 
 interface Props {
   event: Event;
@@ -12,6 +13,7 @@ interface Props {
 
 const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
   const { getEventPeriod } = useFormatDateToTZ();
+  const router = useRouter();
 
   const CoverPictureComponent = useMemo(() => {
     return (
@@ -54,6 +56,13 @@ const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
             </div>
           </div>
         )}
+        <button
+          onClick={() =>
+            router.push(`/creator/create/${encodeURIComponent(event.id)}`)
+          }
+        >
+          Test update
+        </button>
       </div>
     </div>
   );
