@@ -9,6 +9,8 @@ import { useActiveTab } from "@/recoil/activeTab";
 import GetMyLiveEvents from "@/services/graphql/queries/bondscape/GetMyLiveEvents";
 import { useQuery } from "@apollo/client";
 
+const EVENTS_QUERY_LIMIT = 20;
+
 export const useHooks = () => {
   const activeTab = useActiveTab();
   const [fetchingMore, setFetchingMore] = useState(false);
@@ -35,7 +37,7 @@ export const useHooks = () => {
       creatorAddress: user?.profile?.address || "",
       currentDate: now.current.toISOString(),
       offset: 0,
-      limit: 6,
+      limit: EVENTS_QUERY_LIMIT,
     };
   }, [user]);
 
@@ -55,7 +57,7 @@ export const useHooks = () => {
 
   useEffect(() => {
     if (!data) return;
-    if (lastElementInView && data.events.length === 6) {
+    if (lastElementInView && data.events.length === EVENTS_QUERY_LIMIT) {
       setFetchingMore(true);
       fetchMore({
         variables: { offset: data.events.length },

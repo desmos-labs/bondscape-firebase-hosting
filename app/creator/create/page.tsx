@@ -23,7 +23,7 @@ import { BondscapePreviewImage } from "@/types/image";
 export default function CreateEvent() {
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
-  const { createEvent } = useCreateEvent();
+  const { uploadPictureAndCreateEvent } = useCreateEvent();
 
   const handleButtonClick = async (
     formikProps: FormikProps<CreateEventValues>,
@@ -68,7 +68,7 @@ export default function CreateEvent() {
         validateOnChange={true}
         validateOnMount={false}
         initialValues={initialValues}
-        onSubmit={(values) => createEvent(values)}
+        onSubmit={(values) => uploadPictureAndCreateEvent(values)}
       >
         {(formikProps) => {
           const { values, setFieldValue, isSubmitting } = formikProps;
