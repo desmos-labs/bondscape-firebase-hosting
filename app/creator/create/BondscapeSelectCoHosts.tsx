@@ -24,7 +24,7 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
       setLoading(true);
       const data = await getLazyData({
         variables: {
-          input: `%${input}%`,
+          search: `%${input}%`,
         },
       });
       setLoading(false);
@@ -73,7 +73,9 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
             components={{
               MultiValueContainer: (props) => (
                 <div className="flex justify-center my-1 mr-0.5">
-                  <components.MultiValueContainer {...props} />
+                  <components.MultiValueContainer {...props}>
+                    {props.children}
+                  </components.MultiValueContainer>
                 </div>
               ),
               MultiValueLabel: (props) => (
