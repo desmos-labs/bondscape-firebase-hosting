@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client";
 import { GQLEventsResult } from "@/types/event";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useUser from "@/hooks/user/useUser";
@@ -6,37 +5,59 @@ import GetMyPastEvents from "@/services/graphql/queries/bondscape/GetMyPastEvent
 import GetMyDraftEvents from "@/services/graphql/queries/bondscape/GetMyDraftEvents";
 import GetMyUpcomingEvents from "@/services/graphql/queries/bondscape/GetMyUpcomingEvents";
 import { useInView } from "react-intersection-observer";
+import { useActiveTab } from "@/recoil/activeTab";
+import GetMyLiveEvents from "@/services/graphql/queries/bondscape/GetMyLiveEvents";
+import { useQuery } from "@apollo/client";
 
-export const useHooks = (activeTab: number) => {
+const EVENTS_QUERY_LIMIT = 20;
+
+export const useHooks = () => {
+  const activeTab = useActiveTab();
   const [fetchingMore, setFetchingMore] = useState(false);
   const now = useRef(new Date());
-  const { ref: lastElementRef, inView } = useInView();
+  const { ref: lastElementRef, inView: lastElementInView } = useInView();
   const { user } = useUser();
   const currentQuery = useMemo(() => {
     switch (activeTab) {
       case 0:
-        return GetMyUpcomingEvents;
+        return GetMyLiveEvents;
       case 1:
-        return GetMyPastEvents;
+        return GetMyUpcomingEvents;
       case 2:
+        return GetMyPastEvents;
+      case 3:
         return GetMyDraftEvents;
       default:
         return GetMyUpcomingEvents;
     }
   }, [activeTab]);
 
-  const { data, loading, fetchMore } = useQuery<GQLEventsResult>(currentQuery, {
-    variables: {
+  const queryVariables = useMemo(() => {
+    return {
       creatorAddress: user?.profile?.address || "",
       currentDate: now.current.toISOString(),
       offset: 0,
-      limit: 6,
-    },
-  });
+      limit: EVENTS_QUERY_LIMIT,
+    };
+  }, [user]);
+
+  const { data, loading, fetchMore, networkStatus, client } =
+    useQuery<GQLEventsResult>(currentQuery, {
+      variables: queryVariables,
+      fetchPolicy: "cache-and-network",
+    });
+
+  // This is a workaround to avoid the loading state when the query is cached
+  const isActuallyLoading =
+    loading &&
+    !client.readQuery({
+      query: currentQuery,
+      variables: queryVariables,
+    });
 
   useEffect(() => {
     if (!data) return;
-    if (inView) {
+    if (lastElementInView && data.events.length === EVENTS_QUERY_LIMIT) {
       setFetchingMore(true);
       fetchMore({
         variables: { offset: data.events.length },
@@ -54,11 +75,12 @@ export const useHooks = (activeTab: number) => {
         },
       }).then(() => setFetchingMore(false));
     }
-  }, [data, data?.events.length, fetchMore, inView]);
+  }, [data, data?.events.length, fetchMore, lastElementInView]);
 
   return {
     data,
-    loading,
+    isActuallyLoading,
+    networkStatus,
     fetchingMore,
     lastElementRef,
   };

@@ -5,6 +5,7 @@ import "./globals.css";
 import BondscapeWrapper from "./components/BondscapeWrapper";
 import RecoilContextProvider from "./components/RecoilContextProvider";
 import { ApolloWrapper } from "./components/ApolloWrapper";
+import ToastWrapper from "@/components/ToastWrapper";
 
 export default function RootLayout({
   children,
@@ -28,7 +29,9 @@ export default function RootLayout({
         <div className="relative mx-auto w-full min-w-[375px]">
           <RecoilContextProvider>
             <ApolloWrapper>
-              <BondscapeWrapper>{children}</BondscapeWrapper>
+              <ToastWrapper>
+                <BondscapeWrapper>{children}</BondscapeWrapper>
+              </ToastWrapper>
             </ApolloWrapper>
           </RecoilContextProvider>
           <div className={`relative w-full min-w-[375px] bg-no-repeat`}>

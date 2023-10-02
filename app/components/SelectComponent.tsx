@@ -24,7 +24,7 @@ export default function SelectComponent({
   }, [logout, router]);
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <button
         className="flex items-center gap-2 justify-center "
         onClick={() => setSubMenuVisible((prev) => !prev)}

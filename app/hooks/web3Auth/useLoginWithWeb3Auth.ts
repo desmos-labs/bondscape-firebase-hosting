@@ -9,7 +9,6 @@ import { generateWeb3AuthWallet } from "@/lib/WalletUtils";
 import { useWeb3AuthClient } from "@/recoil/web3auth";
 import usePerformLogin from "../apis/usePerformLogin";
 import { setCookie } from "nookies";
-import axiosInstance from "../../services/axios";
 import useUser from "@/hooks/user/useUser";
 import { useRouter } from "next/navigation";
 import { err, ok, Result } from "neverthrow";
@@ -54,9 +53,6 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
               console.log("[TOKEN]:", bearer);
               // We use a cookie to store the bearer token for the apollo client
               setCookie(null, "bearer_token", bearer);
-              axiosInstance.defaults.headers.common = {
-                Authorization: `Bearer ${bearer}`,
-              };
               await saveUser({
                 profile: profile,
                 account: account.account,

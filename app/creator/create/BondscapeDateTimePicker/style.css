@@ -1,0 +1,47 @@
+.ant-picker {
+  border-style: none !important;
+  background-color: #4B4A58 !important;
+}
+
+.ant-picker input {
+  color: #F6F6F7 !important;
+}
+
+.ant-picker-input {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.ant-picker-ok .ant-btn {
+  background-color: #A579FF !important;
+  color: #F6F6F7 !important;
+}
+
+.ant-picker-ok .ant-btn-primary:disabled {
+  opacity: 0.3;
+}
+
+.ant-picker-clear {
+  background-color: #4B4A58 !important;
+}
+
+.ant-picker-now-btn {
+  color: #4B4A58 !important;
+}
+
+.ant-picker-now-btn:hover {
+  color: #A579FF !important;
+}
+
+.ant-picker-content ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ant-picker-content ::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.ant-picker-content ::-webkit-scrollbar-thumb {
+  background-color: #A579FF;
+  border-radius: 20px;
+}

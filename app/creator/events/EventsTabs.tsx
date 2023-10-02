@@ -17,8 +17,10 @@ export default function EventsTabs({
   const emptyText = useMemo(() => {
     switch (activeTab) {
       case 0:
-        return "No upcoming events";
+        return "No live events";
       case 1:
+        return "No upcoming events";
+      case 2:
         return "No past events";
       default:
         return "No events";
@@ -27,7 +29,7 @@ export default function EventsTabs({
 
   if (events?.length === 0) {
     return (
-      <div className="flex flex-1 flex-col justify-center items-center mt-48 gap-6">
+      <div className="flex flex-1 flex-col justify-center items-center mt-24 gap-6">
         <div>
           <svg
             width="201"
@@ -79,6 +81,7 @@ export default function EventsTabs({
           <EventComponent
             key={event.id}
             event={event}
+            isLive={activeTab === 0}
             lastItemRef={events.length - 1 === index ? lastElementRef : null}
           />
         );
