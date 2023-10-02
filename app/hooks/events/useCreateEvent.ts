@@ -5,20 +5,25 @@ import CreateEvent from "../../services/axios/requests/CreateEvent";
 import useUser from "@/hooks/user/useUser";
 import { useRouter } from "next/navigation";
 import { CreateEventValues } from "@/types/event";
+import EditEvent from "@/services/axios/requests/EditEvent";
 
 export const useCreateEvent = () => {
   const { user } = useUser();
   const router = useRouter();
 
   const uploadPictureAndCreateEvent = useCallback(
-    async (values: CreateEventValues) => {
+    async (values: CreateEventValues, eventId?: string) => {
       // If the user is not logged in, we can't create an event
       if (!user || !user.profile) return;
-      // The user is logged in, so we can create the event and add him as creator
-      values.organizers.push(user.profile.address);
+      // Get the addresses of the organizers
+      const organizersAddresses = values.organizers.map(
+        (organizer) => organizer.organizerAddress,
+      );
+      // Add the user's address to the list of organizers
+      organizersAddresses.unshift(user.profile.address);
       // Load the cover picture if it exists
-      let coverPicUrl = undefined;
-      if (values.coverPic.preview !== "") {
+      let coverPicUrl = values.coverPicUrl;
+      if (values.coverPic) {
         const result = await PostImage({
           file: values.coverPic,
         });
@@ -29,24 +34,47 @@ export const useCreateEvent = () => {
           return;
         }
       }
-      // Create the event
-      const eventCreationResult = await CreateEvent({
-        status: values.status,
-        coverPicUrl,
-        eventName: values.eventName,
-        eventDetails: values.eventDetails,
-        organizersAddresses: values.organizers,
-        startDate: values.startDate,
-        endDate: values.endDate,
-        categoriesIds: values.categoriesIds,
-        website: values.website,
-        placeId: values.placeId,
-        tags: values.tags,
-      });
+
+      let eventCreationResult;
+
+      if (eventId) {
+        eventCreationResult = await EditEvent({
+          eventId,
+          status: values.status,
+          coverPicUrl,
+          eventName: values.eventName,
+          eventDetails: values.eventDetails,
+          organizersAddresses: organizersAddresses,
+          startDate: values.startDate,
+          endDate: values.endDate,
+          categoriesIds: values.categories?.map((category) => category.id),
+          website: values.website,
+          placeId: values.placeId,
+          tags: values.tags,
+        });
+      } else {
+        eventCreationResult = await CreateEvent({
+          status: values.status,
+          coverPicUrl,
+          eventName: values.eventName,
+          eventDetails: values.eventDetails,
+          organizersAddresses: organizersAddresses,
+          startDate: values.startDate,
+          endDate: values.endDate,
+          categoriesIds: values.categories?.map((category) => category.id),
+          website: values.website,
+          placeId: values.placeId,
+          tags: values.tags,
+        });
+      }
 
       // Check the result: if it's ok, redirect to the events page and show a success toast, otherwise show an error toast
       if (eventCreationResult.isOk()) {
-        toast.success("Event created successfully");
+        toast.success(
+          eventCreationResult.value.type === "create"
+            ? "Event created successfully"
+            : "Event updated successfully",
+        );
         router.replace(`/creator/events`);
       } else {
         toast.error(eventCreationResult.error.message);

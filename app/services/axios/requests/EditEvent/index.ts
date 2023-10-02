@@ -2,7 +2,8 @@ import { ResultAsync } from "neverthrow";
 import axiosInstance from "../../index";
 import { EventRequestParams } from "@/types/event";
 
-const CreateEvent = ({
+const EditEvent = ({
+  eventId,
   status,
   coverPicUrl,
   eventName,
@@ -14,9 +15,11 @@ const CreateEvent = ({
   placeId,
   tags,
   website,
-}: EventRequestParams): ResultAsync<any, Error> => {
+}: EventRequestParams & {
+  eventId: string;
+}): ResultAsync<any, Error> => {
   return ResultAsync.fromPromise(
-    axiosInstance.post("/events", {
+    axiosInstance.put(`/events/${eventId}`, {
       status,
       name: eventName,
       description: eventDetails,
@@ -33,9 +36,9 @@ const CreateEvent = ({
   ).map((response) => {
     return {
       data: response.data,
-      type: "create",
+      type: "edit",
     };
   });
 };
 
-export default CreateEvent;
+export default EditEvent;

@@ -63,6 +63,20 @@ export interface Event {
    * Event tags.
    */
   tags: string[];
+  /**
+   * Event categories.
+   */
+  categories: {
+    category_id: number;
+    category: {
+      id: number;
+      name: string;
+    };
+  }[];
+  /**
+   * Event status
+   */
+  status?: "published" | "draft";
 }
 
 export interface CreateEventValues {
@@ -73,7 +87,8 @@ export interface CreateEventValues {
   /**
    * Event cover picture.
    */
-  coverPic: BondscapePreviewImage;
+  coverPic?: BondscapePreviewImage;
+  coverPicUrl?: string;
   /**
    * Event name.
    */
@@ -93,7 +108,7 @@ export interface CreateEventValues {
   /**
    * Event categories.
    */
-  categoriesIds?: number[];
+  categories?: EventCategory[];
   /**
    * Event website.
    */
@@ -105,7 +120,7 @@ export interface CreateEventValues {
   /**
    * Event organizers, creator + co-hosts.
    */
-  organizers: string[];
+  organizers: Organizer[];
   /**
    * Event tags.
    */
@@ -133,4 +148,18 @@ export interface GQLEventTagsResult {
   event_tags: {
     tag: string;
   }[];
+}
+
+export interface EventRequestParams {
+  status: string;
+  eventName: string;
+  eventDetails: string;
+  coverPicUrl?: string;
+  startDate?: string;
+  endDate?: string;
+  categoriesIds?: number[];
+  website?: string;
+  placeId?: string;
+  organizersAddresses: string[];
+  tags?: string[];
 }

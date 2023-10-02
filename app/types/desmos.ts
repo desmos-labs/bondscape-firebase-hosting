@@ -51,7 +51,3 @@ export interface DesmosProfile {
 export interface GQLProfileResult {
   readonly profiles: DesmosProfile[];
 }
-
-export interface DesmosProfileComposite extends DesmosProfile {
-  type: string;
-}

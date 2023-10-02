@@ -7,11 +7,16 @@ import GetCategories from "@/services/graphql/queries/bondscape/GetCategories";
 import { EventCategory, GQLEventCategoriesResult } from "@/types/event";
 
 interface Props {
+  readonly initialCategories?: EventCategory[];
   readonly required: boolean;
-  readonly onChange: (categoriesIds: number[]) => void;
+  readonly onChange: (categories: EventCategory[]) => void;
 }
 
-const BondscapeSelectCategory = ({ required, onChange }: Props) => {
+const BondscapeSelectCategory = ({
+  initialCategories,
+  required,
+  onChange,
+}: Props) => {
   const [categoriesLoading, setCategoriesLoading] = useState(false);
 
   const [getLazyData] = useCustomLazyQuery<GQLEventCategoriesResult>(
@@ -46,15 +51,31 @@ const BondscapeSelectCategory = ({ required, onChange }: Props) => {
         </div>
         <div className="flex flex-1">
           <AsyncSelect
+            value={initialCategories?.map((category) => {
+              return {
+                id: category.id,
+                value: category.name,
+                label: category.name,
+              };
+            })}
             instanceId={useId()}
             defaultOptions={true}
             isMulti={true}
+            backspaceRemovesValue={true}
+            noOptionsMessage={() => "No categories found"}
             loadingMessage={() => "Loading..."}
             isLoading={categoriesLoading}
             loadOptions={loadOptions}
             onChange={(categories) => {
               if (categories) {
-                onChange(categories.map((category) => category.id));
+                onChange(
+                  categories.map((category) => {
+                    return {
+                      id: category.id,
+                      name: category.value,
+                    };
+                  }),
+                );
               } else {
                 onChange([]);
               }
@@ -63,7 +84,9 @@ const BondscapeSelectCategory = ({ required, onChange }: Props) => {
             components={{
               MultiValueContainer: (props) => (
                 <div className="mb-1 mr-1">
-                  <components.MultiValueContainer {...props} />
+                  <components.MultiValueContainer {...props}>
+                    {props.children}
+                  </components.MultiValueContainer>
                 </div>
               ),
               MultiValueLabel: (props) => (

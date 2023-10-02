@@ -4,12 +4,16 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 
 interface Props {
+  readonly initialStartValue?: string;
+  readonly initialEndValue?: string;
   readonly required: boolean;
   readonly onChangeStart: (value: string | undefined) => void;
   readonly onChangeEnd: (value: string | undefined) => void;
 }
 
 const BondscapeDateTimePicker = ({
+  initialStartValue,
+  initialEndValue,
   required,
   onChangeStart,
   onChangeEnd,
@@ -53,6 +57,7 @@ const BondscapeDateTimePicker = ({
         </div>
         <div className="flex flex-1">
           <DatePicker
+            value={initialStartValue ? dayjs(initialStartValue) : undefined}
             disabledDate={
               maxDate
                 ? (current) => current < maxDate
@@ -86,6 +91,7 @@ const BondscapeDateTimePicker = ({
         </div>
         <div className="flex flex-1">
           <DatePicker
+            value={initialEndValue ? dayjs(initialEndValue) : undefined}
             disabledDate={
               minDate
                 ? (current) => current < minDate

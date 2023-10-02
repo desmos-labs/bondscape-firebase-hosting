@@ -6,6 +6,7 @@ const GetEventById = gql`
   query GetEventById($eventId: String) @api(name: bondscape) {
     events(where: { id: { _eq: $eventId } }) {
       ...EventsFields
+      status
     }
   }
 `;

@@ -1,6 +1,6 @@
 "use client";
 import MainLayout from "../../../layouts/MainLayout";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import bgOverlay from "../../../../public/eventsBgOverlay.png";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import CreateEventHeader from "@/components/CreateEventHeader";
@@ -17,49 +17,76 @@ import * as Yup from "yup";
 import BondscapeButton from "@/components/BondscapeButton";
 import { CreateEventValues, GQLEventsResult } from "@/types/event";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
-import { BondscapePreviewImage } from "@/types/image";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
+import useUser from "@/hooks/user/useUser";
 
-export default function CreateEvent() {
+interface PageProps {
+  params: {
+    id?: string[];
+  };
+}
+
+export default function CreateEvent({ params }: PageProps) {
+  const [loading, setLoading] = useState(false);
+  const eventId = params && params.id ? params.id[0] : undefined;
   const [initialValues, setInitialValues] = useState<CreateEventValues>({
     status: "draft",
-    coverPic: {
-      preview: "",
-    } as BondscapePreviewImage,
     eventName: "",
     eventDetails: "",
     organizers: [],
+    website: "",
+    tags: [],
+    categories: [],
+    coverPicUrl: "",
+    coverPic: undefined,
+    startDate: undefined,
+    endDate: undefined,
+    placeId: undefined,
   });
 
+  const { user } = useUser();
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
-  const params = useParams();
   const { uploadPictureAndCreateEvent } = useCreateEvent();
   const [getLazyData] = useCustomLazyQuery<GQLEventsResult>(GetEventById, {
     fetchPolicy: "network-only",
   });
 
+  const title = useMemo(() => {
+    if (eventId) return "Edit Event";
+    return "Create Event";
+  }, [eventId]);
+
   const setInitialValuesFromQuery = useCallback(async () => {
-    if (!params) return;
+    if (params && !params.id) return;
+    setLoading(true);
     const result = await getLazyData({
       variables: {
-        eventId: params.id[0],
+        eventId: eventId,
       },
     });
+    setLoading(false);
     if (!result?.events) return;
     const event = result.events[0];
-    setInitialValues({
-      ...initialValues,
-      eventName: event.name,
-      eventDetails: event.name,
-      startDate: event.startDate,
-      endDate: event.endDate,
-      website: event.website,
-      organizers: event.organizers.map((o) => o.organizerAddress),
+
+    setInitialValues((prev) => {
+      return {
+        ...prev,
+        eventName: event.name,
+        eventDetails: event.description,
+        coverPicUrl: event.coverPic,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        categories: event.categories.map((category) => category.category),
+        placeId: event.googlePlaceId,
+        organizers: event.organizers,
+        tags: event.tags,
+        website: event.website,
+      };
     });
-  }, []);
+  }, [params, getLazyData, eventId]);
 
   useEffect(() => {
     setInitialValuesFromQuery();
@@ -92,6 +119,7 @@ export default function CreateEvent() {
       customClasses={"bg-[#020014]"}
       backgroundOverlay={bgOverlay}
       forceNavbarBgVisible={true}
+      isLoading={loading}
     >
       <Formik
         enableReinitialize={true}
@@ -99,7 +127,7 @@ export default function CreateEvent() {
         validateOnChange={true}
         validateOnMount={false}
         initialValues={initialValues}
-        onSubmit={(values) => uploadPictureAndCreateEvent(values)}
+        onSubmit={(values) => uploadPictureAndCreateEvent(values, eventId)}
       >
         {(formikProps) => {
           const { values, setFieldValue, isSubmitting } = formikProps;
@@ -113,13 +141,14 @@ export default function CreateEvent() {
                 <CreateEventHeader onPressGoBack={router.back} />
                 <div className="flex flex-1 flex-col bg-bondscape-surface rounded-[24px] p-[40px]">
                   <div className="text-bondscape-text_neutral_900 text-[30px] font-semibold leading-10 tracking-normal pb-[1.5rem]">
-                    Create Event
+                    {title}
                   </div>
                   <Form className="flex flex-col">
                     <div className="flex flex-1 flex-row gap-[2rem]">
                       <div className="flex flex-col w-[31.75rem] xl:w-[41.5rem] gap-[1rem]">
                         <CoverPicDropZone
-                          coverPic={values.coverPic}
+                          fileToUpload={values.coverPic}
+                          coverPicUrl={values.coverPicUrl}
                           setCoverPic={(coverPic) =>
                             setFieldValue("coverPic", coverPic)
                           }
@@ -167,6 +196,8 @@ export default function CreateEvent() {
                           </div>
                         )}
                         <BondscapeDateTimePicker
+                          initialStartValue={values.startDate}
+                          initialEndValue={values.endDate}
                           required={false}
                           onChangeStart={(value) =>
                             setFieldValue("startDate", value)
@@ -176,9 +207,10 @@ export default function CreateEvent() {
                           }
                         />
                         <BondscapeSelectCategory
+                          initialCategories={values.categories}
                           required={false}
                           onChange={(value) =>
-                            setFieldValue("categoriesIds", value)
+                            setFieldValue("categories", value)
                           }
                         />
                         <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
@@ -189,6 +221,7 @@ export default function CreateEvent() {
                             required={false}
                           />
                           <LocationInput
+                            defaultValue={values.placeId}
                             title={"Location"}
                             required={false}
                             onChange={(placeId) =>
@@ -196,12 +229,18 @@ export default function CreateEvent() {
                             }
                           />
                           <BondscapeSelectCoHosts
+                            initialCoHosts={values.organizers.filter(
+                              (organizer) =>
+                                organizer.organizerAddress !==
+                                user?.profile?.address,
+                            )}
                             required={false}
                             onChange={(organizers) =>
                               setFieldValue("organizers", organizers)
                             }
                           />
                           <BondscapeSelectTags
+                            initialTags={values.tags}
                             required={false}
                             onChange={(tags) => setFieldValue("tags", tags)}
                           />
