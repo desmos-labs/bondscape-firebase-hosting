@@ -11,6 +11,11 @@ export const useCreateEvent = () => {
   const { user } = useUser();
   const router = useRouter();
 
+  /**
+   * Uploads the cover picture and creates the event
+   * @param values The values of the event
+   * @param eventId The id of the event to edit
+   */
   const uploadPictureAndCreateEvent = useCallback(
     async (values: CreateEventValues, eventId?: string) => {
       // If the user is not logged in, we can't create an event

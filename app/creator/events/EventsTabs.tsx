@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import EventComponent from "@/components/EventComponent";
 import { Event } from "@/types/event";
-import EventComponentSkeleton from "@/creator/events/EventComponentSkeleton";
+import EventComponentSkeleton from "@/components/EventComponentSkeleton";
 
 interface Props {
   readonly isLoading: boolean;

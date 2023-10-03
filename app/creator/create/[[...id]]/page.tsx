@@ -56,6 +56,16 @@ export default function CreateEvent({ params }: PageProps) {
     return "Create Event";
   }, [eventId]);
 
+  const draftButtonText = useMemo(() => {
+    if (eventId) return "Edit Draft";
+    return "Save as Draft";
+  }, [eventId]);
+
+  const publishButtonText = useMemo(() => {
+    if (eventId) return "Edit and Publish";
+    return "Publish";
+  }, [eventId]);
+
   const setInitialValuesFromQuery = useCallback(async () => {
     if (!eventId) return;
     const event = getEvent(eventId);
@@ -239,7 +249,7 @@ export default function CreateEvent({ params }: PageProps) {
                     </div>
                     <div className="flex flex-1 justify-center gap-[40px]">
                       <BondscapeButton
-                        text={"Save as Draft"}
+                        text={draftButtonText}
                         disabled={isSubmitting || !requiredDraftValuesSet}
                         loading={isSubmitting && values.status === "draft"}
                         onClick={() => {
@@ -249,7 +259,7 @@ export default function CreateEvent({ params }: PageProps) {
                         }}
                       />
                       <BondscapeButton
-                        text={"Publish"}
+                        text={publishButtonText}
                         disabled={isSubmitting || !requiredSubmitValuesSet}
                         loading={isSubmitting && values.status === "published"}
                         onClick={() => {
