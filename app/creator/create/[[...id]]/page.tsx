@@ -15,12 +15,11 @@ import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
 import BondscapeSelectTags from "@/creator/create/BondscapeSelectTags";
 import * as Yup from "yup";
 import BondscapeButton from "@/components/BondscapeButton";
-import { CreateEventValues, GQLEventsResult } from "@/types/event";
+import { CreateEventValues } from "@/types/event";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
 import { useRouter } from "next/navigation";
-import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
-import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import useUser from "@/hooks/user/useUser";
+import { useGetEvent } from "@/recoil/liveEvents";
 
 interface PageProps {
   params: {
@@ -50,9 +49,7 @@ export default function CreateEvent({ params }: PageProps) {
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
   const { uploadPictureAndCreateEvent } = useCreateEvent();
-  const [getLazyData] = useCustomLazyQuery<GQLEventsResult>(GetEventById, {
-    fetchPolicy: "network-only",
-  });
+  const getEvent = useGetEvent();
 
   const title = useMemo(() => {
     if (eventId) return "Edit Event";
@@ -60,16 +57,9 @@ export default function CreateEvent({ params }: PageProps) {
   }, [eventId]);
 
   const setInitialValuesFromQuery = useCallback(async () => {
-    if (params && !params.id) return;
-    setLoading(true);
-    const result = await getLazyData({
-      variables: {
-        eventId: eventId,
-      },
-    });
-    setLoading(false);
-    if (!result?.events) return;
-    const event = result.events[0];
+    if (!eventId) return;
+    const event = getEvent(eventId);
+    if (!event) return;
 
     setInitialValues((prev) => {
       return {
@@ -86,7 +76,7 @@ export default function CreateEvent({ params }: PageProps) {
         website: event.website,
       };
     });
-  }, [params, getLazyData, eventId]);
+  }, [eventId, getEvent]);
 
   useEffect(() => {
     setInitialValuesFromQuery();
