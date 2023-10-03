@@ -1,26 +1,28 @@
 "use client";
 import MainLayout from "../../../layouts/MainLayout";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React from "react";
 import bgOverlay from "../../../../public/eventsBgOverlay.png";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import CreateEventHeader from "@/components/CreateEventHeader";
 import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
 import BigTextInput from "@/creator/create/BigTextInput";
-import { ErrorMessage, Form, Formik, FormikProps } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import BondscapeDateTimePicker from "@/creator/create/BondscapeDateTimePicker/BondscapeDateTimePicker";
 import BondscapeSelectCategory from "@/creator/create/BondscapeSelectCategory";
 import SmallTextInput from "@/creator/create/SmallTextInput";
 import LocationInput from "@/creator/create/LocationInput";
 import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
 import BondscapeSelectTags from "@/creator/create/BondscapeSelectTags";
-import * as Yup from "yup";
 import BondscapeButton from "@/components/BondscapeButton";
-import { CreateEventValues } from "@/types/event";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
 import { useRouter } from "next/navigation";
 import useUser from "@/hooks/user/useUser";
-import { useGetEvent } from "@/recoil/liveEvents";
+import useHooks from "@/creator/create/[[...id]]/useHooks";
 
+/**
+ * Page for creating an event
+ * @param params - The event id if the event is being edited
+ */
 interface PageProps {
   params: {
     id?: string[];
@@ -28,81 +30,21 @@ interface PageProps {
 }
 
 export default function CreateEvent({ params }: PageProps) {
-  const [loading, setLoading] = useState(false);
   const eventId = params && params.id ? params.id[0] : undefined;
-  const [initialValues, setInitialValues] = useState<CreateEventValues>({
-    status: "draft",
-    eventName: "",
-    eventDetails: "",
-    organizers: [],
-    website: "",
-    tags: [],
-    categories: [],
-    coverPicUrl: "",
-    coverPic: undefined,
-    startDate: undefined,
-    endDate: undefined,
-    placeId: undefined,
-  });
 
-  const { user } = useUser();
+  // Hooks
+  const {
+    title,
+    draftButtonText,
+    publishButtonText,
+    initialValues,
+    validateSchema,
+    handleButtonClick,
+  } = useHooks();
   const [isMobile, isMd] = useBreakpoints();
+  const { user } = useUser();
   const router = useRouter();
   const { uploadPictureAndCreateEvent } = useCreateEvent();
-  const getEvent = useGetEvent();
-
-  const title = useMemo(() => {
-    if (eventId) return "Edit Event";
-    return "Create Event";
-  }, [eventId]);
-
-  const draftButtonText = useMemo(() => {
-    if (eventId) return "Edit Draft";
-    return "Save as Draft";
-  }, [eventId]);
-
-  const publishButtonText = useMemo(() => {
-    if (eventId) return "Edit and Publish";
-    return "Publish";
-  }, [eventId]);
-
-  const setInitialValuesFromQuery = useCallback(async () => {
-    if (!eventId) return;
-    const event = getEvent(eventId);
-    if (!event) return;
-
-    setInitialValues((prev) => {
-      return {
-        ...prev,
-        eventName: event.name,
-        eventDetails: event.description,
-        coverPicUrl: event.coverPic,
-        startDate: event.startDate,
-        endDate: event.endDate,
-        categories: event.categories.map((category) => category.category),
-        placeId: event.googlePlaceId,
-        organizers: event.organizers,
-        tags: event.tags,
-        website: event.website,
-      };
-    });
-  }, [eventId, getEvent]);
-
-  useEffect(() => {
-    setInitialValuesFromQuery();
-  }, [setInitialValuesFromQuery]);
-
-  const handleButtonClick = async (
-    formikProps: FormikProps<CreateEventValues>,
-  ) => {
-    const { submitForm } = formikProps;
-    await submitForm();
-  };
-
-  const validateSchema = Yup.object().shape({
-    eventName: Yup.string().required("The event name is required."),
-    eventDetails: Yup.string().required("Event's details are required."),
-  });
 
   if (isMobile || isMd) {
     return (
@@ -119,7 +61,6 @@ export default function CreateEvent({ params }: PageProps) {
       customClasses={"bg-[#020014]"}
       backgroundOverlay={bgOverlay}
       forceNavbarBgVisible={true}
-      isLoading={loading}
     >
       <Formik
         enableReinitialize={true}
