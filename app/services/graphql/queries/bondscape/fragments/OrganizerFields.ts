@@ -1,16 +1,17 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 const OrganizerFields = gql`
   fragment OrganizerFields on event_organizers {
     organizer {
       address
       bio
-      dtag
+      dTag: dtag
       creation_time
       coverPicture: cover_pic
       nickname
       profilePicture: profile_pic
     }
+    organizerAddress: organizer_address
   }
 `;
 

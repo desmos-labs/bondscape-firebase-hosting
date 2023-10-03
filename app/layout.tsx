@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "./components/Footer";
 import Head from "next/head";
 import "./globals.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import BondscapeWrapper from "./components/BondscapeWrapper";
 import RecoilContextProvider from "./components/RecoilContextProvider";
 import { ApolloWrapper } from "./components/ApolloWrapper";

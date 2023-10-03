@@ -31,7 +31,7 @@ const multiApiLink = ApolloLink.from([
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   const bearerToken = parseCookies().bearer_token;
-  console.log("bearerToken", bearerToken);
+  console.log("[APOLLO REQUEST]", bearerToken);
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,

@@ -3,16 +3,22 @@ import React, { useCallback, useId, useState } from "react";
 import AsyncSelect from "react-select/async";
 import { components } from "react-select";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
-import GetProfile from "@/services/graphql/queries/desmos/GetProfile";
-import { DesmosProfile, GQLProfileResult } from "@/types/desmos";
+import { GQLProfileResult } from "@/types/desmos";
 import Image from "next/image";
+import { Organizer } from "@/types/event";
+import GetProfile from "@/services/graphql/queries/desmos/GetProfile";
 
 interface Props {
+  readonly initialCoHosts?: Organizer[];
   readonly required: boolean;
-  readonly onChange: (addresses: string[]) => void;
+  readonly onChange: (coHosts: Organizer[]) => void;
 }
 
-const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
+const BondscapeSelectCoHosts = ({
+  initialCoHosts,
+  required,
+  onChange,
+}: Props) => {
   const [loading, setLoading] = useState(false);
 
   const [getLazyData] = useCustomLazyQuery<GQLProfileResult>(GetProfile, {
@@ -29,15 +35,12 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
       });
       setLoading(false);
       if (!data) return [];
-      return data.profiles.map((profile: DesmosProfile) => {
+      return data.profiles.map((profile) => {
         return {
-          id: profile.dTag,
-          address: profile.address,
-          dtag: profile.dTag,
-          nickname: profile.nickname,
-          value: profile.dTag,
-          label: profile.dTag,
-          pic: profile.profilePicture,
+          organizer: profile,
+          organizerAddress: profile.address,
+          label: profile.address,
+          value: profile.address,
         };
       });
     },
@@ -55,16 +58,26 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
         </div>
         <div className="flex flex-1">
           <AsyncSelect
+            value={initialCoHosts?.map((coHost) => {
+              return {
+                organizer: coHost.organizer,
+                organizerAddress: coHost.organizerAddress,
+                label: coHost.organizerAddress,
+                value: coHost.organizerAddress,
+              };
+            })}
+            instanceId={useId()}
             isMulti={true}
             isSearchable={true}
-            instanceId={useId()}
-            defaultOptions={true}
             loadingMessage={() => "Loading..."}
             isLoading={loading}
             loadOptions={loadOptions}
-            onChange={(coHosts) => {
-              if (coHosts) {
-                onChange(coHosts.map((coHost) => coHost.address));
+            defaultOptions={true}
+            backspaceRemovesValue={true}
+            noOptionsMessage={() => "No profiles found"}
+            onChange={(organizers) => {
+              if (organizers) {
+                onChange(organizers.map((organizer) => organizer));
               } else {
                 onChange([]);
               }
@@ -78,21 +91,27 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
                   </components.MultiValueContainer>
                 </div>
               ),
-              MultiValueLabel: (props) => (
-                <components.MultiValueLabel {...props}>
-                  <div className="flex flex-row relative gap-2 text-[14px] font-[Poppins] mr-1 bg-[#353343] px-[0.5rem] py-[0.25rem] rounded-[1rem]">
-                    <div className="relative w-[20px] h-[20px]">
-                      <Image
-                        src={props.data.pic || "/defaultProfilePicture.png"}
-                        alt={"Profile pic"}
-                        fill
-                        className="object-cover rounded-[10px]"
-                      />
+              MultiValueLabel: (props) => {
+                return (
+                  <components.MultiValueLabel {...props}>
+                    <div className="flex flex-row relative gap-2 text-[14px] font-[Poppins] mr-1 bg-[#353343] px-[0.5rem] py-[0.25rem] rounded-[1rem]">
+                      <div className="relative w-[20px] h-[20px]">
+                        <Image
+                          src={
+                            props.data.organizer?.profilePicture ||
+                            "/defaultProfilePicture.png"
+                          }
+                          alt={"Profile pic"}
+                          fill
+                          className="object-cover rounded-[10px]"
+                        />
+                      </div>
+                      @{props.data.organizer?.dTag}
                     </div>
-                    {props.data.label}
-                  </div>
-                </components.MultiValueLabel>
-              ),
+                  </components.MultiValueLabel>
+                );
+              },
+
               MultiValueRemove: (props) => (
                 <components.MultiValueRemove {...props}>
                   <svg
@@ -122,7 +141,10 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
                   <div className="flex flex-row p-[0.5rem] bg-bondscape-text_neutral_300 my-2 rounded-[16px] gap-2">
                     <div className="relative w-[40px] h-[40px]">
                       <Image
-                        src={props.data.pic || "/defaultProfilePicture.png"}
+                        src={
+                          props.data.organizer?.profilePicture ||
+                          "/defaultProfilePicture.png"
+                        }
                         alt={"Profile pic"}
                         fill
                         className="object-cover rounded-[20px]"
@@ -130,10 +152,10 @@ const BondscapeSelectCoHosts = ({ required, onChange }: Props) => {
                     </div>
                     <div className="flex flex-col justify-center">
                       <div className="text-[16px] font-semibold text-bondscape-text_neutral_900">
-                        {props.data.nickname || ""}
+                        {props.data.organizer?.nickname || ""}
                       </div>
                       <div className="text-[14px] text-bondscape-text_neutral_800">
-                        @{props.data.dtag}
+                        @{props.data.organizer?.dTag}
                       </div>
                     </div>
                   </div>

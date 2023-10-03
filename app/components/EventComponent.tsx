@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { Event } from "@/types/event";
 import Image from "next/image";
 import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
+import { useRouter } from "next/navigation";
 
 interface Props {
   event: Event;
@@ -12,6 +13,7 @@ interface Props {
 
 const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
   const { getEventPeriod } = useFormatDateToTZ();
+  const router = useRouter();
 
   const CoverPictureComponent = useMemo(() => {
     return (
@@ -46,14 +48,24 @@ const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
             {getEventPeriod(event.startDate, event.endDate)}
           </div>
         </div>
-        {isLive && (
-          <div className="flex flex-row items-center gap-1">
-            <div className="w-[10px] h-[10px] rounded-[5px] bg-feedback-success" />
-            <div className="text-[14px] font-semibold text-feedback-success">
-              LIVE
+        <div>
+          {isLive && (
+            <div className="flex flex-row items-center gap-1">
+              <div className="w-[10px] h-[10px] rounded-[5px] bg-feedback-success" />
+              <div className="text-[14px] font-semibold text-feedback-success">
+                LIVE
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          <button
+            className="flex flex-row items-center"
+            onClick={() =>
+              router.push(`/creator/create/${encodeURIComponent(event.id)}`)
+            }
+          >
+            <div className="text-[14px] font-semibold">EDIT</div>
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -7,11 +7,12 @@ import GetTags from "@/services/graphql/queries/bondscape/GetTags";
 import AsyncCreatableSelect from "react-select/async-creatable";
 
 interface Props {
+  readonly initialTags?: string[];
   readonly required: boolean;
   readonly onChange: (tags: string[]) => void;
 }
 
-const BondscapeSelectTags = ({ required, onChange }: Props) => {
+const BondscapeSelectTags = ({ initialTags, required, onChange }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const [getLazyData] = useCustomLazyQuery<GQLEventTagsResult>(GetTags, {
@@ -23,7 +24,7 @@ const BondscapeSelectTags = ({ required, onChange }: Props) => {
       setLoading(true);
       const data = await getLazyData({
         variables: {
-          tag: input,
+          tag: `%${input}%`,
         },
       });
       setLoading(false);
@@ -53,11 +54,20 @@ const BondscapeSelectTags = ({ required, onChange }: Props) => {
         <div className="flex flex-1">
           <AsyncCreatableSelect
             instanceId={useId()}
+            value={initialTags?.map((tag) => {
+              return {
+                id: tag,
+                value: tag,
+                label: tag,
+              };
+            })}
             defaultOptions={true}
             isMulti={true}
             loadingMessage={() => "Loading..."}
             isLoading={loading}
             loadOptions={loadOptions}
+            noOptionsMessage={() => "No tags found"}
+            backspaceRemovesValue={true}
             onChange={(tags) => {
               if (tags) {
                 onChange(tags.map((tag) => tag.value));

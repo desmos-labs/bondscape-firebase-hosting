@@ -1,12 +1,8 @@
 import { gql } from "@apollo/client";
 import EventsFields from "./fragments/EventsFields";
-import ProfileFields from "../desmos/fragments/ProfilesFields";
-import ImageHashFields from "./fragments/ImageHashFields";
 
 const GetMyDraftEvents = gql`
   ${EventsFields}
-  ${ProfileFields}
-  ${ImageHashFields}
   query GetMyDraftEvents($creatorAddress: String, $offset: Int!, $limit: Int!)
   @api(name: bondscape) {
     events(

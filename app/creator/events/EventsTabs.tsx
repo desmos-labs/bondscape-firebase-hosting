@@ -2,14 +2,17 @@
 import React, { useMemo } from "react";
 import EventComponent from "@/components/EventComponent";
 import { Event } from "@/types/event";
+import EventComponentSkeleton from "@/components/EventComponentSkeleton";
 
 interface Props {
+  readonly isLoading: boolean;
   readonly activeTab: number;
   readonly events: Event[] | undefined;
   readonly lastElementRef: any;
 }
 
 export default function EventsTabs({
+  isLoading,
   activeTab,
   events,
   lastElementRef,
@@ -27,7 +30,7 @@ export default function EventsTabs({
     }
   }, [activeTab]);
 
-  if (events?.length === 0) {
+  if (events?.length === 0 && !isLoading) {
     return (
       <div className="flex flex-1 flex-col justify-center items-center mt-24 gap-6">
         <div>
@@ -76,16 +79,20 @@ export default function EventsTabs({
 
   return (
     <div className="grid grid-cols-2 gap-[40px]">
-      {events?.map((event, index, events) => {
-        return (
-          <EventComponent
-            key={event.id}
-            event={event}
-            isLive={activeTab === 0}
-            lastItemRef={events.length - 1 === index ? lastElementRef : null}
-          />
-        );
-      })}
+      {isLoading ? (
+        <EventComponentSkeleton events={2} />
+      ) : (
+        events?.map((event, index, events) => {
+          return (
+            <EventComponent
+              key={event.id}
+              event={event}
+              isLive={activeTab === 0}
+              lastItemRef={events.length - 1 === index ? lastElementRef : null}
+            />
+          );
+        })
+      )}
     </div>
   );
 }

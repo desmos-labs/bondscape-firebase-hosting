@@ -8,11 +8,14 @@ import { useInView } from "react-intersection-observer";
 import { useActiveTab } from "@/recoil/activeTab";
 import GetMyLiveEvents from "@/services/graphql/queries/bondscape/GetMyLiveEvents";
 import { useQuery } from "@apollo/client";
+import { useSetEvents } from "@/recoil/liveEvents";
 
 const EVENTS_QUERY_LIMIT = 20;
 
 export const useHooks = () => {
+  const [loadingEvents, setLoadingEvents] = useState(false);
   const activeTab = useActiveTab();
+  const setLiveEvents = useSetEvents();
   const [fetchingMore, setFetchingMore] = useState(false);
   const now = useRef(new Date());
   const { ref: lastElementRef, inView: lastElementInView } = useInView();
@@ -47,13 +50,32 @@ export const useHooks = () => {
       fetchPolicy: "cache-and-network",
     });
 
+  useEffect(() => {
+    if (data) {
+      setLiveEvents(data.events);
+    }
+  }, [data, setLiveEvents]);
+
+  useEffect(() => {
+    if (loading) {
+      setLoadingEvents(true);
+    } else {
+      setTimeout(() => {
+        setLoadingEvents(false);
+      }, 1000);
+    }
+  }, [loading]);
+
   // This is a workaround to avoid the loading state when the query is cached
-  const isActuallyLoading =
-    loading &&
-    !client.readQuery({
-      query: currentQuery,
-      variables: queryVariables,
-    });
+  const isActuallyLoading = useMemo(() => {
+    return (
+      loadingEvents &&
+      !client.readQuery({
+        query: currentQuery,
+        variables: queryVariables,
+      })
+    );
+  }, [client, currentQuery, loadingEvents, queryVariables]);
 
   useEffect(() => {
     if (!data) return;

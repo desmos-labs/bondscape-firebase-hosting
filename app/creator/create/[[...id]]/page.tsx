@@ -1,51 +1,50 @@
 "use client";
-import MainLayout from "../../layouts/MainLayout";
+import MainLayout from "../../../layouts/MainLayout";
 import React from "react";
-import bgOverlay from "../../../public/eventsBgOverlay.png";
+import bgOverlay from "../../../../public/eventsBgOverlay.png";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import CreateEventHeader from "@/components/CreateEventHeader";
-import { useRouter } from "next/navigation";
 import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
 import BigTextInput from "@/creator/create/BigTextInput";
-import { ErrorMessage, Form, Formik, FormikProps } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import BondscapeDateTimePicker from "@/creator/create/BondscapeDateTimePicker/BondscapeDateTimePicker";
 import BondscapeSelectCategory from "@/creator/create/BondscapeSelectCategory";
 import SmallTextInput from "@/creator/create/SmallTextInput";
 import LocationInput from "@/creator/create/LocationInput";
 import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
 import BondscapeSelectTags from "@/creator/create/BondscapeSelectTags";
-import * as Yup from "yup";
 import BondscapeButton from "@/components/BondscapeButton";
-import { CreateEventValues } from "@/types/event";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
-import { BondscapePreviewImage } from "@/types/image";
+import { useRouter } from "next/navigation";
+import useUser from "@/hooks/user/useUser";
+import useHooks from "@/creator/create/[[...id]]/useHooks";
 
-export default function CreateEvent() {
+/**
+ * Page for creating an event
+ * @param params - The event id if the event is being edited
+ */
+interface PageProps {
+  params: {
+    id?: string[];
+  };
+}
+
+export default function CreateEvent({ params }: PageProps) {
+  const eventId = params && params.id ? params.id[0] : undefined;
+
+  // Hooks
+  const {
+    title,
+    draftButtonText,
+    publishButtonText,
+    initialValues,
+    validateSchema,
+    handleButtonClick,
+  } = useHooks();
   const [isMobile, isMd] = useBreakpoints();
+  const { user } = useUser();
   const router = useRouter();
   const { uploadPictureAndCreateEvent } = useCreateEvent();
-
-  const handleButtonClick = async (
-    formikProps: FormikProps<CreateEventValues>,
-  ) => {
-    const { submitForm } = formikProps;
-    await submitForm();
-  };
-
-  const initialValues: CreateEventValues = {
-    status: "draft",
-    coverPic: {
-      preview: "",
-    } as BondscapePreviewImage,
-    eventName: "",
-    eventDetails: "",
-    organizers: [],
-  };
-
-  const validateSchema = Yup.object().shape({
-    eventName: Yup.string().required("The event name is required."),
-    eventDetails: Yup.string().required("Event's details are required."),
-  });
 
   if (isMobile || isMd) {
     return (
@@ -64,11 +63,12 @@ export default function CreateEvent() {
       forceNavbarBgVisible={true}
     >
       <Formik
+        enableReinitialize={true}
         validationSchema={validateSchema}
         validateOnChange={true}
         validateOnMount={false}
         initialValues={initialValues}
-        onSubmit={(values) => uploadPictureAndCreateEvent(values)}
+        onSubmit={(values) => uploadPictureAndCreateEvent(values, eventId)}
       >
         {(formikProps) => {
           const { values, setFieldValue, isSubmitting } = formikProps;
@@ -82,13 +82,14 @@ export default function CreateEvent() {
                 <CreateEventHeader onPressGoBack={router.back} />
                 <div className="flex flex-1 flex-col bg-bondscape-surface rounded-[24px] p-[40px]">
                   <div className="text-bondscape-text_neutral_900 text-[30px] font-semibold leading-10 tracking-normal pb-[1.5rem]">
-                    Create Event
+                    {title}
                   </div>
                   <Form className="flex flex-col">
                     <div className="flex flex-1 flex-row gap-[2rem]">
                       <div className="flex flex-col w-[31.75rem] xl:w-[41.5rem] gap-[1rem]">
                         <CoverPicDropZone
-                          coverPic={values.coverPic}
+                          fileToUpload={values.coverPic}
+                          coverPicUrl={values.coverPicUrl}
                           setCoverPic={(coverPic) =>
                             setFieldValue("coverPic", coverPic)
                           }
@@ -136,6 +137,8 @@ export default function CreateEvent() {
                           </div>
                         )}
                         <BondscapeDateTimePicker
+                          initialStartValue={values.startDate}
+                          initialEndValue={values.endDate}
                           required={false}
                           onChangeStart={(value) =>
                             setFieldValue("startDate", value)
@@ -145,9 +148,10 @@ export default function CreateEvent() {
                           }
                         />
                         <BondscapeSelectCategory
+                          initialCategories={values.categories}
                           required={false}
                           onChange={(value) =>
-                            setFieldValue("categoriesIds", value)
+                            setFieldValue("categories", value)
                           }
                         />
                         <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
@@ -158,6 +162,7 @@ export default function CreateEvent() {
                             required={false}
                           />
                           <LocationInput
+                            defaultValue={values.placeId}
                             title={"Location"}
                             required={false}
                             onChange={(placeId) =>
@@ -165,12 +170,18 @@ export default function CreateEvent() {
                             }
                           />
                           <BondscapeSelectCoHosts
+                            initialCoHosts={values.organizers.filter(
+                              (organizer) =>
+                                organizer.organizerAddress !==
+                                user?.profile?.address,
+                            )}
                             required={false}
                             onChange={(organizers) =>
                               setFieldValue("organizers", organizers)
                             }
                           />
                           <BondscapeSelectTags
+                            initialTags={values.tags}
                             required={false}
                             onChange={(tags) => setFieldValue("tags", tags)}
                           />
@@ -179,7 +190,7 @@ export default function CreateEvent() {
                     </div>
                     <div className="flex flex-1 justify-center gap-[40px]">
                       <BondscapeButton
-                        text={"Save as Draft"}
+                        text={draftButtonText}
                         disabled={isSubmitting || !requiredDraftValuesSet}
                         loading={isSubmitting && values.status === "draft"}
                         onClick={() => {
@@ -189,7 +200,7 @@ export default function CreateEvent() {
                         }}
                       />
                       <BondscapeButton
-                        text={"Publish"}
+                        text={publishButtonText}
                         disabled={isSubmitting || !requiredSubmitValuesSet}
                         loading={isSubmitting && values.status === "published"}
                         onClick={() => {

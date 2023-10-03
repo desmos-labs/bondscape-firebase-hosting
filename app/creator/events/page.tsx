@@ -31,23 +31,16 @@ export default function Events() {
     >
       <div className="lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto mt-[32px]">
         <div className="relative flex flex-1 flex-col">
-          {isActuallyLoading ? (
+          <EventsTabs
+            isLoading={isActuallyLoading}
+            activeTab={activeTab}
+            events={data?.events}
+            lastElementRef={lastElementRef}
+          />
+          {fetchingMore && (
             <div className="flex justify-center items-center mt-12">
               <PuffLoader size={100} color={"white"} />
             </div>
-          ) : (
-            <>
-              <EventsTabs
-                activeTab={activeTab}
-                events={data?.events}
-                lastElementRef={lastElementRef}
-              />
-              {fetchingMore && (
-                <div className="flex justify-center items-center mt-12">
-                  <PuffLoader size={100} color={"white"} />
-                </div>
-              )}
-            </>
           )}
         </div>
       </div>

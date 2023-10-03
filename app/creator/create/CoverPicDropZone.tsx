@@ -4,11 +4,22 @@ import { useDropzone } from "react-dropzone";
 import { BondscapePreviewImage } from "@/types/image";
 
 interface Props {
-  coverPic: BondscapePreviewImage;
+  /**
+   * If the user is creating or editing a cover picture, this will be the image
+   */
+  fileToUpload?: BondscapePreviewImage;
+  /**
+   * If the user is editing the event but not modifying the cover picture, this will be the url of the cover picture
+   */
+  coverPicUrl?: string;
   setCoverPic: (coverPic: { preview: string }) => void;
 }
 
-const CoverPicDropZone = ({ coverPic, setCoverPic }: Props) => {
+const CoverPicDropZone = ({
+  fileToUpload,
+  coverPicUrl,
+  setCoverPic,
+}: Props) => {
   const onDrop = useCallback(
     (acceptedFiles: any) => {
       setCoverPic(
@@ -30,8 +41,12 @@ const CoverPicDropZone = ({ coverPic, setCoverPic }: Props) => {
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => URL.revokeObjectURL(coverPic.preview);
-  }, [coverPic.preview]);
+    return () => {
+      if (fileToUpload && fileToUpload.preview) {
+        URL.revokeObjectURL(fileToUpload.preview);
+      }
+    };
+  }, [fileToUpload]);
 
   return (
     <div className="flex cursor-pointer">
@@ -40,14 +55,16 @@ const CoverPicDropZone = ({ coverPic, setCoverPic }: Props) => {
         {...getRootProps()}
       >
         <input {...getInputProps()} />
-        {coverPic.preview ? (
+        {fileToUpload?.preview || coverPicUrl ? (
           <Image
-            src={coverPic.preview}
+            src={fileToUpload?.preview ?? coverPicUrl ?? ""}
             alt="Cover pic preview"
             fill
             className="object-cover rounded-[16px]"
             onLoad={() => {
-              URL.revokeObjectURL(coverPic.preview);
+              if (fileToUpload && fileToUpload.preview) {
+                URL.revokeObjectURL(fileToUpload.preview);
+              }
             }}
           />
         ) : isDragActive ? (

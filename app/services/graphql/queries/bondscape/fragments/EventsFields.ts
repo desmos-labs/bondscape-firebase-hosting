@@ -22,6 +22,12 @@ const EventsFields = gql`
       ...OrganizerFields
       organizerAddress: organizer_address
     }
+    categories {
+      category {
+        id
+        name
+      }
+    }
     website
     tags
   }
