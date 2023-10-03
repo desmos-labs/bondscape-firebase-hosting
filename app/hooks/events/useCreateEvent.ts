@@ -42,34 +42,28 @@ export const useCreateEvent = () => {
 
       let eventCreationResult;
 
+      const eventParams = {
+        status: values.status,
+        coverPicUrl,
+        eventName: values.eventName,
+        eventDetails: values.eventDetails,
+        organizersAddresses: organizersAddresses,
+        startDate: values.startDate,
+        endDate: values.endDate,
+        categoriesIds: values.categories?.map((category) => category.id),
+        website: values.website,
+        placeId: values.placeId,
+        tags: values.tags,
+      };
+
       if (eventId) {
         eventCreationResult = await EditEvent({
           eventId,
-          status: values.status,
-          coverPicUrl,
-          eventName: values.eventName,
-          eventDetails: values.eventDetails,
-          organizersAddresses: organizersAddresses,
-          startDate: values.startDate,
-          endDate: values.endDate,
-          categoriesIds: values.categories?.map((category) => category.id),
-          website: values.website,
-          placeId: values.placeId,
-          tags: values.tags,
+          ...eventParams,
         });
       } else {
         eventCreationResult = await CreateEvent({
-          status: values.status,
-          coverPicUrl,
-          eventName: values.eventName,
-          eventDetails: values.eventDetails,
-          organizersAddresses: organizersAddresses,
-          startDate: values.startDate,
-          endDate: values.endDate,
-          categoriesIds: values.categories?.map((category) => category.id),
-          website: values.website,
-          placeId: values.placeId,
-          tags: values.tags,
+          ...eventParams,
         });
       }
 
