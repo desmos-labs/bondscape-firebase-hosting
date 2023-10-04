@@ -32,12 +32,12 @@ export default function RootLayout({
             <ApolloWrapper>
               <ToastWrapper>
                 <BondscapeWrapper>{children}</BondscapeWrapper>
+                <div className={`relative w-full min-w-[375px] bg-no-repeat`}>
+                  <Footer />
+                </div>
               </ToastWrapper>
             </ApolloWrapper>
           </RecoilContextProvider>
-          <div className={`relative w-full min-w-[375px] bg-no-repeat`}>
-            <Footer />
-          </div>
         </div>
       </body>
     </html>
