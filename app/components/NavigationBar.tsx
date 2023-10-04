@@ -9,8 +9,9 @@ import SelectComponent from "@/components/SelectComponent";
 import { AnimatePresence, motion } from "framer-motion";
 import EventsHeader from "@/components/EventsHeader";
 import Tabs from "@/components/Tabs";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { activeTabState } from "@/recoil/activeTab";
+import { loginVisibilityState } from "@/recoil/loginVisibility";
 
 const NavigationBar = ({
   disableNavbarBgInDesktop,
@@ -21,6 +22,7 @@ const NavigationBar = ({
 }) => {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
+  const isLoginButtonVisible = useRecoilValue(loginVisibilityState);
   // Hooks
   const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
     useBreakpoints();
@@ -57,7 +59,11 @@ const NavigationBar = ({
     ) {
       return;
     }
-    if (!user || !isDesktop || process.env.NODE_ENV === "production") {
+    if (
+      !user ||
+      !isDesktop ||
+      (process.env.NODE_ENV === "production" && !isLoginButtonVisible)
+    ) {
       return;
     }
     return user.profile ? (
@@ -69,7 +75,7 @@ const NavigationBar = ({
         </div>
       </Link>
     );
-  }, [isDesktop, pathname, user]);
+  }, [isDesktop, isLoginButtonVisible, pathname, user]);
 
   return (
     <nav
