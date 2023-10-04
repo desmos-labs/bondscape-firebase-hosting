@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSetRecoilState } from "recoil";
-import { loginVisibilityState } from "@/recoil/loginVisibility";
+import { loginVisibilityState } from "@/jotai/loginVisibility";
+import { useSetAtom } from "jotai";
 
 const Footer = () => {
   const [clicksCounter, setClicksCounter] = useState(0);
-  const setLoginVisibility = useSetRecoilState(loginVisibilityState);
+  const setLoginVisibility = useSetAtom(loginVisibilityState);
 
   useEffect(() => {
     if (clicksCounter === 5) {

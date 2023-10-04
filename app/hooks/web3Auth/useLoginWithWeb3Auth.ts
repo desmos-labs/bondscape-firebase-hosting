@@ -6,7 +6,7 @@ import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { PrivateKeyType } from "@desmoslabs/desmjs";
 import { fromHex } from "@cosmjs/encoding";
 import { generateWeb3AuthWallet } from "@/lib/WalletUtils";
-import { useWeb3AuthClient } from "@/recoil/web3auth";
+import { useWeb3AuthClient } from "@/jotai/web3auth";
 import usePerformLogin from "../apis/usePerformLogin";
 import { setCookie } from "nookies";
 import useUser from "@/hooks/user/useUser";
@@ -93,6 +93,7 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
     async (
       loginProvider: Web3AuthLoginProvider,
     ): Promise<Result<void, Error>> => {
+      console.log("loginWithWeb3Auth", web3authClient);
       if (!web3authClient) {
         return err(new Error("Web3Auth client not initialized"));
       }
