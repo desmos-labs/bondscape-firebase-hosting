@@ -5,10 +5,10 @@ import GetMyPastEvents from "@/services/graphql/queries/bondscape/GetMyPastEvent
 import GetMyDraftEvents from "@/services/graphql/queries/bondscape/GetMyDraftEvents";
 import GetMyUpcomingEvents from "@/services/graphql/queries/bondscape/GetMyUpcomingEvents";
 import { useInView } from "react-intersection-observer";
-import { useActiveTab } from "@/recoil/activeTab";
+import { useActiveTab } from "@/jotai/activeTab";
 import GetMyLiveEvents from "@/services/graphql/queries/bondscape/GetMyLiveEvents";
 import { useQuery } from "@apollo/client";
-import { useSetEvents } from "@/recoil/liveEvents";
+import { useSetEvents } from "@/jotai/liveEvents";
 
 const EVENTS_QUERY_LIMIT = 20;
 

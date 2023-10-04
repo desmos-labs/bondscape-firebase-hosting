@@ -9,17 +9,24 @@ import SelectComponent from "@/components/SelectComponent";
 import { AnimatePresence, motion } from "framer-motion";
 import EventsHeader from "@/components/EventsHeader";
 import Tabs from "@/components/Tabs";
-import { useRecoilState } from "recoil";
-import { activeTabState } from "@/recoil/activeTab";
+import { useActiveTab, useSetActiveTab } from "@/jotai/activeTab";
+import CreateEventHeader from "@/components/CreateEventHeader";
+
+interface Props {
+  readonly disableNavbarBgInDesktop?: boolean;
+  readonly forceNavbarBgVisible?: boolean;
+  readonly goBackStatusBar?: boolean;
+  readonly detailsStatusBar?: boolean;
+}
 
 const NavigationBar = ({
   disableNavbarBgInDesktop,
   forceNavbarBgVisible,
-}: {
-  forceNavbarBgVisible?: boolean;
-  disableNavbarBgInDesktop?: boolean;
-}) => {
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
+  goBackStatusBar,
+  detailsStatusBar,
+}: Props) => {
+  const activeTab = useActiveTab();
+  const setActiveTab = useSetActiveTab();
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
   const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
@@ -77,7 +84,7 @@ const NavigationBar = ({
         navbarBgVisible ? "backdrop-blur-lg" : "bg-transparent"
       } transition-colors ease-in-out sticky flex w-full px-xMobile md:px-xMd lg:px-xLg xl:px-xXl`}
     >
-      <div className="flex flex-1 flex-col gap-[24px]">
+      <div className="flex flex-1 flex-col">
         <div className="flex items-center flex-row justify-between h-navbar-mobile md:h-navbar-md lg:h-navbar-lg xl:h-navbar-xl">
           <Link href="/">
             <BondscapeLogo />
@@ -89,11 +96,21 @@ const NavigationBar = ({
           </AnimatePresence>
         </div>
         {pathname === "/creator/events" && (
-          <div className="flex flex-1 flex-col gap-[24px] w-[70rem] xl:w-[90rem] self-center">
+          <div className="flex flex-1 flex-col gap-[24px] w-[70rem] xl:w-[90rem] self-center mt-4">
             <EventsHeader
               onPressCreateEvent={() => router.push("/creator/create")}
             />
             <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+          </div>
+        )}
+        {goBackStatusBar && (
+          <div className="flex flex-1 flex-col w-[70rem] xl:w-[90rem] self-center">
+            <CreateEventHeader onPressGoBack={router.back} />
+          </div>
+        )}
+        {detailsStatusBar && (
+          <div className="flex flex-1 flex-col w-[70rem] xl:w-[90rem] self-center">
+            <CreateEventHeader onPressGoBack={router.back} editMode={true} />
           </div>
         )}
       </div>

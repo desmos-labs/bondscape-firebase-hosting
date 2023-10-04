@@ -3,7 +3,6 @@ import MainLayout from "../../../layouts/MainLayout";
 import React from "react";
 import bgOverlay from "../../../../public/eventsBgOverlay.png";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
-import CreateEventHeader from "@/components/CreateEventHeader";
 import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
 import BigTextInput from "@/creator/create/BigTextInput";
 import { ErrorMessage, Form, Formik } from "formik";
@@ -15,7 +14,6 @@ import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
 import BondscapeSelectTags from "@/creator/create/BondscapeSelectTags";
 import BondscapeButton from "@/components/BondscapeButton";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
-import { useRouter } from "next/navigation";
 import useUser from "@/hooks/user/useUser";
 import useHooks from "@/creator/create/[[...id]]/useHooks";
 
@@ -40,10 +38,9 @@ export default function CreateEvent({ params }: PageProps) {
     initialValues,
     validateSchema,
     handleButtonClick,
-  } = useHooks();
+  } = useHooks(eventId);
   const [isMobile, isMd] = useBreakpoints();
   const { user } = useUser();
-  const router = useRouter();
   const { uploadPictureAndCreateEvent } = useCreateEvent();
 
   if (isMobile || isMd) {
@@ -61,6 +58,7 @@ export default function CreateEvent({ params }: PageProps) {
       customClasses={"bg-[#020014]"}
       backgroundOverlay={bgOverlay}
       forceNavbarBgVisible={true}
+      statusBarMode={"goBack"}
     >
       <Formik
         enableReinitialize={true}
@@ -78,8 +76,7 @@ export default function CreateEvent({ params }: PageProps) {
             requiredDraftValuesSet && values.startDate && values.endDate;
           return (
             <div className="lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto">
-              <div className="relative flex flex-col mt-[24px]">
-                <CreateEventHeader onPressGoBack={router.back} />
+              <div className="relative flex flex-col">
                 <div className="flex flex-1 flex-col bg-bondscape-surface rounded-[24px] p-[40px]">
                   <div className="text-bondscape-text_neutral_900 text-[30px] font-semibold leading-10 tracking-normal pb-[1.5rem]">
                     {title}
@@ -188,8 +185,10 @@ export default function CreateEvent({ params }: PageProps) {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-1 justify-center gap-[40px]">
+                    <div className="flex flex-1 justify-center gap-[40px] mt-20">
                       <BondscapeButton
+                        className="w-[256px] h-[44px] rounded-[8px] px-[24px] py-[12px]"
+                        textClassName="text-base font-semibold"
                         text={draftButtonText}
                         disabled={isSubmitting || !requiredDraftValuesSet}
                         loading={isSubmitting && values.status === "draft"}
@@ -200,6 +199,8 @@ export default function CreateEvent({ params }: PageProps) {
                         }}
                       />
                       <BondscapeButton
+                        className="w-[256px] h-[44px] rounded-[8px] px-[24px] py-[12px]"
+                        textClassName="text-base font-semibold"
                         text={publishButtonText}
                         disabled={isSubmitting || !requiredSubmitValuesSet}
                         loading={isSubmitting && values.status === "published"}

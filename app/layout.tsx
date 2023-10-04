@@ -4,7 +4,7 @@ import Head from "next/head";
 import "./globals.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import BondscapeWrapper from "./components/BondscapeWrapper";
-import RecoilContextProvider from "./components/RecoilContextProvider";
+import JotaiProvider from "./components/JotaiProvider";
 import { ApolloWrapper } from "./components/ApolloWrapper";
 import ToastWrapper from "@/components/ToastWrapper";
 
@@ -28,13 +28,13 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <div className="relative mx-auto w-full min-w-[375px]">
-          <RecoilContextProvider>
+          <JotaiProvider>
             <ApolloWrapper>
               <ToastWrapper>
                 <BondscapeWrapper>{children}</BondscapeWrapper>
               </ToastWrapper>
             </ApolloWrapper>
-          </RecoilContextProvider>
+          </JotaiProvider>
           <div className={`relative w-full min-w-[375px] bg-no-repeat`}>
             <Footer />
           </div>

@@ -6,7 +6,7 @@ import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import EventsTabs from "@/creator/events/EventsTabs";
 import { PuffLoader } from "react-spinners";
 import useHooks from "@/creator/events/useHooks";
-import { useActiveTab } from "@/recoil/activeTab";
+import { useActiveTab } from "@/jotai/activeTab";
 
 export default function Events() {
   const activeTab = useActiveTab();

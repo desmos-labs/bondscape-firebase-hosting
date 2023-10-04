@@ -6,7 +6,7 @@ import { IProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { PrivateKeyType } from "@desmoslabs/desmjs";
 import { fromHex } from "@cosmjs/encoding";
 import { generateWeb3AuthWallet } from "@/lib/WalletUtils";
-import { useWeb3AuthClient } from "@/recoil/web3auth";
+import { useWeb3AuthClient } from "@/jotai/web3auth";
 import usePerformLogin from "../apis/usePerformLogin";
 import { setCookie } from "nookies";
 import useUser from "@/hooks/user/useUser";

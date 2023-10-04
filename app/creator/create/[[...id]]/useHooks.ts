@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { FormikProps } from "formik";
 import { CreateEventValues } from "@/types/event";
 import * as Yup from "yup";
-import { useGetEvent } from "@/recoil/liveEvents";
+import { useGetEvent } from "@/jotai/liveEvents";
 
 const useHooks = (eventId?: string) => {
   const [initialValues, setInitialValues] = useState<CreateEventValues>({
