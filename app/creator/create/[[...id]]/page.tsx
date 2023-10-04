@@ -31,7 +31,6 @@ interface PageProps {
 
 export default function CreateEvent({ params }: PageProps) {
   const eventId = params && params.id ? params.id[0] : undefined;
-
   // Hooks
   const {
     title,
@@ -40,7 +39,7 @@ export default function CreateEvent({ params }: PageProps) {
     initialValues,
     validateSchema,
     handleButtonClick,
-  } = useHooks();
+  } = useHooks(eventId);
   const [isMobile, isMd] = useBreakpoints();
   const { user } = useUser();
   const router = useRouter();

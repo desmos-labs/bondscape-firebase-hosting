@@ -9,9 +9,9 @@ import SelectComponent from "@/components/SelectComponent";
 import { AnimatePresence, motion } from "framer-motion";
 import EventsHeader from "@/components/EventsHeader";
 import Tabs from "@/components/Tabs";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { activeTabState } from "@/recoil/activeTab";
-import { loginVisibilityState } from "@/recoil/loginVisibility";
+import { useActiveTab, useSetActiveTab } from "@/jotai/activeTab";
+import { loginVisibilityState } from "@/jotai/loginVisibility";
+import { useAtomValue } from "jotai";
 
 const NavigationBar = ({
   disableNavbarBgInDesktop,
@@ -20,9 +20,10 @@ const NavigationBar = ({
   forceNavbarBgVisible?: boolean;
   disableNavbarBgInDesktop?: boolean;
 }) => {
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
+  const activeTab = useActiveTab();
+  const setActiveTab = useSetActiveTab();
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
-  const isLoginButtonVisible = useRecoilValue(loginVisibilityState);
+  const isLoginButtonVisible = useAtomValue(loginVisibilityState);
   // Hooks
   const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
     useBreakpoints();

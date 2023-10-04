@@ -1,15 +1,13 @@
-import { atom, useRecoilValue, useSetRecoilState } from "recoil";
+import { atomWithStorage } from "jotai/utils";
+import { useAtomValue, useSetAtom } from "jotai";
 import { Event } from "@/types/event";
 import { useCallback } from "react";
 
-export const eventsState = atom<Event[]>({
-  key: "events",
-  default: [],
-});
+export const eventsState = atomWithStorage<Event[]>("events", []);
 
-export const useEvents = () => useRecoilValue(eventsState);
+export const useEvents = () => useAtomValue(eventsState);
 
-export const useSetEvents = () => useSetRecoilState(eventsState);
+export const useSetEvents = () => useSetAtom(eventsState);
 
 export const useGetEvent = () => {
   const liveEvents = useEvents();
