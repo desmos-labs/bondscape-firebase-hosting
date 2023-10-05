@@ -14,11 +14,6 @@ const useGetGooglePlace = (placeId?: string) => {
     url: undefined,
   });
 
-  const loader = new Loader({
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY,
-    version: "weekly",
-  });
-
   /**
    * Get the google place details by place id
    */
@@ -31,6 +26,12 @@ const useGetGooglePlace = (placeId?: string) => {
       });
       return;
     }
+
+    const loader = new Loader({
+      apiKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY,
+      version: "weekly",
+    });
+
     loader.importLibrary("places").then(() => {
       const service = new google.maps.places.PlacesService(
         document.createElement("div"),
@@ -54,7 +55,7 @@ const useGetGooglePlace = (placeId?: string) => {
         },
       );
     });
-  }, [loader, placeId]);
+  }, [placeId]);
 
   return {
     googlePlace,

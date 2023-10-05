@@ -33,7 +33,7 @@ const LocationInput = ({ defaultValue, title, required, onChange }: Props) => {
         }
       });
     }
-  }, [defaultValue]);
+  }, [defaultValue, setValue]);
 
   const ref = useOnclickOutside(() => {
     clearSuggestions();

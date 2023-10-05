@@ -42,7 +42,7 @@ export default function EventDetails({ params }: { params: any }) {
   useEffect(() => {
     const eventId = params.id as string;
     loadEvent(eventId);
-  }, [params.id, router]);
+  }, [loadEvent, params.id, router]);
 
   const organizers = useMemo(() => {
     if (selectedEvent && selectedEvent?.organizers) {
@@ -249,7 +249,10 @@ export default function EventDetails({ params }: { params: any }) {
               <div className="flex flex-row flex-wrap gap-2 mt-3">
                 {selectedEvent ? (
                   selectedEvent?.tags?.map((tag) => (
-                    <div className="flex items-center justify-center px-5 py-2 bg-bondscape-text_neutral_100 rounded-[100px] text-bondscape-text_neutral_600 text-sm">
+                    <div
+                      key={tag}
+                      className="flex items-center justify-center px-5 py-2 bg-bondscape-text_neutral_100 rounded-[100px] text-bondscape-text_neutral_600 text-sm"
+                    >
                       {tag}
                     </div>
                   ))
