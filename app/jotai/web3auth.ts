@@ -1,3 +1,5 @@
+"use client";
+
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 

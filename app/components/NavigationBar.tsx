@@ -10,20 +10,26 @@ import { AnimatePresence, motion } from "framer-motion";
 import EventsHeader from "@/components/EventsHeader";
 import Tabs from "@/components/Tabs";
 import { useActiveTab, useSetActiveTab } from "@/jotai/activeTab";
-import { loginVisibilityState } from "@/jotai/loginVisibility";
-import { useAtomValue } from "jotai";
+import CreateEventHeader from "@/components/CreateEventHeader";
+
+interface Props {
+  readonly disableNavbarBgInDesktop?: boolean;
+  readonly forceNavbarBgVisible?: boolean;
+  readonly goBackStatusBar?: boolean;
+  readonly detailsStatusBar?: boolean;
+  readonly editButtonHref?: string;
+}
 
 const NavigationBar = ({
   disableNavbarBgInDesktop,
   forceNavbarBgVisible,
-}: {
-  forceNavbarBgVisible?: boolean;
-  disableNavbarBgInDesktop?: boolean;
-}) => {
+  goBackStatusBar,
+  detailsStatusBar,
+  editButtonHref,
+}: Props) => {
   const activeTab = useActiveTab();
   const setActiveTab = useSetActiveTab();
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
-  const isLoginButtonVisible = useAtomValue(loginVisibilityState);
   // Hooks
   const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
     useBreakpoints();
@@ -60,11 +66,7 @@ const NavigationBar = ({
     ) {
       return;
     }
-    if (
-      !user ||
-      !isDesktop ||
-      (process.env.NODE_ENV === "production" && !isLoginButtonVisible)
-    ) {
+    if (!user || !isDesktop || process.env.NODE_ENV === "production") {
       return;
     }
     return user.profile ? (
@@ -76,7 +78,7 @@ const NavigationBar = ({
         </div>
       </Link>
     );
-  }, [isDesktop, isLoginButtonVisible, pathname, user]);
+  }, [isDesktop, pathname, user]);
 
   return (
     <nav
@@ -84,7 +86,7 @@ const NavigationBar = ({
         navbarBgVisible ? "backdrop-blur-lg" : "bg-transparent"
       } transition-colors ease-in-out sticky flex w-full px-xMobile md:px-xMd lg:px-xLg xl:px-xXl`}
     >
-      <div className="flex flex-1 flex-col gap-[24px]">
+      <div className="flex flex-1 flex-col">
         <div className="flex items-center flex-row justify-between h-navbar-mobile md:h-navbar-md lg:h-navbar-lg xl:h-navbar-xl">
           <Link href="/">
             <BondscapeLogo />
@@ -96,11 +98,22 @@ const NavigationBar = ({
           </AnimatePresence>
         </div>
         {pathname === "/creator/events" && (
-          <div className="flex flex-1 flex-col gap-[24px] w-[70rem] xl:w-[90rem] self-center">
-            <EventsHeader
-              onPressCreateEvent={() => router.push("/creator/create")}
-            />
+          <div className="flex flex-1 flex-col gap-[24px] w-[70rem] xl:w-[90rem] self-center mt-4">
+            <EventsHeader />
             <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+          </div>
+        )}
+        {goBackStatusBar && (
+          <div className="flex flex-1 flex-col w-[70rem] xl:w-[90rem] self-center">
+            <CreateEventHeader />
+          </div>
+        )}
+        {detailsStatusBar && (
+          <div className="flex flex-1 flex-col w-[70rem] xl:w-[90rem] self-center">
+            <CreateEventHeader
+              editMode={true}
+              editButtonHref={editButtonHref}
+            />
           </div>
         )}
       </div>

@@ -28,6 +28,7 @@ const EventsFields = gql`
         name
       }
     }
+    detailsLink: details_link
     website
     tags
   }

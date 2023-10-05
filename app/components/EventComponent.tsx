@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { Event } from "@/types/event";
 import Image from "next/image";
 import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Props {
   event: Event;
@@ -13,7 +13,6 @@ interface Props {
 
 const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
   const { getEventPeriod } = useFormatDateToTZ();
-  const router = useRouter();
 
   const CoverPictureComponent = useMemo(() => {
     return (
@@ -32,15 +31,16 @@ const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
     );
   }, [event.coverPic, event.id]);
   return (
-    <div
-      className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface gap-[1rem] bondscape-box-shadow-event-card`}
+    <Link
+      href={`/creator/events/${event.id}`}
+      className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface hover:bg-[#28282D] gap-[1rem] bondscape-box-shadow-event-card transition ease-in-out`}
       ref={lastItemRef}
     >
       <div className="relative w-full h-[16.5rem] xl:h-[23.5rem]">
         {CoverPictureComponent}
       </div>
-      <div className="flex flex-1 flex-row justify-between items-center">
-        <div className="flex flex-col gap-[0.25rem]">
+      <div className="flex flex-1 w-full flex-row justify-between items-center">
+        <div className="flex flex-col gap-[0.25rem] items-start">
           <div className="text-[20px] font-semibold text-bondscape-text_neutral_900 leading-[1.75rem]">
             {event.name}
           </div>
@@ -57,17 +57,9 @@ const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
               </div>
             </div>
           )}
-          <button
-            className="flex flex-row items-center"
-            onClick={() =>
-              router.push(`/creator/create/${encodeURIComponent(event.id)}`)
-            }
-          >
-            <div className="text-[14px] font-semibold">EDIT</div>
-          </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

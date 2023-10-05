@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FormikProps } from "formik";
-import { CreateEventValues } from "@/types/event";
+import { CreateEventValues, GQLEventsResult } from "@/types/event";
 import * as Yup from "yup";
-import { useGetEvent } from "@/jotai/liveEvents";
+import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
+import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
 
 const useHooks = (eventId?: string) => {
+  const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
+  const [isLoading, setIsLoading] = useState(eventId !== undefined);
   const [initialValues, setInitialValues] = useState<CreateEventValues>({
     status: "draft",
     eventName: "",
@@ -19,7 +22,6 @@ const useHooks = (eventId?: string) => {
     endDate: undefined,
     placeId: undefined,
   });
-  const getEvent = useGetEvent();
 
   // Memoized values
   const title = useMemo(() => {
@@ -42,10 +44,16 @@ const useHooks = (eventId?: string) => {
    * Set initial values from atom state
    */
   const setInitialValuesFromQuery = useCallback(async () => {
-    console.log("event", eventId);
     if (!eventId) return;
-    const event = getEvent(eventId);
-    if (!event) return;
+    setIsLoading(true);
+    const result = await getEventById({
+      variables: {
+        eventId,
+      },
+    });
+    setIsLoading(false);
+    if (!result) return;
+    const event = result.events[0];
 
     setInitialValues((prev) => {
       return {
@@ -62,7 +70,7 @@ const useHooks = (eventId?: string) => {
         website: event.website,
       };
     });
-  }, [eventId, getEvent]);
+  }, [eventId, getEventById]);
 
   const handleButtonClick = async (
     formikProps: FormikProps<CreateEventValues>,
@@ -83,6 +91,7 @@ const useHooks = (eventId?: string) => {
   });
 
   return {
+    isLoading,
     draftButtonText,
     publishButtonText,
     title,

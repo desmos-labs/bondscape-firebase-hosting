@@ -1,19 +1,16 @@
 import React from "react";
+import Link from "next/link";
 
-interface Props {
-  readonly onPressCreateEvent: () => void;
-}
-
-const EventsHeader = ({ onPressCreateEvent }: Props) => {
+const EventsHeader = () => {
   return (
     <div className="flex flex-row flex-1 justify-between items-center">
       <div className="text-neutral-100 text-3xl font-semibold font-['Poppins'] leading-10">
         My Events
       </div>
       <div className="justify-start items-start inline-flex">
-        <button
+        <Link
           className="flex flex-row py-1 rounded-full items-center justify-center gap-2 text-bondscape-primary fill-bondscape-primary hover:text-[#654A9C] hover:fill-[#654A9C] transition ease-in-out"
-          onClick={onPressCreateEvent}
+          href={"/creator/create"}
         >
           <div className="w-4 h-4 p-0.5 justify-center items-center flex">
             <div className="w-3 h-3 relative">
@@ -41,7 +38,7 @@ const EventsHeader = ({ onPressCreateEvent }: Props) => {
           <div className="flex items-center justify-center align-middle text-base font-semibold">
             Create Event
           </div>
-        </button>
+        </Link>
       </div>
     </div>
   );

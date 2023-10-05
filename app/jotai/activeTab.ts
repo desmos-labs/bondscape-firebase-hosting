@@ -1,5 +1,7 @@
-import { atomWithStorage } from "jotai/utils";
+"use client";
+
 import { useAtomValue, useSetAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
 export const activeTabState = atomWithStorage<number>("activeTab", 0);
 

@@ -7,6 +7,8 @@ interface Props {
   readonly disabled?: boolean;
   readonly loading?: boolean;
   readonly onClick?: () => void;
+  readonly className?: string;
+  readonly textClassName?: string;
 }
 
 const BondscapeButton = ({
@@ -15,18 +17,22 @@ const BondscapeButton = ({
   loading,
   disabled,
   onClick,
+  className,
+  textClassName,
 }: Props) => {
   return (
     <button
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`${
+      className={`${className} ${
         disabled && "opacity-[0.5]"
-      } w-64 h-11 px-6 py-3 mt-12 self-center bg-violet-400 rounded-lg justify-center items-center gap-2 inline-flex transition ease-in-out`}
+      } self-center bg-bondscape-primary justify-center items-center gap-2 inline-flex transition ease-in-out cursor-pointer`}
     >
       <ClipLoader size={20} color={"white"} loading={loading} />
-      <div className="text-center text-white text-base font-semibold font-['Poppins'] leading-normal">
+      <div
+        className={`${textClassName} text-center text-white font-semibold leading-normal`}
+      >
         {text}
       </div>
     </button>
