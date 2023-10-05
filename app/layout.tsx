@@ -2,6 +2,7 @@ import React from "react";
 import Footer from "./components/Footer";
 import Head from "next/head";
 import "./globals.css";
+import "./theme.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import BondscapeWrapper from "./components/BondscapeWrapper";
 import JotaiProvider from "./components/JotaiProvider";
@@ -27,18 +28,18 @@ export default function RootLayout({
         className="bg-bondscape-background-primary"
         suppressHydrationWarning={true}
       >
-        <div className="relative mx-auto w-full min-w-[375px]">
-          <JotaiProvider>
-            <ApolloWrapper>
-              <ToastWrapper>
+        <JotaiProvider>
+          <ApolloWrapper>
+            <ToastWrapper>
+              <div className="relative mx-auto w-full min-w-[375px]">
                 <BondscapeWrapper>{children}</BondscapeWrapper>
-              </ToastWrapper>
-            </ApolloWrapper>
-          </JotaiProvider>
-          <div className={`relative w-full min-w-[375px] bg-no-repeat`}>
-            <Footer />
-          </div>
-        </div>
+                <div className={`relative w-full min-w-[375px] bg-no-repeat`}>
+                  <Footer />
+                </div>
+              </div>
+            </ToastWrapper>
+          </ApolloWrapper>
+        </JotaiProvider>
       </body>
     </html>
   );

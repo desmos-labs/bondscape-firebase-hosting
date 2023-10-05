@@ -1,17 +1,20 @@
 import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  readonly onPressGoBack: () => void;
   readonly editMode?: boolean;
+  readonly editButtonHref?: string;
 }
 
-const CreateEventHeader = ({ onPressGoBack, editMode }: Props) => {
+const CreateEventHeader = ({ editMode, editButtonHref }: Props) => {
+  const router = useRouter();
   return (
     <div className="inline-flex items-center mb-[40px]">
       <div className="flex flex-1 flex-row justify-between">
         <button
           className="self-start py-1 justify-center items-center gap-2 flex text-bondscape-primary fill-bondscape-primary hover:text-[#654A9C] hover:fill-[#654A9C] transition ease-in-out"
-          onClick={onPressGoBack}
+          onClick={() => router.back()}
         >
           <div className="w-4 h-4 p-0.5 justify-center items-center flex">
             <div className="w-3 h-3 relative">
@@ -36,13 +39,13 @@ const CreateEventHeader = ({ onPressGoBack, editMode }: Props) => {
             </div>
           </div>
           <div className="text-center text-[16px] font-semibold leading-normal">
-            Events
+            Go Back
           </div>
         </button>
-        {editMode && (
-          <button
+        {editMode && editButtonHref && (
+          <Link
             className="py-1 justify-center items-center gap-2 flex text-bondscape-primary stroke-bondscape-primary hover:stroke-[#654A9C] hover:text-[#654A9C] transition ease-in-out"
-            onClick={onPressGoBack}
+            href={editButtonHref}
           >
             <div className="w-[16px] h-[16px] justify-center items-center flex">
               <div className="w-3 h-3 relative">
@@ -64,7 +67,7 @@ const CreateEventHeader = ({ onPressGoBack, editMode }: Props) => {
             <div className="text-center text-[16px] font-semibold leading-normal mt-1">
               Edit Event
             </div>
-          </button>
+          </Link>
         )}
       </div>
     </div>

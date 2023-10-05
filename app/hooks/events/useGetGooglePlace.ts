@@ -24,7 +24,11 @@ const useGetGooglePlace = (placeId?: string) => {
    */
   useEffect(() => {
     if (!placeId) {
-      setGooglePlace(undefined);
+      setGooglePlace({
+        name: "Unavailable",
+        formattedAddress: "Unavailable",
+        url: undefined,
+      });
       return;
     }
     loader.importLibrary("places").then(() => {

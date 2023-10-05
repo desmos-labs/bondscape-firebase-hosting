@@ -33,7 +33,7 @@ const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
   return (
     <Link
       href={`/creator/events/${event.id}`}
-      className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface gap-[1rem] bondscape-box-shadow-event-card`}
+      className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface hover:bg-[#28282D] gap-[1rem] bondscape-box-shadow-event-card transition ease-in-out`}
       ref={lastItemRef}
     >
       <div className="relative w-full h-[16.5rem] xl:h-[23.5rem]">

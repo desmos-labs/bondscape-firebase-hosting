@@ -17,6 +17,7 @@ interface Props {
   readonly forceNavbarBgVisible?: boolean;
   readonly goBackStatusBar?: boolean;
   readonly detailsStatusBar?: boolean;
+  readonly editButtonHref?: string;
 }
 
 const NavigationBar = ({
@@ -24,6 +25,7 @@ const NavigationBar = ({
   forceNavbarBgVisible,
   goBackStatusBar,
   detailsStatusBar,
+  editButtonHref,
 }: Props) => {
   const activeTab = useActiveTab();
   const setActiveTab = useSetActiveTab();
@@ -97,20 +99,21 @@ const NavigationBar = ({
         </div>
         {pathname === "/creator/events" && (
           <div className="flex flex-1 flex-col gap-[24px] w-[70rem] xl:w-[90rem] self-center mt-4">
-            <EventsHeader
-              onPressCreateEvent={() => router.push("/creator/create")}
-            />
+            <EventsHeader />
             <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
         )}
         {goBackStatusBar && (
           <div className="flex flex-1 flex-col w-[70rem] xl:w-[90rem] self-center">
-            <CreateEventHeader onPressGoBack={router.back} />
+            <CreateEventHeader />
           </div>
         )}
         {detailsStatusBar && (
           <div className="flex flex-1 flex-col w-[70rem] xl:w-[90rem] self-center">
-            <CreateEventHeader onPressGoBack={router.back} editMode={true} />
+            <CreateEventHeader
+              editMode={true}
+              editButtonHref={editButtonHref}
+            />
           </div>
         )}
       </div>

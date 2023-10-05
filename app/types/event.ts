@@ -77,6 +77,10 @@ export interface Event {
    * Event status
    */
   status?: "published" | "draft";
+  /**
+   * Link to share this event.
+   */
+  detailsLink: string;
 }
 
 export interface CreateEventValues {

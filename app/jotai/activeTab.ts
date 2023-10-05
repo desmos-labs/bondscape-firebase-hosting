@@ -1,8 +1,9 @@
 "use client";
 
-import { atom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-export const activeTabState = atom<number>(0);
+export const activeTabState = atomWithStorage<number>("activeTab", 0);
 
 export const useActiveTab = () => useAtomValue(activeTabState);
 

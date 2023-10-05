@@ -16,6 +16,7 @@ import BondscapeButton from "@/components/BondscapeButton";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
 import useUser from "@/hooks/user/useUser";
 import useHooks from "@/creator/create/[[...id]]/useHooks";
+import { PuffLoader } from "react-spinners";
 
 /**
  * Page for creating an event
@@ -31,6 +32,7 @@ export default function CreateEvent({ params }: PageProps) {
   const eventId = params && params.id ? params.id[0] : undefined;
   // Hooks
   const {
+    isLoading,
     title,
     draftButtonText,
     publishButtonText,
@@ -49,6 +51,28 @@ export default function CreateEvent({ params }: PageProps) {
           This page is not supported on mobile devices. Please use a desktop
         </div>
       </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <MainLayout
+        customClasses={"bg-[#020014]"}
+        backgroundOverlay={bgOverlay}
+        forceNavbarBgVisible={true}
+        statusBarMode={"goBack"}
+      >
+        <div className="flex flex-1 lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto items-center justify-center">
+          <PuffLoader
+            color={"#A579FF"}
+            loading={true}
+            size={70}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            className="mt-36"
+          />
+        </div>
+      </MainLayout>
     );
   }
 

@@ -1,9 +1,10 @@
 "use client";
 import { Event } from "@/types/event";
 import { useCallback } from "react";
-import { atom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
-export const eventsState = atom<Event[]>([]);
+export const eventsState = atomWithStorage<Event[]>("events", []);
 
 export const useEvents = () => useAtomValue(eventsState);
 
@@ -13,7 +14,6 @@ export const useGetEvent = () => {
   const events = useEvents();
   return useCallback(
     (eventId: string) => {
-      console.log("eventId Inside", eventId);
       return events.find((event) => event.id === eventId);
     },
     [events],
