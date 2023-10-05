@@ -1,13 +1,28 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { loginVisibilityState } from "@/jotai/loginVisibility";
+import { useSetAtom } from "jotai";
 
 const Footer = () => {
+  const [clicksCounter, setClicksCounter] = useState(0);
+  const setLoginVisibility = useSetAtom(loginVisibilityState);
+
+  useEffect(() => {
+    if (clicksCounter === 5) {
+      setLoginVisibility(true);
+    }
+  }, [clicksCounter, setLoginVisibility]);
+
   return (
     <div className="flex bg-bondscape-background-primary px-xMobile md:px-xMd lg:px-xLg xl:px-xXl py-yMobile lg:py-[30px]">
       <div className="flex flex-1 flex-col lg:flex-row lg:items-center">
-        <span className="text-[#8F8F8F] text-[14px] font-light leading-none pb-2 lg:pb-0 lg:pr-[40px]">
+        <button
+          onClick={() => setClicksCounter((prev) => prev + 1)}
+          className="text-[#8F8F8F] text-[14px] font-light leading-none pb-2 lg:pb-0 lg:pr-[40px]"
+        >
           Copyright © Desmos Labs {new Date().getFullYear()}
-        </span>
+        </button>
         <div className="flex flex-row lg:flex-1 justify-between items-center">
           <div className="flex flex-row text-[14px] font-light">
             <Link

@@ -39,9 +39,10 @@ const useHooks = (eventId?: string) => {
 
   // Callbacks
   /**
-   * Set initial values from recoil state
+   * Set initial values from atom state
    */
   const setInitialValuesFromQuery = useCallback(async () => {
+    console.log("event", eventId);
     if (!eventId) return;
     const event = getEvent(eventId);
     if (!event) return;

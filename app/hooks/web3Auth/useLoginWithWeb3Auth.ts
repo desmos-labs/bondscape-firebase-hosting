@@ -93,6 +93,7 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
     async (
       loginProvider: Web3AuthLoginProvider,
     ): Promise<Result<void, Error>> => {
+      console.log("loginWithWeb3Auth", web3authClient);
       if (!web3authClient) {
         return err(new Error("Web3Auth client not initialized"));
       }

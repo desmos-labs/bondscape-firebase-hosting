@@ -29,7 +29,6 @@ interface PageProps {
 
 export default function CreateEvent({ params }: PageProps) {
   const eventId = params && params.id ? params.id[0] : undefined;
-
   // Hooks
   const {
     title,
