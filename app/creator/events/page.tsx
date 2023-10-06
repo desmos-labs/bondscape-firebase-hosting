@@ -7,11 +7,27 @@ import EventsTabs from "@/creator/events/EventsTabs";
 import { PuffLoader } from "react-spinners";
 import useHooks from "@/creator/events/useHooks";
 import { useActiveTab } from "@/jotai/activeTab";
+import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
+import {
+  useDeleteEventModal,
+  useSetDeleteEventModal,
+} from "@/jotai/deleteEventModal";
+import { classNames } from "primereact/utils";
 
 export default function Events() {
   const activeTab = useActiveTab();
+  const deleteEventModal = useDeleteEventModal();
+  const setDeleteEventModal = useSetDeleteEventModal();
   const [isMobile, isMd] = useBreakpoints();
-  const { data, isActuallyLoading, fetchingMore, lastElementRef } = useHooks();
+  const {
+    data,
+    isActuallyLoading,
+    fetchingMore,
+    lastElementRef,
+    deleteEvent,
+    deletingEvent,
+  } = useHooks();
 
   if (isMobile || isMd) {
     return (
@@ -44,6 +60,53 @@ export default function Events() {
           )}
         </div>
       </div>
+      <Dialog
+        closable={false}
+        header={"Delete Event"}
+        visible={deleteEventModal.visible}
+        onHide={() =>
+          setDeleteEventModal({
+            visible: false,
+            eventId: "",
+          })
+        }
+        pt={{
+          header: {
+            className: classNames("text-center"),
+          },
+        }}
+      >
+        <div className="text-base text-center text-bondscape-text_neutral_900 mb-10">
+          Are you sure you want to delete this event?
+        </div>
+        <div className="flex flex-1 flex-row justify-center gap-6">
+          <Button
+            outlined
+            disabled={deletingEvent}
+            label={"No"}
+            className="h-11 w-52"
+            onClick={() =>
+              setDeleteEventModal({
+                visible: false,
+                eventId: "",
+              })
+            }
+          />
+          <Button
+            label={"Yes, Delete"}
+            className="h-11 w-52"
+            disabled={deletingEvent}
+            loading={deletingEvent}
+            onClick={async () => {
+              await deleteEvent(deleteEventModal.eventId);
+              setDeleteEventModal({
+                visible: false,
+                eventId: "",
+              });
+            }}
+          />
+        </div>
+      </Dialog>
     </MainLayout>
   );
 }

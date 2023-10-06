@@ -86,8 +86,8 @@ export default function EventDetails({ params }: { params: any }) {
             </div>
             {selectedEvent && (
               <BondscapeButton
-                textClassName={"text-sm"}
-                className={"w-[165px] px-[20px] py-[10px] rounded-[10px] z-4"}
+                textClassName="text-sm"
+                className="w-[165px] px-[20px] py-[10px] rounded-[10px] z-4 h-10"
                 loading={false}
                 text={"Show QR Code"}
                 onClick={() => setQrCodeVisible(true)}
@@ -186,7 +186,13 @@ export default function EventDetails({ params }: { params: any }) {
                   </div>
                 </div>
               </div>
-              <button className="flex basis-1/2 flex-row gap-2 items-center">
+              <button
+                className="flex basis-1/2 flex-row gap-2 items-center"
+                onClick={() =>
+                  googlePlace?.url &&
+                  window.open(googlePlace.url, "_blank", "noreferrer")
+                }
+              >
                 <div>
                   <Image
                     width={40}
