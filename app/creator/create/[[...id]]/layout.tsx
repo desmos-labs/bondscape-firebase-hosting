@@ -1,5 +1,5 @@
 import React from "react";
-import DefaultSEO from "../../seo";
+import DefaultSEO from "../../../seo";
 import Script from "next/script";
 
 export const metadata = {
