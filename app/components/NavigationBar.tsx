@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import BondscapeLogo from "./BondscapeLogo";
 import useBreakpoints from "../hooks/layout/useBreakpoints";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import useUser from "@/hooks/user/useUser";
 import SelectComponent from "@/components/SelectComponent";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,6 +11,8 @@ import EventsHeader from "@/components/EventsHeader";
 import Tabs from "@/components/Tabs";
 import { useActiveTab, useSetActiveTab } from "@/jotai/activeTab";
 import CreateEventHeader from "@/components/CreateEventHeader";
+import { useAtomValue } from "jotai";
+import { loginVisibilityState } from "@/jotai/loginVisibility";
 
 interface Props {
   readonly disableNavbarBgInDesktop?: boolean;
@@ -29,12 +31,12 @@ const NavigationBar = ({
 }: Props) => {
   const activeTab = useActiveTab();
   const setActiveTab = useSetActiveTab();
+  const isLoginButtonVisible = useAtomValue(loginVisibilityState);
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
   const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
     useBreakpoints();
   const pathname = usePathname();
-  const router = useRouter();
   const { user } = useUser();
   const handleScroll = useCallback(() => {
     if (window.scrollY >= 60 && (isMobile || isMd)) {
@@ -66,7 +68,11 @@ const NavigationBar = ({
     ) {
       return;
     }
-    if (!user || !isDesktop || process.env.NODE_ENV === "production") {
+    if (
+      !user ||
+      !isDesktop ||
+      (process.env.NODE_ENV === "production" && !isLoginButtonVisible)
+    ) {
       return;
     }
     return user.profile ? (
@@ -78,7 +84,7 @@ const NavigationBar = ({
         </div>
       </Link>
     );
-  }, [isDesktop, pathname, user]);
+  }, [isDesktop, isLoginButtonVisible, pathname, user]);
 
   return (
     <nav

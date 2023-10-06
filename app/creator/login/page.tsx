@@ -8,7 +8,8 @@ import useBreakpoints from "../../hooks/layout/useBreakpoints";
 import useLoginWithWeb3Auth from "../../hooks/web3Auth/useLoginWithWeb3Auth";
 import { DesmosChain } from "@/lib/WalletUtils/LinkableChains";
 import { Web3AuthLoginProvider } from "@/types/web3auth";
-import Modal from "react-modal";
+import { Dialog } from "primereact/dialog";
+import { classNames } from "primereact/utils";
 
 export default function Login() {
   const { login, loginLoading } = useLoginWithWeb3Auth(DesmosChain);
@@ -99,45 +100,24 @@ export default function Login() {
         </div>
       </div>
 
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Profile not found modal"
-        ariaHideApp={false}
-        closeTimeoutMS={300}
-        style={{
-          content: {
-            position: "absolute",
-            width: "40rem",
-            height: "10rem",
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            margin: "auto",
-            alignSelf: "center",
-            backgroundColor: "#21202A",
-            borderRadius: "8px",
-            border: "none",
-          },
-          overlay: {
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
+      <Dialog
+        visible={modalIsOpen}
+        onHide={closeModal}
+        header="We can't find your Desmos Profile"
+        pt={{
+          header: {
+            className: classNames("text-center font-semibold"),
           },
         }}
       >
-        <div className="relative flex flex-1 h-full w-full items-center justify-center">
+        <div className="relative flex flex-1 h-full w-full items-center justify-center mt-4">
           <div className="text-center text-white font-semibold text-[16px] leading-[24px]">
             Sorry, seems like you do not have a Desmos Profile yet. <br />
             <br />
             Please download Bondscape and create your own Desmos Profile
           </div>
         </div>
-      </Modal>
+      </Dialog>
     </MainLayout>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { ClipLoader } from "react-spinners";
+import { Button } from "primereact/button";
 
 interface Props {
   readonly text: string;
@@ -21,21 +21,21 @@ const BondscapeButton = ({
   textClassName,
 }: Props) => {
   return (
-    <button
+    <Button
       type={type}
       disabled={disabled}
       onClick={onClick}
+      loading={loading}
       className={`${className} ${
         disabled && "opacity-[0.5]"
-      } self-center bg-bondscape-primary justify-center items-center gap-2 inline-flex transition ease-in-out cursor-pointer`}
+      } h-12 self-center bg-bondscape-primary justify-center items-center gap-2 inline-flex transition ease-in-out cursor-pointer`}
     >
-      <ClipLoader size={20} color={"white"} loading={loading} />
       <div
         className={`${textClassName} text-center text-white font-semibold leading-normal`}
       >
         {text}
       </div>
-    </button>
+    </Button>
   );
 };
 

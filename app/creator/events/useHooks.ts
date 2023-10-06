@@ -1,5 +1,5 @@
 import { GQLEventsResult } from "@/types/event";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useUser from "@/hooks/user/useUser";
 import GetMyPastEvents from "@/services/graphql/queries/bondscape/GetMyPastEvents";
 import GetMyDraftEvents from "@/services/graphql/queries/bondscape/GetMyDraftEvents";
@@ -8,14 +8,15 @@ import { useInView } from "react-intersection-observer";
 import { useActiveTab } from "@/jotai/activeTab";
 import GetMyLiveEvents from "@/services/graphql/queries/bondscape/GetMyLiveEvents";
 import { useQuery } from "@apollo/client";
-import { useSetEvents } from "@/jotai/liveEvents";
+import DeleteEvent from "@/services/axios/requests/DeleteEvent";
+import { toast } from "react-toastify";
 
 const EVENTS_QUERY_LIMIT = 20;
 
 export const useHooks = () => {
   const [loadingEvents, setLoadingEvents] = useState(false);
+  const [deletingEvent, setDeletingEvent] = useState(false);
   const activeTab = useActiveTab();
-  const setLiveEvents = useSetEvents();
   const [fetchingMore, setFetchingMore] = useState(false);
   const now = useRef(new Date());
   const { ref: lastElementRef, inView: lastElementInView } = useInView();
@@ -44,17 +45,11 @@ export const useHooks = () => {
     };
   }, [user]);
 
-  const { data, loading, fetchMore, networkStatus, client } =
+  const { data, loading, refetch, fetchMore, networkStatus, client } =
     useQuery<GQLEventsResult>(currentQuery, {
       variables: queryVariables,
       fetchPolicy: "cache-and-network",
     });
-
-  useEffect(() => {
-    if (data) {
-      setLiveEvents(data.events);
-    }
-  }, [data, setLiveEvents]);
 
   useEffect(() => {
     if (loading) {
@@ -76,6 +71,21 @@ export const useHooks = () => {
       })
     );
   }, [client, currentQuery, loadingEvents, queryVariables]);
+
+  const deleteEvent = useCallback(
+    async (eventId: string) => {
+      setDeletingEvent(true);
+      const deleteResult = await DeleteEvent({ eventId });
+      setDeletingEvent(false);
+      if (deleteResult.isErr()) {
+        toast.error(deleteResult.error.message);
+      } else {
+        toast.success("Event deleted");
+        await refetch();
+      }
+    },
+    [refetch],
+  );
 
   useEffect(() => {
     if (!data) return;
@@ -105,6 +115,8 @@ export const useHooks = () => {
     networkStatus,
     fetchingMore,
     lastElementRef,
+    deleteEvent,
+    deletingEvent,
   };
 };
 
