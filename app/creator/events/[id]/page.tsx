@@ -36,7 +36,7 @@ export default function EventDetails({ params }: { params: any }) {
     }
   }, []);
 
-  async function toDataURL() {
+  const toDataURL = useCallback(async () => {
     setGeneratingQr(true);
     try {
       const response = await fetch(eventQrCode);
@@ -45,7 +45,7 @@ export default function EventDetails({ params }: { params: any }) {
     } finally {
       setGeneratingQr(false);
     }
-  }
+  }, [eventQrCode]);
 
   const saveQrCode = useCallback(async () => {
     const a = document.createElement("a");
@@ -54,7 +54,7 @@ export default function EventDetails({ params }: { params: any }) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  }, [selectedEvent?.name]);
+  }, [selectedEvent?.name, toDataURL]);
 
   useEffect(() => {
     if (selectedEvent) {
