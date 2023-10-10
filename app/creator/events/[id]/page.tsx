@@ -13,17 +13,54 @@ import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
 import Skeleton from "react-loading-skeleton";
 import { Dialog } from "primereact/dialog";
-import { QRCodeSVG } from "qrcode.react";
 import { Button } from "primereact/button";
+import GetQrCode from "@/services/axios/requests/GetQrCode";
+import { PuffLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 export default function EventDetails({ params }: { params: any }) {
   const [selectedEvent, setSelectedEvent] = useState<Event>();
+  const [eventQrCode, setEventQrCode] = useState("");
+  const [generatingQr, setGeneratingQr] = useState(false);
   const [qrCodeVisible, setQrCodeVisible] = useState(false);
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
   const { getEventPeriodExtended } = useFormatDateToTZ();
   const { googlePlace } = useGetGooglePlace(selectedEvent?.googlePlaceId);
+
+  const generateQrCode = useCallback(async (url: string) => {
+    const result = await GetQrCode(url, "url");
+    if (result.isOk()) {
+      setEventQrCode(result.value.url);
+    }
+  }, []);
+
+  async function toDataURL() {
+    setGeneratingQr(true);
+    try {
+      const response = await fetch(eventQrCode);
+      const blob = await response.blob();
+      return URL.createObjectURL(blob);
+    } finally {
+      setGeneratingQr(false);
+    }
+  }
+
+  const saveQrCode = useCallback(async () => {
+    const a = document.createElement("a");
+    a.href = await toDataURL();
+    a.download = `bondscape_${selectedEvent?.name}_qr_code.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }, [selectedEvent?.name]);
+
+  useEffect(() => {
+    if (selectedEvent) {
+      generateQrCode(selectedEvent.joinLink);
+    }
+  }, [generateQrCode, selectedEvent]);
 
   const loadEvent = useCallback(
     async (eventId: string) => {
@@ -277,37 +314,49 @@ export default function EventDetails({ params }: { params: any }) {
       >
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="p-2.5 rounded-[8px] bg-white">
-            <QRCodeSVG
-              value={selectedEvent?.detailsLink ?? ""}
-              size={158}
-              fgColor={"#8358F9"}
-              level={"H"}
-              imageSettings={{
-                src: "/qrCodeLogo.png",
-                width: 67,
-                height: 67,
-                excavate: false,
-              }}
-            />
+            {eventQrCode ? (
+              <Image
+                alt={"Qr code"}
+                src={eventQrCode}
+                width={158}
+                height={158}
+              />
+            ) : (
+              <PuffLoader color={"#A579FF"} />
+            )}
           </div>
           <div className="flex flex-1 flex-col gap-[40px] items-center">
             <div className="text-xl font-semibold text-bondscape-text_neutral_900 mt-6">
               {selectedEvent?.name ?? <Skeleton width={500} />}
             </div>
             {selectedEvent && (
-              <Button
-                outlined
-                className="w-[432px] justify-center font-semibold"
-                pt={{
-                  label: {
-                    className: "font-semibold",
-                  },
-                }}
-                label={"Copy Link"}
-                onClick={() => {
-                  navigator.clipboard.writeText(selectedEvent.detailsLink);
-                }}
-              />
+              <div className="flex flex-col gap-4">
+                <Button
+                  outlined
+                  className="w-[432px] justify-center font-semibold"
+                  pt={{
+                    label: {
+                      className: "font-semibold",
+                    },
+                  }}
+                  label={"Copy Link"}
+                  onClick={() => {
+                    navigator.clipboard.writeText(selectedEvent.detailsLink);
+                    toast("Link copied to clipboard!");
+                  }}
+                />
+                <Button
+                  loading={generatingQr}
+                  className="w-[432px] justify-center font-semibold"
+                  pt={{
+                    label: {
+                      className: "font-semibold",
+                    },
+                  }}
+                  label={"Download QR Code"}
+                  onClick={() => saveQrCode()}
+                />
+              </div>
             )}
           </div>
         </div>
