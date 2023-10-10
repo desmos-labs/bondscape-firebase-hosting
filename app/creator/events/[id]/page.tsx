@@ -17,6 +17,7 @@ import { Button } from "primereact/button";
 import GetQrCode from "@/services/axios/requests/GetQrCode";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
+import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
 
 export default function EventDetails({ params }: { params: any }) {
   const [selectedEvent, setSelectedEvent] = useState<Event>();
@@ -58,7 +59,11 @@ export default function EventDetails({ params }: { params: any }) {
 
   useEffect(() => {
     if (selectedEvent) {
-      generateQrCode(selectedEvent.joinLink);
+      GetEventJoinLink(selectedEvent.id).then((result) => {
+        if (result.isOk()) {
+          generateQrCode(result.value);
+        }
+      });
     }
   }, [generateQrCode, selectedEvent]);
 

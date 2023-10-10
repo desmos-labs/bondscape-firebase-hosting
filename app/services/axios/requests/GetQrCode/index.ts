@@ -15,7 +15,7 @@ const GetQrCode = (
         Accept: type === "url" ? "application/json" : "image/*",
       },
     }),
-    (e: any) => e ?? Error("Error getting the nonce"),
+    (e: any) => e ?? Error("Error getting the qr code"),
   ).map((response) => response.data);
 };
 

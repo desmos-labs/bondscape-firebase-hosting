@@ -81,10 +81,6 @@ export interface Event {
    * Link to share this event.
    */
   detailsLink: string;
-  /**
-   * Link to join this event.
-   */
-  joinLink: string;
 }
 
 export interface CreateEventValues {
