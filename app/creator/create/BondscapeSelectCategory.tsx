@@ -43,7 +43,7 @@ const BondscapeSelectCategory = ({
   return (
     <div className="flex flex-col bg-bondscape-text_neutral_100 gap-[0.75rem] rounded-[16px] p-[1rem]">
       <div className="flex flex-row items-center gap-2">
-        <div className="flex gap-1 w-[110px]">
+        <div className="flex gap-1 w-[130px]">
           <label className="text-[16px] text-bondscape-text_neutral_900">
             {"Category"}
           </label>

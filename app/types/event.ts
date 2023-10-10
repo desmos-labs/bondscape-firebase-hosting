@@ -106,6 +106,18 @@ export interface Event {
   ticketsCategories: EventTicketCategory[];
 }
 
+export interface TicketCategoryValues {
+  coverPic?: BondscapePreviewImage;
+  coverPicUrl?: string;
+  description: string;
+  category: string;
+  maxQuantityPerPerson?: number;
+  maxQuantityPerCategory?: number;
+  availableFrom?: string;
+  availableTill?: string;
+  controllers: Organizer[];
+}
+
 export interface CreateEventValues {
   /**
    * Event status.

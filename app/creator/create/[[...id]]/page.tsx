@@ -1,6 +1,6 @@
 "use client";
 import MainLayout from "../../../layouts/MainLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import bgOverlay from "../../../../public/eventsBgOverlay.png";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import { PuffLoader } from "react-spinners";
@@ -8,6 +8,8 @@ import useHooks from "@/creator/create/[[...id]]/useHooks";
 import { AnimatePresence, motion } from "framer-motion";
 import MainSection from "@/creator/create/[[...id]]/MainSection";
 import TicketSection from "@/creator/create/[[...id]]/TicketSection";
+import { Formik } from "formik";
+import useCreateEvent from "@/hooks/events/useCreateEvent";
 
 /**
  * Page for creating an event
@@ -23,8 +25,29 @@ export default function CreateEvent({ params }: PageProps) {
   const eventId = params && params.id ? params.id[0] : undefined;
   const [activeSection, setActiveSection] = useState(0);
   // Hooks
-  const { isLoading } = useHooks(eventId);
   const [isMobile, isMd] = useBreakpoints();
+  const {
+    title,
+    initialValues,
+    validateSchema,
+    draftButtonText,
+    publishButtonText,
+    isLoading,
+  } = useHooks(eventId);
+  const { uploadPictureAndCreateEvent } = useCreateEvent();
+
+  const [scrollPosition, setPosition] = useState({ scrollX: 0, scrollY: 0 });
+
+  useEffect(() => {
+    function updatePosition() {
+      setPosition({ scrollX: window.scrollX, scrollY: window.scrollY });
+    }
+
+    window.addEventListener("scroll", updatePosition);
+    updatePosition();
+
+    return () => window.removeEventListener("scroll", updatePosition);
+  }, []);
 
   if (isMobile || isMd) {
     return (
@@ -58,55 +81,75 @@ export default function CreateEvent({ params }: PageProps) {
     );
   }
 
-  const variants = {
-    enter: (direction: number) => {
-      return {
-        x: direction > 0 ? 1000 : -1000,
-        opacity: 0,
-      };
-    },
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => {
-      return {
-        zIndex: 0,
-        x: direction < 0 ? 1000 : -1000,
-        opacity: 0,
-      };
-    },
-  };
-
   return (
     <MainLayout
       customClasses={"bg-[#020014]"}
       backgroundOverlay={bgOverlay}
       forceNavbarBgVisible={true}
       statusBarMode={"goBack"}
+      statusBarBackOverride={
+        activeSection === 0
+          ? undefined
+          : () => {
+              window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+              setActiveSection(0);
+            }
+      }
     >
-      <AnimatePresence mode={"wait"}>
-        <motion.div
-          key={activeSection}
-          initial={{ x: 10, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -10, opacity: 0 }}
-          transition={{ duration: 0.2 }}
+      <div className="overflow-x-hidden">
+        <Formik
+          enableReinitialize={true}
+          validationSchema={validateSchema}
+          validateOnChange={true}
+          validateOnMount={false}
+          initialValues={initialValues}
+          onSubmit={(values) => uploadPictureAndCreateEvent(values, eventId)}
         >
-          {activeSection === 0 ? (
-            <MainSection
-              eventId={eventId}
-              setActiveSection={setActiveSection}
-            />
-          ) : (
-            <TicketSection
-              eventId={eventId}
-              setActiveSection={setActiveSection}
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
+          {(formikProps) => {
+            const { values } = formikProps;
+            const requiredDraftValuesSet =
+              values.eventName !== "" && values.eventDetails !== "";
+            const requiredSubmitValuesSet =
+              requiredDraftValuesSet && values.startDate && values.endDate;
+
+            return (
+              <AnimatePresence mode={"wait"}>
+                <motion.div
+                  className="lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto"
+                  key={activeSection}
+                  initial={{ x: 300, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -300, opacity: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: scrollPosition.scrollY > 0 ? 0.3 : 0,
+                  }}
+                >
+                  <motion.div className="relative flex flex-col">
+                    <motion.div className="flex flex-1 flex-col bg-bondscape-surface rounded-[24px] p-[40px]">
+                      <motion.div>
+                        {activeSection === 0 ? (
+                          <MainSection
+                            title={title}
+                            formikProps={formikProps}
+                            setActiveSection={setActiveSection}
+                          />
+                        ) : (
+                          <TicketSection
+                            formikProps={formikProps}
+                            draftButtonText={draftButtonText}
+                            publishButtonText={publishButtonText}
+                          />
+                        )}
+                      </motion.div>
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+              </AnimatePresence>
+            );
+          }}
+        </Formik>
+      </div>
     </MainLayout>
   );
 }

@@ -17,6 +17,7 @@ export interface MainLayoutProps {
   readonly customClasses?: string;
   readonly fullScreenHeightOption?: "always" | "onlyDesktop" | "never";
   readonly statusBarMode?: "goBack" | "editDetails";
+  readonly statusBarBackOverride?: () => void;
   readonly editButtonHref?: string;
 }
 
@@ -32,6 +33,7 @@ const MainLayout = (props: MainLayoutProps) => {
     customClasses,
     fullScreenHeightOption,
     statusBarMode,
+    statusBarBackOverride,
     editButtonHref,
   } = props;
   const [sectionHeight, setSectionHeight] = useState("h-auto");
@@ -75,6 +77,7 @@ const MainLayout = (props: MainLayoutProps) => {
               forceNavbarBgVisible={forceNavbarBgVisible}
               goBackStatusBar={statusBarMode === "goBack"}
               detailsStatusBar={statusBarMode === "editDetails"}
+              statusBarBackOverride={statusBarBackOverride}
               editButtonHref={editButtonHref}
             />
           </div>

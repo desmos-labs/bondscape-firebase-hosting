@@ -4,6 +4,8 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 
 interface Props {
+  readonly startLabel?: string;
+  readonly endLabel?: string;
   readonly initialStartValue?: string;
   readonly initialEndValue?: string;
   readonly required: boolean;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 const BondscapeDateTimePicker = ({
+  startLabel,
+  endLabel,
   initialStartValue,
   initialEndValue,
   required,
@@ -49,9 +53,9 @@ const BondscapeDateTimePicker = ({
   return (
     <div className="flex flex-col bg-bondscape-text_neutral_100 gap-[0.75rem] rounded-[16px]  p-[1rem]">
       <div className="flex flex-row items-center gap-2">
-        <div className="flex gap-1 w-[110px]">
-          <label className="text-[16px] text-bondscape-text_neutral_900">
-            {"Event Starts"}
+        <div className="flex gap-1 min-w-[130px]">
+          <label className="text-[16px] text-bondscape-text_neutral_900 whitespace-nowrap">
+            {startLabel || "Event Starts"}
           </label>
           {required && <span className="text-[#FF8686]">*</span>}
         </div>
@@ -83,9 +87,9 @@ const BondscapeDateTimePicker = ({
         </div>
       </div>
       <div className="flex flex-row items-center gap-2">
-        <div className="flex gap-1 w-[110px]">
-          <label className="text-[16px] text-bondscape-text_neutral_900">
-            {"Event Ends"}
+        <div className="flex gap-1 min-w-[130px]">
+          <label className="text-[16px] text-bondscape-text_neutral_900 whitespace-nowrap">
+            {endLabel || "Event Ends"}
           </label>
           {required && <span className="text-[#FF8686]">*</span>}
         </div>

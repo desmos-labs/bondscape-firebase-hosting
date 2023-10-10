@@ -12,12 +12,16 @@ interface Props {
   readonly initialCoHosts?: Organizer[];
   readonly required: boolean;
   readonly onChange: (coHosts: Organizer[]) => void;
+  readonly label?: string;
+  readonly placeholder?: string;
 }
 
 const BondscapeSelectCoHosts = ({
   initialCoHosts,
   required,
   onChange,
+  label,
+  placeholder,
 }: Props) => {
   const [loading, setLoading] = useState(false);
 
@@ -50,9 +54,9 @@ const BondscapeSelectCoHosts = ({
   return (
     <div className="flex flex-col bg-bondscape-text_neutral_100 gap-[0.75rem] rounded-[16px] px-[1rem]">
       <div className="flex flex-row items-center gap-2">
-        <div className="flex gap-1 w-[110px]">
+        <div className="flex gap-1 w-[130px]">
           <label className="text-[16px] text-bondscape-text_neutral_900">
-            {"Co-Hosts"}
+            {label || "Co-Hosts"}
           </label>
           {required && <span className="text-[#FF8686]">*</span>}
         </div>
@@ -82,7 +86,7 @@ const BondscapeSelectCoHosts = ({
                 onChange([]);
               }
             }}
-            placeholder={"Add a dtag or a nickname"}
+            placeholder={placeholder || "Add a dtag or a nickname"}
             components={{
               MultiValueContainer: (props) => (
                 <div className="flex justify-center my-1 mr-0.5">

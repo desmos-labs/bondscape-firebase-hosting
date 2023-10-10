@@ -36,7 +36,7 @@ const useHooks = (eventId?: string) => {
 
   const publishButtonText = useMemo(() => {
     if (eventId) return "Edit and Publish";
-    return "Publish";
+    return "Create Event";
   }, [eventId]);
 
   // Callbacks

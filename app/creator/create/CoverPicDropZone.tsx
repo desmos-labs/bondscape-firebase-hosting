@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { BondscapePreviewImage } from "@/types/image";
@@ -12,7 +12,7 @@ interface Props {
    * If the user is editing the event but not modifying the cover picture, this will be the url of the cover picture
    */
   coverPicUrl?: string;
-  setCoverPic: (coverPic: { preview: string }) => void;
+  setCoverPic: (coverPic: BondscapePreviewImage) => void;
 }
 
 const CoverPicDropZone = ({
@@ -39,15 +39,6 @@ const CoverPicDropZone = ({
     maxFiles: 1,
   });
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => {
-      if (fileToUpload && fileToUpload.preview) {
-        URL.revokeObjectURL(fileToUpload.preview);
-      }
-    };
-  }, [fileToUpload]);
-
   return (
     <div className="flex cursor-pointer">
       <div
@@ -61,11 +52,6 @@ const CoverPicDropZone = ({
             alt="Cover pic preview"
             fill
             className="object-cover rounded-[16px]"
-            onLoad={() => {
-              if (fileToUpload && fileToUpload.preview) {
-                URL.revokeObjectURL(fileToUpload.preview);
-              }
-            }}
           />
         ) : isDragActive ? (
           <div className="text-center text-white text-sm font-normal leading-tight">
