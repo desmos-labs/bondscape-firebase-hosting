@@ -306,6 +306,27 @@ export default function EventDetails({ params }: { params: any }) {
             </div>
           </div>
         </div>
+        <div className="flex flex-1 flex-col gap-[12px] bg-bondscape-surface p-[24px] rounded-[16px]">
+          <div className="text-2xl font-semibold text-bondscape-text_neutral_900">
+            Tickets
+          </div>
+          <div className="flex flex-row items-center justify-between gap-4">
+            <div className="flex bg-bondscape-text_neutral_100 p-6 basis-1/2 rounded-[16px]">
+              <div className="text-bondscape-text_neutral_900 text-lg font-semibold leading-relaxed">
+                Early Bird
+              </div>
+              <div></div>
+              <div></div>
+            </div>
+            <div className="flex bg-bondscape-text_neutral_100 p-6 basis-1/2 rounded-[16px]">
+              <div className="text-bondscape-text_neutral_900 text-lg font-semibold leading-relaxed">
+                General Admission
+              </div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
       </div>
       <Dialog
         className="flex w-[480px]"

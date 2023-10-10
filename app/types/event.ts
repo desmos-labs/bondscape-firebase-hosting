@@ -12,6 +12,25 @@ export interface Organizer {
   organizerAddress: string;
 }
 
+export interface EventTicketCategory {
+  /**
+   * Ticket id.
+   */
+  id: string;
+  /**
+   * Ticket name.
+   */
+  name: string;
+  startDate: string;
+  endDate: string;
+  ticketsCount: {
+    aggregate: {
+      count: number;
+    };
+  };
+  totalTicketsAvailable: number;
+}
+
 export interface Event {
   /**
    * Event id.
@@ -85,6 +104,10 @@ export interface Event {
    * Link to join this event.
    */
   joinLink: string;
+  /**
+   * Event tickets categories.
+   */
+  ticketsCategories: EventTicketCategory[];
 }
 
 export interface CreateEventValues {

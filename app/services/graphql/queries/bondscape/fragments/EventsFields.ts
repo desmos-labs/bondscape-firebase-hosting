@@ -32,6 +32,18 @@ const EventsFields = gql`
     joinLink: join_link
     website
     tags
+    ticketsCategories: tickets_categories {
+      id
+      name
+      startDate: start_date
+      endDate: end_date
+      ticketsCount: tickets_aggregate {
+        aggregate {
+          count
+        }
+      }
+      totalTicketsAvailable: total_tickets_available
+    }
   }
 `;
 
