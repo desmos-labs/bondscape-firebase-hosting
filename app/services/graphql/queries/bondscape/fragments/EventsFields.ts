@@ -29,7 +29,6 @@ const EventsFields = gql`
       }
     }
     detailsLink: details_link
-    joinLink: join_link
     website
     tags
     ticketsCategories: tickets_categories {

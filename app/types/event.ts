@@ -101,10 +101,6 @@ export interface Event {
    */
   detailsLink: string;
   /**
-   * Link to join this event.
-   */
-  joinLink: string;
-  /**
    * Event tickets categories.
    */
   ticketsCategories: EventTicketCategory[];
