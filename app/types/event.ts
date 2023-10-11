@@ -111,8 +111,8 @@ export interface TicketCategoryValues {
   coverPicUrl?: string;
   description: string;
   category: string;
-  maxQuantityPerPerson?: number;
-  maxQuantityPerCategory?: number;
+  maxQuantityPerPerson: number;
+  maxQuantityPerCategory: number;
   availableFrom?: string;
   availableTill?: string;
   controllers: Organizer[];
@@ -164,6 +164,10 @@ export interface CreateEventValues {
    * Event tags.
    */
   tags?: string[];
+  /**
+   * Event tickets categories.
+   */
+  ticketsCategories?: TicketCategoryValues[];
 }
 
 export interface GQLEventsResult {

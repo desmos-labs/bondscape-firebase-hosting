@@ -1,15 +1,15 @@
 "use client";
-import MainLayout from "../../../layouts/MainLayout";
-import React, { useEffect, useState } from "react";
-import bgOverlay from "../../../../public/eventsBgOverlay.png";
-import useBreakpoints from "@/hooks/layout/useBreakpoints";
-import { PuffLoader } from "react-spinners";
-import useHooks from "@/creator/create/[[...id]]/useHooks";
-import { AnimatePresence, motion } from "framer-motion";
 import MainSection from "@/creator/create/[[...id]]/MainSection";
 import TicketSection from "@/creator/create/[[...id]]/TicketSection";
-import { Formik } from "formik";
+import useHooks from "@/creator/create/[[...id]]/useHooks";
 import useCreateEvent from "@/hooks/events/useCreateEvent";
+import useBreakpoints from "@/hooks/layout/useBreakpoints";
+import { Formik } from "formik";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { PuffLoader } from "react-spinners";
+import bgOverlay from "../../../../public/eventsBgOverlay.png";
+import MainLayout from "../../../layouts/MainLayout";
 
 /**
  * Page for creating an event
@@ -106,12 +106,6 @@ export default function CreateEvent({ params }: PageProps) {
           onSubmit={(values) => uploadPictureAndCreateEvent(values, eventId)}
         >
           {(formikProps) => {
-            const { values } = formikProps;
-            const requiredDraftValuesSet =
-              values.eventName !== "" && values.eventDetails !== "";
-            const requiredSubmitValuesSet =
-              requiredDraftValuesSet && values.startDate && values.endDate;
-
             return (
               <AnimatePresence mode={"wait"}>
                 <motion.div
@@ -139,6 +133,7 @@ export default function CreateEvent({ params }: PageProps) {
                             formikProps={formikProps}
                             draftButtonText={draftButtonText}
                             publishButtonText={publishButtonText}
+                            initialValues={initialValues}
                           />
                         )}
                       </motion.div>

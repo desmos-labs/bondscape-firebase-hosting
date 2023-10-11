@@ -1,23 +1,23 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import useBreakpoints from "@/hooks/layout/useBreakpoints";
-import { useRouter } from "next/navigation";
-import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
-import useGetGooglePlace from "@/hooks/events/useGetGooglePlace";
-import { Event, GQLEventsResult } from "@/types/event";
-import MainLayout from "@/layouts/MainLayout";
 import BondscapeButton from "@/components/BondscapeButton";
+import useGetGooglePlace from "@/hooks/events/useGetGooglePlace";
+import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
+import useBreakpoints from "@/hooks/layout/useBreakpoints";
+import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
+import MainLayout from "@/layouts/MainLayout";
+import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
+import GetQrCode from "@/services/axios/requests/GetQrCode";
+import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
+import { Event, GQLEventsResult } from "@/types/event";
 import Image from "next/image";
 import Link from "next/link";
-import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
-import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
-import Skeleton from "react-loading-skeleton";
-import { Dialog } from "primereact/dialog";
+import { useRouter } from "next/navigation";
 import { Button } from "primereact/button";
-import GetQrCode from "@/services/axios/requests/GetQrCode";
+import { Dialog } from "primereact/dialog";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
 
 export default function EventDetails({ params }: { params: any }) {
   const [selectedEvent, setSelectedEvent] = useState<Event>();
@@ -334,6 +334,9 @@ export default function EventDetails({ params }: { params: any }) {
         </div>
       </div>
       <Dialog
+        draggable={false}
+        modal={true}
+        blockScroll={true}
         className="flex w-[480px]"
         visible={qrCodeVisible}
         onHide={() => setQrCodeVisible(false)}

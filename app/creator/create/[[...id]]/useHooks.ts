@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { FormikProps } from "formik";
-import { CreateEventValues, GQLEventsResult } from "@/types/event";
-import * as Yup from "yup";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
+import { CreateEventValues, GQLEventsResult } from "@/types/event";
+import { FormikProps } from "formik";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import * as Yup from "yup";
 
 const useHooks = (eventId?: string) => {
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
@@ -21,6 +21,7 @@ const useHooks = (eventId?: string) => {
     startDate: undefined,
     endDate: undefined,
     placeId: undefined,
+    ticketsCategories: [],
   });
 
   // Memoized values
