@@ -33,6 +33,7 @@ export default function CreateEvent({ params }: PageProps) {
     draftButtonText,
     publishButtonText,
     isLoading,
+    handleButtonClick,
   } = useHooks(eventId);
   const { uploadPictureAndCreateEvent } = useCreateEvent();
 
@@ -131,6 +132,7 @@ export default function CreateEvent({ params }: PageProps) {
                         ) : (
                           <TicketSection
                             formikProps={formikProps}
+                            handleButtonClick={handleButtonClick}
                             draftButtonText={draftButtonText}
                             publishButtonText={publishButtonText}
                             initialValues={initialValues}

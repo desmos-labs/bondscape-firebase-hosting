@@ -11,6 +11,9 @@ import React, { useState } from "react";
 
 interface TicketSectionProps {
   readonly formikProps: FormikProps<CreateEventValues>;
+  readonly handleButtonClick: (
+    formikProps: FormikProps<CreateEventValues>,
+  ) => void;
   readonly draftButtonText: string;
   readonly publishButtonText: any;
   readonly initialValues: CreateEventValues;
@@ -18,6 +21,7 @@ interface TicketSectionProps {
 
 const TicketSection = ({
   formikProps,
+  handleButtonClick,
   draftButtonText,
   publishButtonText,
   initialValues,
@@ -97,6 +101,11 @@ const TicketSection = ({
           className="w-[256px] h-[44px] rounded-[8px] px-[24px] py-[12px]"
           textClassName="text-base font-semibold"
           text={draftButtonText}
+          onClick={() => {
+            setFieldValue("status", "draft").then(() =>
+              handleButtonClick(formikProps),
+            );
+          }}
         />
         <BondscapeButton
           disabled={!requiredSubmitValuesSet || isSubmitting}
@@ -104,6 +113,11 @@ const TicketSection = ({
           className="w-[256px] h-[44px] rounded-[8px] px-[24px] py-[12px]"
           textClassName="text-base font-semibold"
           text={publishButtonText}
+          onClick={() => {
+            setFieldValue("status", "published").then(() =>
+              handleButtonClick(formikProps),
+            );
+          }}
         />
       </div>
       <Dialog

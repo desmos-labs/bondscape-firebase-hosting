@@ -101,7 +101,7 @@ const TicketCategory = ({
             </div>
           )}
 
-        {eventTicketCategory.controllers.length > 0 && (
+        {eventTicketCategory.validators.length > 0 && (
           <div className="flex flex-row gap-2 items-center">
             <Image
               alt={"Tickets icon"}
@@ -110,17 +110,17 @@ const TicketCategory = ({
               height={20}
             />
             <div className="flex flex-row gap-2">
-              {eventTicketCategory?.controllers.map((validator, index) => {
+              {eventTicketCategory?.validators.map((validator, index) => {
                 return (
                   <div
                     className="flex flex-row gap-1.5 items-center"
-                    key={validator.organizerAddress}
+                    key={validator.validatorAddress}
                   >
                     <div className={"relative w-[20px] h-[20px]"}>
                       <Image
                         alt={"Validator profile picture"}
                         src={
-                          validator.organizer?.profilePicture ||
+                          validator.validator?.profilePicture ||
                           "/defaultProfilePicture.png"
                         }
                         fill
@@ -129,9 +129,9 @@ const TicketCategory = ({
                     </div>
 
                     <div className="text-base font-normal text-bondscape-text_neutral_700">
-                      {validator.organizer?.nickname ||
-                        validator.organizer?.dTag ||
-                        validator.organizerAddress}
+                      {validator.validator?.nickname ||
+                        validator.validator?.dTag ||
+                        validator.validatorAddress}
                     </div>
                   </div>
                 );

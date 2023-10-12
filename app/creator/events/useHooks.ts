@@ -1,14 +1,14 @@
-import { GQLEventsResult } from "@/types/event";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useUser from "@/hooks/user/useUser";
-import GetMyPastEvents from "@/services/graphql/queries/bondscape/GetMyPastEvents";
-import GetMyDraftEvents from "@/services/graphql/queries/bondscape/GetMyDraftEvents";
-import GetMyUpcomingEvents from "@/services/graphql/queries/bondscape/GetMyUpcomingEvents";
-import { useInView } from "react-intersection-observer";
 import { useActiveTab } from "@/jotai/activeTab";
-import GetMyLiveEvents from "@/services/graphql/queries/bondscape/GetMyLiveEvents";
-import { useQuery } from "@apollo/client";
 import DeleteEvent from "@/services/axios/requests/DeleteEvent";
+import GetMyDraftEvents from "@/services/graphql/queries/bondscape/GetMyDraftEvents";
+import GetMyLiveEvents from "@/services/graphql/queries/bondscape/GetMyLiveEvents";
+import GetMyPastEvents from "@/services/graphql/queries/bondscape/GetMyPastEvents";
+import GetMyUpcomingEvents from "@/services/graphql/queries/bondscape/GetMyUpcomingEvents";
+import { GQLEventsResult } from "@/types/event";
+import { useQuery } from "@apollo/client";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { toast } from "react-toastify";
 
 const EVENTS_QUERY_LIMIT = 20;
@@ -49,6 +49,9 @@ export const useHooks = () => {
     useQuery<GQLEventsResult>(currentQuery, {
       variables: queryVariables,
       fetchPolicy: "cache-and-network",
+      onError: (error) => {
+        console.error(error);
+      },
     });
 
   useEffect(() => {

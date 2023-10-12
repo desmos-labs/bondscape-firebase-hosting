@@ -69,6 +69,18 @@ const useHooks = (eventId?: string) => {
         organizers: event.organizers,
         tags: event.tags,
         website: event.website,
+        ticketsCategories: event.ticketsCategories.map((ticketCategory) => {
+          return {
+            category: ticketCategory.name,
+            description: ticketCategory.description,
+            availableFrom: ticketCategory.startDate,
+            availableUntil: ticketCategory.endDate,
+            maxQuantityPerPerson: ticketCategory.ticketsPerUser,
+            maxQuantityPerCategory: ticketCategory.totalTicketsAvailable,
+            validators: ticketCategory.validators || [],
+            coverPicUrl: ticketCategory.coverPicUrl,
+          };
+        }),
       };
     });
   }, [eventId, getEventById]);

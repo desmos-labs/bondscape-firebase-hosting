@@ -1,14 +1,14 @@
 import BondscapeButton from "@/components/BondscapeButton";
 import BigTextInput from "@/creator/create/BigTextInput";
 import BondscapeDateTimePicker from "@/creator/create/BondscapeDateTimePicker/BondscapeDateTimePicker";
-import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
+import BondscapeSelectValidators from "@/creator/create/BondscapeSelectValidators";
 import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
 import SmallTextInput from "@/creator/create/SmallTextInput";
 import useUser from "@/hooks/user/useUser";
 import {
   CreateEventValues,
-  Organizer,
   TicketCategoryValues,
+  Validator,
 } from "@/types/event";
 import { ErrorMessage, Form, Formik, FormikProps } from "formik";
 import React, { useState } from "react";
@@ -33,7 +33,7 @@ const CreateTicketCategory = ({
     availableTill: undefined,
     coverPicUrl: "",
     coverPic: undefined,
-    controllers: [],
+    validators: [],
   });
 
   const { values: globalValues, setFieldValue: setGlobalFieldValue } =
@@ -137,7 +137,10 @@ const CreateTicketCategory = ({
                           placeholder={"Max quantity per person"}
                           required={true}
                           onChange={(text) =>
-                            setFieldValue("maxQuantityPerPerson", text)
+                            setFieldValue(
+                              "maxQuantityPerPerson",
+                              parseInt(text, 10),
+                            )
                           }
                           type={"number"}
                           min={1}
@@ -148,7 +151,10 @@ const CreateTicketCategory = ({
                           placeholder={"Max quantity per category"}
                           required={true}
                           onChange={(text) =>
-                            setFieldValue("maxQuantityPerCategory", text)
+                            setFieldValue(
+                              "maxQuantityPerCategory",
+                              parseInt(text, 10),
+                            )
                           }
                           type={"number"}
                           min={1}
@@ -168,19 +174,19 @@ const CreateTicketCategory = ({
                         }
                       />
                       <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
-                        <BondscapeSelectCoHosts
+                        <BondscapeSelectValidators
                           label={"Verifiers"}
                           placeholder={
                             "dTags or Nicknames of the users who can validate attendees tickets"
                           }
-                          initialCoHosts={values.controllers.filter(
-                            (controller: Organizer) =>
-                              controller.organizerAddress !==
+                          initialValidators={values.validators.filter(
+                            (validator: Validator) =>
+                              validator.validatorAddress !==
                               user?.profile?.address,
                           )}
                           required={false}
-                          onChange={(organizers) =>
-                            setFieldValue("controllers", organizers)
+                          onChange={(validators) =>
+                            setFieldValue("validators", validators)
                           }
                         />
                       </div>

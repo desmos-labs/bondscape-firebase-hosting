@@ -12,6 +12,17 @@ export interface Organizer {
   organizerAddress: string;
 }
 
+export interface Validator {
+  /**
+   * validator Desmos profile.
+   */
+  validator?: DesmosProfile;
+  /**
+   * validator address.
+   */
+  validatorAddress: string;
+}
+
 export interface EventTicketCategory {
   /**
    * Ticket id.
@@ -21,14 +32,13 @@ export interface EventTicketCategory {
    * Ticket name.
    */
   name: string;
-  startDate: string;
-  endDate: string;
-  ticketsCount: {
-    aggregate: {
-      count: number;
-    };
-  };
+  description?: string;
+  coverPicUrl?: string;
+  startDate?: string;
+  endDate?: string;
+  ticketsPerUser: number;
   totalTicketsAvailable: number;
+  validators?: Validator[];
 }
 
 export interface Event {
@@ -109,13 +119,13 @@ export interface Event {
 export interface TicketCategoryValues {
   coverPic?: BondscapePreviewImage;
   coverPicUrl?: string;
-  description: string;
+  description?: string;
   category: string;
   maxQuantityPerPerson: number;
   maxQuantityPerCategory: number;
   availableFrom?: string;
   availableTill?: string;
-  controllers: Organizer[];
+  validators: Validator[];
 }
 
 export interface CreateEventValues {
@@ -205,4 +215,19 @@ export interface EventRequestParams {
   placeId?: string;
   organizersAddresses: string[];
   tags?: string[];
+}
+
+export interface TicketCategoryRequestParams {
+  name: string;
+  description?: string;
+  start_date?: string;
+  end_date?: string;
+  total_tickets_available: number;
+  tickets_per_user: number;
+  tickets_image_url?: string;
+  validators_addresses: string[];
+}
+
+export interface GQLTicketCategoryValidatorsResult {
+  eventTicketCategoryValidators: Validator[];
 }

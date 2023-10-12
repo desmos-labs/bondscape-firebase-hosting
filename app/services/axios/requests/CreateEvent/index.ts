@@ -1,6 +1,6 @@
+import { EventRequestParams } from "@/types/event";
 import { ResultAsync } from "neverthrow";
 import axiosInstance from "../../index";
-import { EventRequestParams } from "@/types/event";
 
 const CreateEvent = ({
   status,
@@ -29,7 +29,7 @@ const CreateEvent = ({
       categories_ids: categoriesIds,
       tags: tags,
     }),
-    (e: any) => e ?? Error("Error saving the file"),
+    (e: any) => e ?? Error("Error creating event"),
   ).map((response) => {
     return {
       data: response.data,

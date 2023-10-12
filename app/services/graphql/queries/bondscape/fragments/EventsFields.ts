@@ -1,11 +1,13 @@
+import ValidatorFields from "@/services/graphql/queries/bondscape/fragments/ValidatorFields";
 import { gql } from "@apollo/client";
-import OrganizerFields from "./OrganizerFields";
 import ProfileFields from "../../desmos/fragments/ProfilesFields";
 import ImageHashFields from "./ImageHashFields";
+import OrganizerFields from "./OrganizerFields";
 
 const EventsFields = gql`
   ${OrganizerFields}
   ${ProfileFields}
+  ${ValidatorFields}
   ${ImageHashFields}
   fragment EventsFields on events {
     id
@@ -34,14 +36,15 @@ const EventsFields = gql`
     ticketsCategories: tickets_categories {
       id
       name
+      description
+      coverPicUrl: tickets_image_url
       startDate: start_date
       endDate: end_date
-      ticketsCount: tickets_aggregate {
-        aggregate {
-          count
-        }
-      }
+      ticketsPerUser: tickets_per_user
       totalTicketsAvailable: total_tickets_available
+      validators {
+        ...ValidatorFields
+      }
     }
   }
 `;
