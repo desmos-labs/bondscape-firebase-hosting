@@ -14,6 +14,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
+import { ProgressBar } from "primereact/progressbar";
+import { classNames } from "primereact/utils";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { PuffLoader } from "react-spinners";
@@ -315,21 +317,72 @@ export default function EventDetails({ params }: { params: any }) {
           <div className="text-2xl font-semibold text-bondscape-text_neutral_900">
             Tickets
           </div>
-          <div className="flex flex-row items-center justify-between gap-4">
-            <div className="flex bg-bondscape-text_neutral_100 p-6 basis-1/2 rounded-[16px]">
-              <div className="text-bondscape-text_neutral_900 text-lg font-semibold leading-relaxed">
-                Early Bird
-              </div>
-              <div></div>
-              <div></div>
-            </div>
-            <div className="flex bg-bondscape-text_neutral_100 p-6 basis-1/2 rounded-[16px]">
-              <div className="text-bondscape-text_neutral_900 text-lg font-semibold leading-relaxed">
-                General Admission
-              </div>
-              <div></div>
-              <div></div>
-            </div>
+          <div className="grid grid-cols-2 gap-4">
+            {selectedEvent?.ticketsCategories?.map((ticketCategory) => {
+              return (
+                <div
+                  key={ticketCategory.id}
+                  className="flex flex-col bg-bondscape-text_neutral_100 p-6 basis-1/2 rounded-[16px]"
+                >
+                  <div className="text-bondscape-text_neutral_900 text-lg font-semibold leading-relaxed mb-4">
+                    {ticketCategory.name}
+                  </div>
+                  <div className="flex flex-row gap-2 items-center mb-2">
+                    <Image
+                      alt={"Tickets icon"}
+                      src={"/eventDetailsTicketIcon.png"}
+                      width={20}
+                      height={20}
+                    />
+                    <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
+                      {ticketCategory.ticketsPerUser} /{" "}
+                      {ticketCategory.totalTicketsAvailable}
+                    </div>
+
+                    <ProgressBar
+                      value={
+                        (ticketCategory.totalTicketsAvailable *
+                          ticketCategory.ticketsPerUser) /
+                        100
+                      }
+                      showValue={false}
+                      pt={{
+                        root: {
+                          className: classNames(
+                            "w-[100px] h-[4px] bg-[#5B5379]",
+                          ),
+                        },
+                      }}
+                    />
+                  </div>
+                  {ticketCategory.startDate && ticketCategory.endDate && (
+                    <div className="flex flex-row gap-2 items-center">
+                      <Image
+                        alt={"Tickets icon"}
+                        src={"/eventDetailsCalendarIcon.png"}
+                        width={20}
+                        height={20}
+                      />
+                      <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
+                        {
+                          getEventPeriodExtended(
+                            ticketCategory?.startDate,
+                            ticketCategory?.endDate,
+                          ).date
+                        }
+                        <span className="mr-2" />
+                        {
+                          getEventPeriodExtended(
+                            ticketCategory?.startDate,
+                            ticketCategory?.endDate,
+                          ).time
+                        }
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

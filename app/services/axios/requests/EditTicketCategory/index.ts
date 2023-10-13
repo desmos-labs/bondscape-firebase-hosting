@@ -8,7 +8,7 @@ const EditTicketCategory = (
   ticketCategoryValues: TicketCategoryRequestParams,
 ): ResultAsync<any, Error> => {
   return ResultAsync.fromPromise(
-    axiosInstance.post(
+    axiosInstance.put(
       `/events/${eventId}/tickets/categories/${categoryId}`,
       ticketCategoryValues,
     ),

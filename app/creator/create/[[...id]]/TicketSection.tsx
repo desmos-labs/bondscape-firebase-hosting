@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 
 interface TicketSectionProps {
   readonly formikProps: FormikProps<CreateEventValues>;
@@ -17,6 +17,9 @@ interface TicketSectionProps {
   readonly draftButtonText: string;
   readonly publishButtonText: any;
   readonly initialValues: CreateEventValues;
+  readonly setTicketCategoriesToDelete: React.Dispatch<
+    SetStateAction<string[]>
+  >;
 }
 
 const TicketSection = ({
@@ -25,6 +28,7 @@ const TicketSection = ({
   draftButtonText,
   publishButtonText,
   initialValues,
+  setTicketCategoriesToDelete,
 }: TicketSectionProps) => {
   const [createTicketModalVisible, setCreateTicketModalVisible] =
     useState(false);
@@ -40,7 +44,6 @@ const TicketSection = ({
   });
 
   const { values, setFieldValue, isSubmitting } = formikProps;
-
   const requiredDraftValuesSet =
     values.eventName !== "" && values.eventDetails !== "";
   const requiredSubmitValuesSet =
@@ -84,7 +87,7 @@ const TicketSection = ({
           return (
             <TicketCategory
               eventTicketCategory={ticketCategory}
-              key={index}
+              key={ticketCategory.category + index}
               setDeleteTicketCategoryModalVisible={
                 setDeleteTicketCategoryModalVisible
               }
@@ -180,7 +183,15 @@ const TicketSection = ({
             label={"Yes, Delete"}
             className="h-11 w-52"
             onClick={async () => {
-              if (deleteTicketCategoryModalVisible.category) {
+              const category = deleteTicketCategoryModalVisible.category;
+              if (category) {
+                if (category.id) {
+                  const idToDelete = category.id;
+                  setTicketCategoriesToDelete((prevState) => [
+                    ...prevState,
+                    idToDelete,
+                  ]);
+                }
                 await setFieldValue(
                   "ticketsCategories",
                   values.ticketsCategories?.filter(

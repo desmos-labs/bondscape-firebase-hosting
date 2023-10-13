@@ -1,23 +1,33 @@
 import useUser from "@/hooks/user/useUser";
 import CreateTicketCategory from "@/services/axios/requests/CreateTicketCategory";
+import DeleteTicketCategory from "@/services/axios/requests/DeleteTicketCategory";
 import EditEvent from "@/services/axios/requests/EditEvent";
+import EditTicketCategory from "@/services/axios/requests/EditTicketCategory";
 import PostImage from "@/services/axios/requests/PostImage";
 import {
   CreateEventValues,
   TicketCategoryRequestParams,
   TicketCategoryValues,
 } from "@/types/event";
+import { err } from "neverthrow";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import CreateEvent from "../../services/axios/requests/CreateEvent";
 
 export const useCreateEvent = () => {
+  const [ticketCategoriesToDelete, setTicketCategoriesToDelete] = useState<
+    string[]
+  >([]);
   const { user } = useUser();
   const router = useRouter();
 
   const createTicketCategory = useCallback(
-    async (eventId: string, values: TicketCategoryValues) => {
+    async (
+      eventId: string,
+      values: TicketCategoryValues,
+      categoryId?: string,
+    ) => {
       // If the user is not logged in, we can't create an event
       if (!user || !user.profile) return;
       // Get the addresses of the organizers
@@ -25,7 +35,13 @@ export const useCreateEvent = () => {
         (validator) => validator.validatorAddress,
       );
       // Add the user's address to the list of organizers
-      validatorsAddresses.unshift(user.profile.address);
+      if (
+        validatorsAddresses.find(
+          (address) => address === user.profile?.address,
+        ) === undefined
+      ) {
+        validatorsAddresses.unshift(user.profile.address);
+      }
       // Load the cover picture if it exists
       let ticketCoverPicUrl = values.coverPicUrl;
       if (values.coverPic) {
@@ -39,7 +55,6 @@ export const useCreateEvent = () => {
           return;
         }
       }
-      let eventCreationResult;
 
       const ticketCreationParams: TicketCategoryRequestParams = {
         name: values.category,
@@ -51,10 +66,27 @@ export const useCreateEvent = () => {
         total_tickets_available: values.maxQuantityPerCategory,
         validators_addresses: validatorsAddresses,
       };
-
-      const result = await CreateTicketCategory(eventId, ticketCreationParams);
-      if (result.isOk()) {
-        console.log("Ticket category created successfully", result.value);
+      if (categoryId) {
+        const result = await EditTicketCategory(
+          eventId,
+          categoryId,
+          ticketCreationParams,
+        );
+        if (result.isOk()) {
+          console.log("Ticket category edited successfully", result.value);
+        } else {
+          return err(result.error);
+        }
+      } else {
+        const result = await CreateTicketCategory(
+          eventId,
+          ticketCreationParams,
+        );
+        if (result.isOk()) {
+          console.log("Ticket category created successfully", result.value);
+        } else {
+          return err(result.error);
+        }
       }
     },
     [user],
@@ -74,7 +106,13 @@ export const useCreateEvent = () => {
         (organizer) => organizer.organizerAddress,
       );
       // Add the user's address to the list of organizers
-      organizersAddresses.unshift(user.profile.address);
+      if (
+        organizersAddresses.find(
+          (address) => address === user.profile?.address,
+        ) === undefined
+      ) {
+        organizersAddresses.unshift(user.profile.address);
+      }
       // Load the cover picture if it exists
       let coverPicUrl = values.coverPicUrl;
       if (values.coverPic) {
@@ -118,6 +156,27 @@ export const useCreateEvent = () => {
 
       // Check the result: if it's ok, create ticket categories and then redirect to the events page and show a success toast, otherwise show an error toast
       if (eventCreationResult.isOk() || eventId) {
+        console.log(ticketCategoriesToDelete.length);
+        if (ticketCategoriesToDelete.length > 0) {
+          console.log(ticketCategoriesToDelete.length);
+          await Promise.all(
+            ticketCategoriesToDelete.map(async (ticketCategoryId) => {
+              console.log(ticketCategoryId);
+              const result = await DeleteTicketCategory({
+                eventId: eventCreationResult.value.data.event_id ?? eventId,
+                categoryId: ticketCategoryId,
+              });
+              if (result.isOk()) {
+                console.log(
+                  "Ticket category deleted successfully",
+                  result.value,
+                );
+              } else {
+                return err(result.error);
+              }
+            }),
+          );
+        }
         if (values.ticketsCategories) {
           try {
             await Promise.all(
@@ -125,6 +184,7 @@ export const useCreateEvent = () => {
                 return createTicketCategory(
                   eventCreationResult.value.data.event_id ?? eventId,
                   ticketCategory,
+                  ticketCategory.id,
                 );
               }),
             );
@@ -144,11 +204,12 @@ export const useCreateEvent = () => {
         toast.error(eventCreationResult.error.message);
       }
     },
-    [createTicketCategory, router, user],
+    [createTicketCategory, router, ticketCategoriesToDelete, user],
   );
 
   return {
     uploadPictureAndCreateEvent,
+    setTicketCategoriesToDelete,
   };
 };
 

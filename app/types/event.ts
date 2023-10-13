@@ -117,6 +117,7 @@ export interface Event {
 }
 
 export interface TicketCategoryValues {
+  id?: string;
   coverPic?: BondscapePreviewImage;
   coverPicUrl?: string;
   description?: string;

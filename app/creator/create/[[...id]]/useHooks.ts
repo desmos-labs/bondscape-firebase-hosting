@@ -55,7 +55,6 @@ const useHooks = (eventId?: string) => {
     setIsLoading(false);
     if (!result) return;
     const event = result.events[0];
-
     setInitialValues((prev) => {
       return {
         ...prev,
@@ -71,6 +70,7 @@ const useHooks = (eventId?: string) => {
         website: event.website,
         ticketsCategories: event.ticketsCategories.map((ticketCategory) => {
           return {
+            id: ticketCategory.id,
             category: ticketCategory.name,
             description: ticketCategory.description,
             availableFrom: ticketCategory.startDate,

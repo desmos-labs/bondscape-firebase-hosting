@@ -32,7 +32,9 @@ const CreateEvent = ({
     (e: any) => e ?? Error("Error creating event"),
   ).map((response) => {
     return {
-      data: response.data,
+      data: {
+        event_id: response.data.event_id,
+      },
       type: "create",
     };
   });

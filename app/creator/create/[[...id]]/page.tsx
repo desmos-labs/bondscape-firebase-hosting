@@ -35,7 +35,8 @@ export default function CreateEvent({ params }: PageProps) {
     isLoading,
     handleButtonClick,
   } = useHooks(eventId);
-  const { uploadPictureAndCreateEvent } = useCreateEvent();
+  const { uploadPictureAndCreateEvent, setTicketCategoriesToDelete } =
+    useCreateEvent();
 
   const [scrollPosition, setPosition] = useState({ scrollX: 0, scrollY: 0 });
 
@@ -136,6 +137,9 @@ export default function CreateEvent({ params }: PageProps) {
                             draftButtonText={draftButtonText}
                             publishButtonText={publishButtonText}
                             initialValues={initialValues}
+                            setTicketCategoriesToDelete={
+                              setTicketCategoriesToDelete
+                            }
                           />
                         )}
                       </motion.div>
