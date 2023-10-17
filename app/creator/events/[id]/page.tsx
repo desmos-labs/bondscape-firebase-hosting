@@ -211,7 +211,7 @@ export default function EventDetails({ params }: { params: any }) {
                     width={40}
                     height={40}
                     alt={"calendar icon"}
-                    src={"/eventDetailsCalendarIcon.png"}
+                    src={"/eventDetailsCalendarBigIcon.png"}
                   />
                 </div>
                 <div>
@@ -335,13 +335,15 @@ export default function EventDetails({ params }: { params: any }) {
                     {ticketCategory.name}
                   </div>
                   <div className="flex flex-row gap-2 items-center mb-2">
-                    <Image
-                      alt={"Tickets icon"}
-                      src={"/eventDetailsTicketIcon.png"}
-                      width={20}
-                      height={20}
-                    />
-                    <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
+                    <div className="relative">
+                      <Image
+                        alt={"Tickets icon"}
+                        src={"/eventDetailsTicketIcon.png"}
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                    <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
                       {ticketCategory?.ticketsSold?.aggregate.count ?? 0} /{" "}
                       {ticketCategory.totalTicketsAvailable}
                     </div>
@@ -370,7 +372,7 @@ export default function EventDetails({ params }: { params: any }) {
                         width={20}
                         height={20}
                       />
-                      <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
+                      <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
                         {
                           getEventPeriodExtended(
                             ticketCategory?.startDate,
