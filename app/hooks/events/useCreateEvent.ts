@@ -65,7 +65,7 @@ export const useCreateEvent = () => {
         description: values.description,
         tickets_image_url: ticketCoverPicUrl,
         start_date: values.availableFrom,
-        end_date: values.availableTill,
+        end_date: values.availableUntil,
         tickets_per_user: values.maxQuantityPerPerson,
         total_tickets_available: values.maxQuantityPerCategory,
         validators_addresses: validatorsAddresses,

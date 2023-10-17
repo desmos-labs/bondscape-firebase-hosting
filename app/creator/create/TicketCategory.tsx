@@ -132,7 +132,7 @@ const TicketCategory = ({
               style={{ width: "auto" }}
             />
             <div className="flex flex-row gap-2">
-              {eventTicketCategory?.validators.map((validator, index) => {
+              {eventTicketCategory?.validators.map((validator) => {
                 return (
                   <div
                     className="flex flex-row gap-1.5 items-center"
