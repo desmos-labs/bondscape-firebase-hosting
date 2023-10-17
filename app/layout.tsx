@@ -1,13 +1,12 @@
+import ToastWrapper from "@/components/ToastWrapper";
 import React from "react";
+import "react-loading-skeleton/dist/skeleton.css";
+import { ApolloWrapper } from "./components/ApolloWrapper";
+import BondscapeWrapper from "./components/BondscapeWrapper";
 import Footer from "./components/Footer";
-import Head from "next/head";
+import JotaiProvider from "./components/JotaiProvider";
 import "./globals.css";
 import "./theme.css";
-import "react-loading-skeleton/dist/skeleton.css";
-import BondscapeWrapper from "./components/BondscapeWrapper";
-import JotaiProvider from "./components/JotaiProvider";
-import { ApolloWrapper } from "./components/ApolloWrapper";
-import ToastWrapper from "@/components/ToastWrapper";
 
 export default function RootLayout({
   children,
@@ -16,13 +15,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-        />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-      </Head>
       {/* Main content */}
       <body
         className="bg-bondscape-background-primary"

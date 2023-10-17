@@ -9,6 +9,7 @@ interface Props {
   readonly inputClassName?: string;
   readonly maxLength?: number;
   readonly rows?: number;
+  readonly onChange?: (text: string) => void;
 }
 
 const BigTextInput = ({
@@ -19,6 +20,7 @@ const BigTextInput = ({
   inputClassName,
   maxLength,
   rows,
+  onChange,
 }: Props) => {
   return (
     <div className="flex flex-1 flex-col bg-bondscape-text_neutral_100 gap-[0.75rem] p-[1rem] rounded-[16px]">
@@ -36,6 +38,7 @@ const BigTextInput = ({
         rows={rows}
         maxLength={maxLength}
         placeholder={placeholder}
+        onChange={(e: any) => onChange && onChange(e.target.value)}
       />
     </div>
   );

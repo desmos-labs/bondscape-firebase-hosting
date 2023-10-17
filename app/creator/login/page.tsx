@@ -1,15 +1,15 @@
 "use client";
-import React, { useCallback, useState } from "react";
-import MainLayout from "../../layouts/MainLayout";
+import { DesmosChain } from "@/lib/WalletUtils/LinkableChains";
+import { Web3AuthLoginProvider } from "@/types/web3auth";
 import Image from "next/image";
+import { Dialog } from "primereact/dialog";
+import { classNames } from "primereact/utils";
+import React, { useCallback, useState } from "react";
 import heroImage from "../../../public/bondscape-home-bg.png";
 import overlay from "../../../public/login-overlay-bg.png";
 import useBreakpoints from "../../hooks/layout/useBreakpoints";
 import useLoginWithWeb3Auth from "../../hooks/web3Auth/useLoginWithWeb3Auth";
-import { DesmosChain } from "@/lib/WalletUtils/LinkableChains";
-import { Web3AuthLoginProvider } from "@/types/web3auth";
-import { Dialog } from "primereact/dialog";
-import { classNames } from "primereact/utils";
+import MainLayout from "../../layouts/MainLayout";
 
 export default function Login() {
   const { login, loginLoading } = useLoginWithWeb3Auth(DesmosChain);
@@ -101,6 +101,9 @@ export default function Login() {
       </div>
 
       <Dialog
+        draggable={false}
+        modal={true}
+        blockScroll={true}
         visible={modalIsOpen}
         onHide={closeModal}
         header="We can't find your Desmos Profile"

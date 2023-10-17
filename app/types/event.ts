@@ -12,6 +12,40 @@ export interface Organizer {
   organizerAddress: string;
 }
 
+export interface Validator {
+  /**
+   * validator Desmos profile.
+   */
+  validator?: DesmosProfile;
+  /**
+   * validator address.
+   */
+  validatorAddress: string;
+}
+
+export interface EventTicketCategory {
+  /**
+   * Ticket id.
+   */
+  id: string;
+  /**
+   * Ticket name.
+   */
+  name: string;
+  description?: string;
+  coverPicUrl?: string;
+  startDate?: string;
+  endDate?: string;
+  ticketsSold?: {
+    aggregate: {
+      count: number;
+    };
+  };
+  ticketsPerUser: number;
+  totalTicketsAvailable: number;
+  validators?: Validator[];
+}
+
 export interface Event {
   /**
    * Event id.
@@ -81,6 +115,24 @@ export interface Event {
    * Link to share this event.
    */
   detailsLink: string;
+  /**
+   * Event tickets categories.
+   */
+  ticketsCategories: EventTicketCategory[];
+}
+
+export interface TicketCategoryValues {
+  id?: string;
+  coverPic?: BondscapePreviewImage;
+  coverPicUrl?: string;
+  description?: string;
+  category: string;
+  maxQuantityPerPerson: number;
+  ticketsSold?: number;
+  maxQuantityPerCategory: number;
+  availableFrom?: string;
+  availableUntil?: string;
+  validators: Validator[];
 }
 
 export interface CreateEventValues {
@@ -129,6 +181,10 @@ export interface CreateEventValues {
    * Event tags.
    */
   tags?: string[];
+  /**
+   * Event tickets categories.
+   */
+  ticketsCategories?: TicketCategoryValues[];
 }
 
 export interface GQLEventsResult {
@@ -166,4 +222,19 @@ export interface EventRequestParams {
   placeId?: string;
   organizersAddresses: string[];
   tags?: string[];
+}
+
+export interface TicketCategoryRequestParams {
+  name: string;
+  description?: string;
+  start_date?: string;
+  end_date?: string;
+  total_tickets_available: number;
+  tickets_per_user: number;
+  tickets_image_url?: string;
+  validators_addresses: string[];
+}
+
+export interface GQLTicketCategoryValidatorsResult {
+  eventTicketCategoryValidators: Validator[];
 }

@@ -75,7 +75,7 @@ const LocationInput = ({ defaultValue, title, required, onChange }: Props) => {
       ref={ref}
     >
       <div className="flex flex-1 flex-row items-center gap-2">
-        <div className="flex w-[110px]">
+        <div className="flex w-[130px]">
           <label className="text-[16px] text-bondscape-text_neutral_900">
             {title}
           </label>

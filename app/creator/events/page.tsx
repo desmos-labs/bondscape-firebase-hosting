@@ -1,19 +1,19 @@
 "use client";
-import MainLayout from "../../layouts/MainLayout";
-import React from "react";
-import bgOverlay from "../../../public/eventsBgOverlay.png";
-import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import EventsTabs from "@/creator/events/EventsTabs";
-import { PuffLoader } from "react-spinners";
 import useHooks from "@/creator/events/useHooks";
+import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import { useActiveTab } from "@/jotai/activeTab";
-import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";
 import {
   useDeleteEventModal,
   useSetDeleteEventModal,
 } from "@/jotai/deleteEventModal";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
+import React from "react";
+import { PuffLoader } from "react-spinners";
+import bgOverlay from "../../../public/eventsBgOverlay.png";
+import MainLayout from "../../layouts/MainLayout";
 
 export default function Events() {
   const activeTab = useActiveTab();
@@ -61,6 +61,9 @@ export default function Events() {
         </div>
       </div>
       <Dialog
+        draggable={false}
+        modal={true}
+        blockScroll={true}
         closable={false}
         header={"Delete Event"}
         visible={deleteEventModal.visible}

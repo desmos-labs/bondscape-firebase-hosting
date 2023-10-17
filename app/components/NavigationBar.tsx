@@ -19,6 +19,7 @@ interface Props {
   readonly forceNavbarBgVisible?: boolean;
   readonly goBackStatusBar?: boolean;
   readonly detailsStatusBar?: boolean;
+  readonly statusBarBackOverride?: () => void;
   readonly editButtonHref?: string;
 }
 
@@ -27,6 +28,7 @@ const NavigationBar = ({
   forceNavbarBgVisible,
   goBackStatusBar,
   detailsStatusBar,
+  statusBarBackOverride,
   editButtonHref,
 }: Props) => {
   const activeTab = useActiveTab();
@@ -111,7 +113,11 @@ const NavigationBar = ({
         )}
         {goBackStatusBar && (
           <div className="flex flex-1 flex-col w-[70rem] xl:w-[90rem] self-center">
-            <CreateEventHeader />
+            <CreateEventHeader
+              editMode={false}
+              editButtonHref={undefined}
+              statusBarBackOverride={statusBarBackOverride}
+            />
           </div>
         )}
         {detailsStatusBar && (
@@ -119,6 +125,7 @@ const NavigationBar = ({
             <CreateEventHeader
               editMode={true}
               editButtonHref={editButtonHref}
+              statusBarBackOverride={statusBarBackOverride}
             />
           </div>
         )}

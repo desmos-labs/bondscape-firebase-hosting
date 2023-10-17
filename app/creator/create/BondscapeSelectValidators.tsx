@@ -2,22 +2,22 @@
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import GetProfile from "@/services/graphql/queries/desmos/GetProfile";
 import { GQLProfileResult } from "@/types/desmos";
-import { Organizer } from "@/types/event";
+import { Validator } from "@/types/event";
 import Image from "next/image";
 import React, { useCallback, useId, useState } from "react";
 import { components } from "react-select";
 import AsyncSelect from "react-select/async";
 
 interface Props {
-  readonly initialCoHosts?: Organizer[];
+  readonly initialValidators?: Validator[];
   readonly required: boolean;
-  readonly onChange: (coHosts: Organizer[]) => void;
+  readonly onChange: (validators: Validator[]) => void;
   readonly label?: string;
   readonly placeholder?: string;
 }
 
-const BondscapeSelectCoHosts = ({
-  initialCoHosts,
+const BondscapeSelectValidators = ({
+  initialValidators,
   required,
   onChange,
   label,
@@ -41,8 +41,8 @@ const BondscapeSelectCoHosts = ({
       if (!data) return [];
       return data.profiles.map((profile) => {
         return {
-          organizer: profile,
-          organizerAddress: profile.address,
+          validator: profile,
+          validatorAddress: profile.address,
           label: profile.address,
           value: profile.address,
         };
@@ -62,12 +62,12 @@ const BondscapeSelectCoHosts = ({
         </div>
         <div className="flex flex-1">
           <AsyncSelect
-            value={initialCoHosts?.map((coHost) => {
+            value={initialValidators?.map((validator) => {
               return {
-                organizer: coHost.organizer,
-                organizerAddress: coHost.organizerAddress,
-                label: coHost.organizerAddress,
-                value: coHost.organizerAddress,
+                validator: validator.validator,
+                validatorAddress: validator.validatorAddress,
+                label: validator.validatorAddress,
+                value: validator.validatorAddress,
               };
             })}
             instanceId={useId()}
@@ -79,9 +79,9 @@ const BondscapeSelectCoHosts = ({
             defaultOptions={true}
             backspaceRemovesValue={true}
             noOptionsMessage={() => "No profiles found"}
-            onChange={(organizers) => {
-              if (organizers) {
-                onChange(organizers.map((organizer) => organizer));
+            onChange={(validators) => {
+              if (validators) {
+                onChange(validators.map((validator) => validator));
               } else {
                 onChange([]);
               }
@@ -102,7 +102,7 @@ const BondscapeSelectCoHosts = ({
                       <div className="relative w-[20px] h-[20px]">
                         <Image
                           src={
-                            props.data.organizer?.profilePicture ||
+                            props.data.validator?.profilePicture ||
                             "/defaultProfilePicture.png"
                           }
                           alt={"Profile pic"}
@@ -111,7 +111,7 @@ const BondscapeSelectCoHosts = ({
                           sizes={"20px"}
                         />
                       </div>
-                      @{props.data.organizer?.dTag}
+                      @{props.data.validator?.dTag}
                     </div>
                   </components.MultiValueLabel>
                 );
@@ -147,7 +147,7 @@ const BondscapeSelectCoHosts = ({
                     <div className="relative w-[40px] h-[40px]">
                       <Image
                         src={
-                          props.data.organizer?.profilePicture ||
+                          props.data.validator?.profilePicture ||
                           "/defaultProfilePicture.png"
                         }
                         alt={"Profile pic"}
@@ -157,10 +157,10 @@ const BondscapeSelectCoHosts = ({
                     </div>
                     <div className="flex flex-col justify-center">
                       <div className="text-[16px] font-semibold text-bondscape-text_neutral_900">
-                        {props.data.organizer?.nickname || ""}
+                        {props.data.validator?.nickname || ""}
                       </div>
                       <div className="text-[14px] text-bondscape-text_neutral_800">
-                        @{props.data.organizer?.dTag}
+                        @{props.data.validator?.dTag}
                       </div>
                     </div>
                   </div>
@@ -206,4 +206,4 @@ const BondscapeSelectCoHosts = ({
   );
 };
 
-export default BondscapeSelectCoHosts;
+export default BondscapeSelectValidators;

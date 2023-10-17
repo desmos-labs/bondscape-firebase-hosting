@@ -5,16 +5,23 @@ import { useRouter } from "next/navigation";
 interface Props {
   readonly editMode?: boolean;
   readonly editButtonHref?: string;
+  readonly statusBarBackOverride?: () => void;
 }
 
-const CreateEventHeader = ({ editMode, editButtonHref }: Props) => {
+const CreateEventHeader = ({
+  editMode,
+  editButtonHref,
+  statusBarBackOverride,
+}: Props) => {
   const router = useRouter();
   return (
     <div className="inline-flex items-center mb-[40px]">
       <div className="flex flex-1 flex-row justify-between">
         <button
           className="self-start py-1 justify-center items-center gap-2 flex text-bondscape-primary fill-bondscape-primary hover:text-[#654A9C] hover:fill-[#654A9C] transition ease-in-out"
-          onClick={() => router.back()}
+          onClick={
+            statusBarBackOverride ? statusBarBackOverride : () => router.back()
+          }
         >
           <div className="w-4 h-4 p-0.5 justify-center items-center flex">
             <div className="w-3 h-3 relative">

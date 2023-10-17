@@ -1,34 +1,41 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import useBreakpoints from "@/hooks/layout/useBreakpoints";
-import { useRouter } from "next/navigation";
-import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
-import useGetGooglePlace from "@/hooks/events/useGetGooglePlace";
-import { Event, GQLEventsResult } from "@/types/event";
-import MainLayout from "@/layouts/MainLayout";
 import BondscapeButton from "@/components/BondscapeButton";
+import useGetGooglePlace from "@/hooks/events/useGetGooglePlace";
+import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
+import useBreakpoints from "@/hooks/layout/useBreakpoints";
+import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
+import MainLayout from "@/layouts/MainLayout";
+import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
+import GetQrCode from "@/services/axios/requests/GetQrCode";
+import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
+import { Event, GQLEventsResult } from "@/types/event";
 import Image from "next/image";
 import Link from "next/link";
-import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
-import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
-import Skeleton from "react-loading-skeleton";
-import { Dialog } from "primereact/dialog";
+import { useRouter } from "next/navigation";
 import { Button } from "primereact/button";
-import GetQrCode from "@/services/axios/requests/GetQrCode";
+import { Dialog } from "primereact/dialog";
+import { ProgressBar } from "primereact/progressbar";
+import { classNames } from "primereact/utils";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
 
 export default function EventDetails({ params }: { params: any }) {
+  // States
   const [selectedEvent, setSelectedEvent] = useState<Event>();
   const [eventQrCode, setEventQrCode] = useState("");
   const [generatingQr, setGeneratingQr] = useState(false);
   const [qrCodeVisible, setQrCodeVisible] = useState(false);
+
+  // Hooks
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
   const { getEventPeriodExtended } = useFormatDateToTZ();
   const { googlePlace } = useGetGooglePlace(selectedEvent?.googlePlaceId);
+
+  // Callbacks
 
   const generateQrCode = useCallback(async (url: string) => {
     const result = await GetQrCode(url, "url");
@@ -57,16 +64,6 @@ export default function EventDetails({ params }: { params: any }) {
     document.body.removeChild(a);
   }, [selectedEvent?.name, toDataURL]);
 
-  useEffect(() => {
-    if (selectedEvent) {
-      GetEventJoinLink(selectedEvent.id).then((result) => {
-        if (result.isOk()) {
-          generateQrCode(result.value);
-        }
-      });
-    }
-  }, [generateQrCode, selectedEvent]);
-
   const loadEvent = useCallback(
     async (eventId: string) => {
       const result = await getEventById({
@@ -80,6 +77,18 @@ export default function EventDetails({ params }: { params: any }) {
     },
     [getEventById],
   );
+
+  // Effects
+
+  useEffect(() => {
+    if (selectedEvent) {
+      GetEventJoinLink(selectedEvent.id).then((result) => {
+        if (result.isOk()) {
+          generateQrCode(result.value);
+        }
+      });
+    }
+  }, [generateQrCode, selectedEvent]);
 
   useEffect(() => {
     const eventId = params.id as string;
@@ -202,7 +211,7 @@ export default function EventDetails({ params }: { params: any }) {
                     width={40}
                     height={40}
                     alt={"calendar icon"}
-                    src={"/eventDetailsCalendarIcon.png"}
+                    src={"/eventDetailsCalendarBigIcon.png"}
                   />
                 </div>
                 <div>
@@ -311,8 +320,85 @@ export default function EventDetails({ params }: { params: any }) {
             </div>
           </div>
         </div>
+        <div className="flex flex-1 flex-col gap-[12px] bg-bondscape-surface p-[24px] rounded-[16px]">
+          <div className="text-2xl font-semibold text-bondscape-text_neutral_900">
+            Tickets
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {selectedEvent?.ticketsCategories?.map((ticketCategory) => {
+              return (
+                <div
+                  key={ticketCategory.id}
+                  className="flex flex-col bg-bondscape-text_neutral_100 p-6 basis-1/2 rounded-[16px]"
+                >
+                  <div className="text-bondscape-text_neutral_900 text-lg font-semibold leading-relaxed mb-4">
+                    {ticketCategory.name}
+                  </div>
+                  <div className="flex flex-row gap-2 items-center mb-2">
+                    <div className="relative">
+                      <Image
+                        alt={"Tickets icon"}
+                        src={"/eventDetailsTicketIcon.png"}
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                    <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
+                      {ticketCategory?.ticketsSold?.aggregate.count ?? 0} /{" "}
+                      {ticketCategory.totalTicketsAvailable}
+                    </div>
+
+                    <ProgressBar
+                      value={
+                        ((ticketCategory?.ticketsSold?.aggregate?.count ?? 0) /
+                          ticketCategory.totalTicketsAvailable) *
+                        100
+                      }
+                      showValue={false}
+                      pt={{
+                        root: {
+                          className: classNames(
+                            "w-[100px] h-[4px] bg-[#5B5379]",
+                          ),
+                        },
+                      }}
+                    />
+                  </div>
+                  {ticketCategory.startDate && ticketCategory.endDate && (
+                    <div className="flex flex-row gap-2 items-center">
+                      <Image
+                        alt={"Tickets icon"}
+                        src={"/eventDetailsCalendarIcon.png"}
+                        width={20}
+                        height={20}
+                      />
+                      <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
+                        {
+                          getEventPeriodExtended(
+                            ticketCategory?.startDate,
+                            ticketCategory?.endDate,
+                          ).date
+                        }
+                        <span className="mr-2" />
+                        {
+                          getEventPeriodExtended(
+                            ticketCategory?.startDate,
+                            ticketCategory?.endDate,
+                          ).time
+                        }
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
       <Dialog
+        draggable={false}
+        modal={true}
+        blockScroll={true}
         className="flex w-[480px]"
         visible={qrCodeVisible}
         onHide={() => setQrCodeVisible(false)}

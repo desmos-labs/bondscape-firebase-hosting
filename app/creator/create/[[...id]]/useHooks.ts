@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { FormikProps } from "formik";
-import { CreateEventValues, GQLEventsResult } from "@/types/event";
-import * as Yup from "yup";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
+import { CreateEventValues, GQLEventsResult } from "@/types/event";
+import { FormikProps } from "formik";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import * as Yup from "yup";
 
 const useHooks = (eventId?: string) => {
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
@@ -21,6 +21,7 @@ const useHooks = (eventId?: string) => {
     startDate: undefined,
     endDate: undefined,
     placeId: undefined,
+    ticketsCategories: [],
   });
 
   // Memoized values
@@ -36,7 +37,7 @@ const useHooks = (eventId?: string) => {
 
   const publishButtonText = useMemo(() => {
     if (eventId) return "Edit and Publish";
-    return "Publish";
+    return "Create Event";
   }, [eventId]);
 
   // Callbacks
@@ -54,7 +55,6 @@ const useHooks = (eventId?: string) => {
     setIsLoading(false);
     if (!result) return;
     const event = result.events[0];
-
     setInitialValues((prev) => {
       return {
         ...prev,
@@ -68,6 +68,20 @@ const useHooks = (eventId?: string) => {
         organizers: event.organizers,
         tags: event.tags,
         website: event.website,
+        ticketsCategories: event.ticketsCategories.map((ticketCategory) => {
+          return {
+            id: ticketCategory.id,
+            category: ticketCategory.name,
+            description: ticketCategory.description,
+            availableFrom: ticketCategory.startDate,
+            availableUntil: ticketCategory.endDate,
+            ticketsSold: ticketCategory.ticketsSold?.aggregate.count || 0,
+            maxQuantityPerPerson: ticketCategory.ticketsPerUser,
+            maxQuantityPerCategory: ticketCategory.totalTicketsAvailable,
+            validators: ticketCategory.validators || [],
+            coverPicUrl: ticketCategory.coverPicUrl,
+          };
+        }),
       };
     });
   }, [eventId, getEventById]);

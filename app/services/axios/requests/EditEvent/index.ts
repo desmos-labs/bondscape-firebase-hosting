@@ -1,6 +1,6 @@
+import { EventRequestParams } from "@/types/event";
 import { ResultAsync } from "neverthrow";
 import axiosInstance from "../../index";
-import { EventRequestParams } from "@/types/event";
 
 const EditEvent = ({
   eventId,
@@ -32,10 +32,12 @@ const EditEvent = ({
       categories_ids: categoriesIds,
       tags: tags,
     }),
-    (e: any) => e ?? Error("Error saving the file"),
+    (e: any) => e ?? Error("Error editing event"),
   ).map((response) => {
     return {
-      data: response.data,
+      data: {
+        event_id: response.data.event_id,
+      },
       type: "edit",
     };
   });
