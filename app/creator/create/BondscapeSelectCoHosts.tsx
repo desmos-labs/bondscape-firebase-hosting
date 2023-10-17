@@ -1,12 +1,12 @@
 "use client";
-import React, { useCallback, useId, useState } from "react";
-import AsyncSelect from "react-select/async";
-import { components } from "react-select";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
-import { GQLProfileResult } from "@/types/desmos";
-import Image from "next/image";
-import { Organizer } from "@/types/event";
 import GetProfile from "@/services/graphql/queries/desmos/GetProfile";
+import { GQLProfileResult } from "@/types/desmos";
+import { Organizer } from "@/types/event";
+import Image from "next/image";
+import React, { useCallback, useId, useState } from "react";
+import { components } from "react-select";
+import AsyncSelect from "react-select/async";
 
 interface Props {
   readonly initialCoHosts?: Organizer[];
@@ -108,6 +108,7 @@ const BondscapeSelectCoHosts = ({
                           alt={"Profile pic"}
                           fill
                           className="object-cover rounded-[10px]"
+                          sizes={"20px"}
                         />
                       </div>
                       @{props.data.organizer?.dTag}

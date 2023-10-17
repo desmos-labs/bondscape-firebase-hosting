@@ -9,7 +9,7 @@ import {
   TicketCategoryRequestParams,
   TicketCategoryValues,
 } from "@/types/event";
-import { err } from "neverthrow";
+import { err, ok, Result } from "neverthrow";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
@@ -22,26 +22,30 @@ export const useCreateEvent = () => {
   const { user } = useUser();
   const router = useRouter();
 
+  /**
+   * Creates a ticket category for the event
+   * @param eventId The id of the event
+   * @param values The values of the ticket category
+   * @param categoryId The id of the ticket category to edit
+   * @returns The result of the request
+   */
   const createTicketCategory = useCallback(
     async (
       eventId: string,
       values: TicketCategoryValues,
       categoryId?: string,
-    ) => {
+    ): Promise<Result<any, Error>> => {
       // If the user is not logged in, we can't create an event
-      if (!user || !user.profile) return;
+      if (!user || !user.profile) return err(new Error("User not logged in"));
       // Get the addresses of the organizers
       const validatorsAddresses = values.validators.map(
         (validator) => validator.validatorAddress,
       );
-      // Add the user's address to the list of organizers
-      if (
-        validatorsAddresses.find(
-          (address) => address === user.profile?.address,
-        ) === undefined
-      ) {
+      // Add the user's address to the list of validators if it's a new category
+      if (!categoryId) {
         validatorsAddresses.unshift(user.profile.address);
       }
+
       // Load the cover picture if it exists
       let ticketCoverPicUrl = values.coverPicUrl;
       if (values.coverPic) {
@@ -52,7 +56,7 @@ export const useCreateEvent = () => {
           ticketCoverPicUrl = result.value.url;
         } else {
           toast.error(result.error.message);
-          return;
+          return err(result.error);
         }
       }
 
@@ -72,20 +76,20 @@ export const useCreateEvent = () => {
           categoryId,
           ticketCreationParams,
         );
-        if (result.isOk()) {
-          console.log("Ticket category edited successfully", result.value);
-        } else {
+        if (result.isErr()) {
           return err(result.error);
+        } else {
+          return ok(result.value);
         }
       } else {
         const result = await CreateTicketCategory(
           eventId,
           ticketCreationParams,
         );
-        if (result.isOk()) {
-          console.log("Ticket category created successfully", result.value);
-        } else {
+        if (result.isErr()) {
           return err(result.error);
+        } else {
+          return ok(result.value);
         }
       }
     },
@@ -105,12 +109,8 @@ export const useCreateEvent = () => {
       const organizersAddresses = values.organizers.map(
         (organizer) => organizer.organizerAddress,
       );
-      // Add the user's address to the list of organizers
-      if (
-        organizersAddresses.find(
-          (address) => address === user.profile?.address,
-        ) === undefined
-      ) {
+      // Add the user's address to the list of organizers if it's a new event
+      if (!eventId) {
         organizersAddresses.unshift(user.profile.address);
       }
       // Load the cover picture if it exists
@@ -155,43 +155,48 @@ export const useCreateEvent = () => {
       }
 
       // Check the result: if it's ok, create ticket categories and then redirect to the events page and show a success toast, otherwise show an error toast
+      let ticketCategoryDeleteResult;
       if (eventCreationResult.isOk() || eventId) {
-        console.log(ticketCategoriesToDelete.length);
         if (ticketCategoriesToDelete.length > 0) {
-          console.log(ticketCategoriesToDelete.length);
-          await Promise.all(
+          ticketCategoryDeleteResult = await Promise.all(
             ticketCategoriesToDelete.map(async (ticketCategoryId) => {
-              console.log(ticketCategoryId);
-              const result = await DeleteTicketCategory({
+              return DeleteTicketCategory({
                 eventId: eventCreationResult.value.data.event_id ?? eventId,
                 categoryId: ticketCategoryId,
               });
-              if (result.isOk()) {
-                console.log(
-                  "Ticket category deleted successfully",
-                  result.value,
-                );
-              } else {
-                return err(result.error);
-              }
             }),
           );
         }
+
+        if (ticketCategoryDeleteResult?.find((result) => result.isErr())) {
+          ticketCategoryDeleteResult?.map((result) => {
+            if (result.isErr()) {
+              toast.error(result.error.message);
+            }
+          });
+          return;
+        }
+
+        let ticketCategoryCreationResult: Result<any, Error>[] = [];
         if (values.ticketsCategories) {
-          try {
-            await Promise.all(
-              values.ticketsCategories.map((ticketCategory) => {
-                return createTicketCategory(
-                  eventCreationResult.value.data.event_id ?? eventId,
-                  ticketCategory,
-                  ticketCategory.id,
-                );
-              }),
-            );
-          } catch (e) {
-            console.error(e);
-            return;
-          }
+          ticketCategoryCreationResult = await Promise.all(
+            values.ticketsCategories.map((ticketCategory) => {
+              return createTicketCategory(
+                eventCreationResult.value.data.event_id ?? eventId,
+                ticketCategory,
+                ticketCategory.id,
+              );
+            }),
+          );
+        }
+
+        if (ticketCategoryCreationResult.find((result) => result.isErr())) {
+          ticketCategoryCreationResult.map((result) => {
+            if (result.isErr()) {
+              toast.error(result.error.message);
+            }
+          });
+          return;
         }
 
         toast.success(

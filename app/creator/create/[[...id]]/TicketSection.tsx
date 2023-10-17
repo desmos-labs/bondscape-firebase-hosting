@@ -16,7 +16,6 @@ interface TicketSectionProps {
   ) => void;
   readonly draftButtonText: string;
   readonly publishButtonText: any;
-  readonly initialValues: CreateEventValues;
   readonly setTicketCategoriesToDelete: React.Dispatch<
     SetStateAction<string[]>
   >;
@@ -27,9 +26,11 @@ const TicketSection = ({
   handleButtonClick,
   draftButtonText,
   publishButtonText,
-  initialValues,
   setTicketCategoriesToDelete,
 }: TicketSectionProps) => {
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<
+    number | undefined
+  >(undefined);
   const [createTicketModalVisible, setCreateTicketModalVisible] =
     useState(false);
   const [
@@ -69,6 +70,7 @@ const TicketSection = ({
               src={"/eventCreationAddTicketIcon.png"}
               width={48}
               height={48}
+              sizes={"48px"}
             />
           </div>
 
@@ -91,6 +93,10 @@ const TicketSection = ({
               setDeleteTicketCategoryModalVisible={
                 setDeleteTicketCategoryModalVisible
               }
+              onEditCategory={() => {
+                setSelectedCategoryIndex(index);
+                setCreateTicketModalVisible(true);
+              }}
             />
           );
         })}
@@ -141,6 +147,7 @@ const TicketSection = ({
         }}
       >
         <CreateTicketCategory
+          selectedCategoryIndex={selectedCategoryIndex}
           formikProps={formikProps}
           onHide={() => setCreateTicketModalVisible(false)}
         />

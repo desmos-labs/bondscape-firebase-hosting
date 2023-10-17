@@ -40,6 +40,11 @@ const EventsFields = gql`
       coverPicUrl: tickets_image_url
       startDate: start_date
       endDate: end_date
+      ticketsSold: tickets_aggregate {
+        aggregate {
+          count
+        }
+      }
       ticketsPerUser: tickets_per_user
       totalTicketsAvailable: total_tickets_available
       validators {

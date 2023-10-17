@@ -75,6 +75,7 @@ const useHooks = (eventId?: string) => {
             description: ticketCategory.description,
             availableFrom: ticketCategory.startDate,
             availableUntil: ticketCategory.endDate,
+            ticketsSold: ticketCategory.ticketsSold?.aggregate.count || 0,
             maxQuantityPerPerson: ticketCategory.ticketsPerUser,
             maxQuantityPerCategory: ticketCategory.totalTicketsAvailable,
             validators: ticketCategory.validators || [],

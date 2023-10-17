@@ -108,6 +108,7 @@ const BondscapeSelectValidators = ({
                           alt={"Profile pic"}
                           fill
                           className="object-cover rounded-[10px]"
+                          sizes={"20px"}
                         />
                       </div>
                       @{props.data.validator?.dTag}

@@ -36,6 +36,11 @@ export interface EventTicketCategory {
   coverPicUrl?: string;
   startDate?: string;
   endDate?: string;
+  ticketsSold?: {
+    aggregate: {
+      count: number;
+    };
+  };
   ticketsPerUser: number;
   totalTicketsAvailable: number;
   validators?: Validator[];
@@ -123,9 +128,10 @@ export interface TicketCategoryValues {
   description?: string;
   category: string;
   maxQuantityPerPerson: number;
+  ticketsSold?: number;
   maxQuantityPerCategory: number;
   availableFrom?: string;
-  availableTill?: string;
+  availableUntil?: string;
   validators: Validator[];
 }
 

@@ -22,15 +22,20 @@ import { PuffLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
 export default function EventDetails({ params }: { params: any }) {
+  // States
   const [selectedEvent, setSelectedEvent] = useState<Event>();
   const [eventQrCode, setEventQrCode] = useState("");
   const [generatingQr, setGeneratingQr] = useState(false);
   const [qrCodeVisible, setQrCodeVisible] = useState(false);
+
+  // Hooks
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
   const { getEventPeriodExtended } = useFormatDateToTZ();
   const { googlePlace } = useGetGooglePlace(selectedEvent?.googlePlaceId);
+
+  // Callbacks
 
   const generateQrCode = useCallback(async (url: string) => {
     const result = await GetQrCode(url, "url");
@@ -59,16 +64,6 @@ export default function EventDetails({ params }: { params: any }) {
     document.body.removeChild(a);
   }, [selectedEvent?.name, toDataURL]);
 
-  useEffect(() => {
-    if (selectedEvent) {
-      GetEventJoinLink(selectedEvent.id).then((result) => {
-        if (result.isOk()) {
-          generateQrCode(result.value);
-        }
-      });
-    }
-  }, [generateQrCode, selectedEvent]);
-
   const loadEvent = useCallback(
     async (eventId: string) => {
       const result = await getEventById({
@@ -82,6 +77,18 @@ export default function EventDetails({ params }: { params: any }) {
     },
     [getEventById],
   );
+
+  // Effects
+
+  useEffect(() => {
+    if (selectedEvent) {
+      GetEventJoinLink(selectedEvent.id).then((result) => {
+        if (result.isOk()) {
+          generateQrCode(result.value);
+        }
+      });
+    }
+  }, [generateQrCode, selectedEvent]);
 
   useEffect(() => {
     const eventId = params.id as string;
@@ -335,14 +342,14 @@ export default function EventDetails({ params }: { params: any }) {
                       height={20}
                     />
                     <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
-                      {ticketCategory.ticketsPerUser} /{" "}
+                      {ticketCategory?.ticketsSold?.aggregate.count ?? 0} /{" "}
                       {ticketCategory.totalTicketsAvailable}
                     </div>
 
                     <ProgressBar
                       value={
-                        (ticketCategory.totalTicketsAvailable *
-                          ticketCategory.ticketsPerUser) /
+                        ((ticketCategory?.ticketsSold?.aggregate?.count ?? 0) /
+                          ticketCategory.totalTicketsAvailable) *
                         100
                       }
                       showValue={false}

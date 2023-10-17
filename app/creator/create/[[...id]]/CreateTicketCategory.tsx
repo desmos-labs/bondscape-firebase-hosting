@@ -11,15 +11,17 @@ import {
   Validator,
 } from "@/types/event";
 import { ErrorMessage, Form, Formik, FormikProps } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 
 interface CreateTicketCategoryProps {
+  readonly selectedCategoryIndex?: number;
   readonly formikProps: FormikProps<CreateEventValues>;
   readonly onHide: () => void;
 }
 
 const CreateTicketCategory = ({
+  selectedCategoryIndex,
   formikProps: globalFormikProps,
   onHide,
 }: CreateTicketCategoryProps) => {
@@ -30,7 +32,7 @@ const CreateTicketCategory = ({
     maxQuantityPerPerson: 1,
     maxQuantityPerCategory: 1,
     availableFrom: undefined,
-    availableTill: undefined,
+    availableUntil: undefined,
     coverPicUrl: "",
     coverPic: undefined,
     validators: [],
@@ -38,6 +40,14 @@ const CreateTicketCategory = ({
 
   const { values: globalValues, setFieldValue: setGlobalFieldValue } =
     globalFormikProps;
+
+  useEffect(() => {
+    if (selectedCategoryIndex !== undefined && globalValues.ticketsCategories) {
+      setInitialValues({
+        ...globalValues.ticketsCategories[selectedCategoryIndex],
+      });
+    }
+  }, [globalValues.ticketsCategories, selectedCategoryIndex]);
 
   // Form validation
   const validateSchema = Yup.object().shape({
@@ -51,10 +61,22 @@ const CreateTicketCategory = ({
   });
 
   const onSubmit = async (values: TicketCategoryValues) => {
-    await setGlobalFieldValue("ticketsCategories", [
-      ...(globalValues.ticketsCategories || []),
-      values,
-    ]);
+    if (selectedCategoryIndex === undefined) {
+      await setGlobalFieldValue("ticketsCategories", [
+        ...(globalValues.ticketsCategories || []),
+        values,
+      ]);
+    } else {
+      const newTicketCategories = globalValues.ticketsCategories?.map(
+        (ticketCategory, index) => {
+          if (index === selectedCategoryIndex) {
+            return values;
+          }
+          return ticketCategory;
+        },
+      );
+      await setGlobalFieldValue("ticketsCategories", newTicketCategories);
+    }
     onHide();
   };
 
@@ -164,7 +186,7 @@ const CreateTicketCategory = ({
                         startLabel={"Available From"}
                         endLabel={"Available Until"}
                         initialStartValue={values.availableFrom}
-                        initialEndValue={values.availableTill}
+                        initialEndValue={values.availableUntil}
                         required={false}
                         onChangeStart={(value) =>
                           setFieldValue("availableFrom", value)

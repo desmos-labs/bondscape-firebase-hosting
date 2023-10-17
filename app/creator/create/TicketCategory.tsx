@@ -13,11 +13,13 @@ interface Props {
       visible: boolean;
     }>
   >;
+  readonly onEditCategory?: () => void;
 }
 
 const TicketCategory = ({
   eventTicketCategory,
   setDeleteTicketCategoryModalVisible,
+  onEditCategory,
 }: Props) => {
   const { getEventPeriodExtended } = useFormatDateToTZ();
 
@@ -27,7 +29,20 @@ const TicketCategory = ({
         <div className="text-bondscape-text_neutral_900 text-2xl font-semibold leading-9">
           {eventTicketCategory.category}
         </div>
-        <div>
+        <div className="flex gap-[24px]">
+          <button
+            className="w-[20px] h-[20px] relative items-center justify-center"
+            onClick={onEditCategory}
+          >
+            <Image
+              alt={"Edit icon"}
+              src={"/editEventIcon.png"}
+              fill
+              className={"object-cover"}
+              sizes={"20px"}
+            />
+          </button>
+
           <button
             className="w-[20px] h-[20px] relative items-center justify-center"
             onClick={() =>
@@ -42,6 +57,7 @@ const TicketCategory = ({
               src={"/trashIcon.png"}
               fill
               className={"object-cover"}
+              sizes={"20px"}
             />
           </button>
         </div>
@@ -54,16 +70,18 @@ const TicketCategory = ({
             src={"/eventDetailsTicketIcon.png"}
             width={20}
             height={20}
+            sizes={"20px"}
+            style={{ width: "auto" }}
           />
           <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
-            {eventTicketCategory.maxQuantityPerPerson} /{" "}
+            {eventTicketCategory?.ticketsSold ?? 0} /{" "}
             {eventTicketCategory.maxQuantityPerCategory}
           </div>
 
           <ProgressBar
             value={
-              (eventTicketCategory.maxQuantityPerCategory *
-                eventTicketCategory.maxQuantityPerPerson) /
+              ((eventTicketCategory?.ticketsSold ?? 0) /
+                eventTicketCategory.maxQuantityPerCategory) *
               100
             }
             showValue={false}
@@ -74,7 +92,7 @@ const TicketCategory = ({
             }}
           />
         </div>
-        {eventTicketCategory.availableTill &&
+        {eventTicketCategory.availableUntil &&
           eventTicketCategory.availableFrom && (
             <div className="flex flex-row gap-2 items-center">
               <Image
@@ -82,19 +100,21 @@ const TicketCategory = ({
                 src={"/eventDetailsCalendarIcon.png"}
                 width={20}
                 height={20}
+                sizes={"20px"}
+                style={{ width: "auto" }}
               />
               <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
                 {
                   getEventPeriodExtended(
                     eventTicketCategory?.availableFrom,
-                    eventTicketCategory?.availableTill,
+                    eventTicketCategory?.availableUntil,
                   ).date
                 }
                 <span className="mr-2" />
                 {
                   getEventPeriodExtended(
                     eventTicketCategory?.availableFrom,
-                    eventTicketCategory?.availableTill,
+                    eventTicketCategory?.availableUntil,
                   ).time
                 }
               </div>
@@ -108,6 +128,8 @@ const TicketCategory = ({
               src={"/eventDetailsValidatorsIcon.png"}
               width={20}
               height={20}
+              sizes={"20px"}
+              style={{ width: "auto" }}
             />
             <div className="flex flex-row gap-2">
               {eventTicketCategory?.validators.map((validator, index) => {
@@ -146,6 +168,7 @@ const TicketCategory = ({
               src={"/eventDetailsDescriptionIcon.png"}
               width={20}
               height={20}
+              sizes={"20px"}
             />
             <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700">
               {eventTicketCategory.description}

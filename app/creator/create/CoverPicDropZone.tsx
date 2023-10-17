@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import Image from "next/image";
-import { useDropzone } from "react-dropzone";
 import { BondscapePreviewImage } from "@/types/image";
+import Image from "next/image";
+import React, { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 interface Props {
   /**
@@ -52,6 +52,8 @@ const CoverPicDropZone = ({
             alt="Cover pic preview"
             fill
             className="object-cover rounded-[16px]"
+            priority={true}
+            sizes={"100%"}
           />
         ) : isDragActive ? (
           <div className="text-center text-white text-sm font-normal leading-tight">

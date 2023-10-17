@@ -136,7 +136,6 @@ export default function CreateEvent({ params }: PageProps) {
                             handleButtonClick={handleButtonClick}
                             draftButtonText={draftButtonText}
                             publishButtonText={publishButtonText}
-                            initialValues={initialValues}
                             setTicketCategoriesToDelete={
                               setTicketCategoriesToDelete
                             }
