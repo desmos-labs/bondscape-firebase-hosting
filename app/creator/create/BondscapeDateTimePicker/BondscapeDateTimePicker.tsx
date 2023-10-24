@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import "./style.css";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import React, { useState } from "react";
+import "./style.css";
 
 interface Props {
   readonly startLabel?: string;
@@ -64,7 +64,7 @@ const BondscapeDateTimePicker = ({
             value={initialStartValue ? dayjs(initialStartValue) : undefined}
             disabledDate={
               maxDate
-                ? (current) => current < maxDate
+                ? (current) => current > maxDate
                 : (current) => current < dayjs()
             }
             onChange={(date) => {
