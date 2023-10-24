@@ -192,7 +192,7 @@ const CreateTicketCategory = ({
                           setFieldValue("availableFrom", value)
                         }
                         onChangeEnd={(value) =>
-                          setFieldValue("availableTill", value)
+                          setFieldValue("availableUntil", value)
                         }
                       />
                       <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
