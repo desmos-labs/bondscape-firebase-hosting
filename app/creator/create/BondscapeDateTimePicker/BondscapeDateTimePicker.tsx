@@ -64,7 +64,7 @@ const BondscapeDateTimePicker = ({
             value={initialStartValue ? dayjs(initialStartValue) : undefined}
             disabledDate={
               maxDate
-                ? (current) => current > maxDate
+                ? (current) => current > maxDate || current < dayjs()
                 : (current) => current < dayjs()
             }
             onChange={(date) => {
