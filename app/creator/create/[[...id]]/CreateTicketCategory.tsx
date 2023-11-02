@@ -112,7 +112,7 @@ const CreateTicketCategory = ({
                       />
                       <BigTextInput
                         title={"Description"}
-                        inputName={"ticketDescription"}
+                        inputName={"description"}
                         placeholder={
                           "Add an optional description of the advantages granted by your NFT ticket, if any."
                         }
