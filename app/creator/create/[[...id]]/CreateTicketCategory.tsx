@@ -195,6 +195,11 @@ const CreateTicketCategory = ({
                           setFieldValue("availableUntil", value)
                         }
                       />
+                      <div className="text-bondscape-text_neutral_900 text-[12px] font-normal">
+                        {
+                          "The availability time will be in the time zone based on where the event will be held."
+                        }
+                      </div>
                       <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
                         <BondscapeSelectValidators
                           label={"Verifiers"}
