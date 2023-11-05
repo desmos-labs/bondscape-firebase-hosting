@@ -1,16 +1,16 @@
-import { ErrorMessage, Form, FormikProps } from "formik";
-import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
+import BondscapeButton from "@/components/BondscapeButton";
 import BigTextInput from "@/creator/create/BigTextInput";
 import BondscapeDateTimePicker from "@/creator/create/BondscapeDateTimePicker/BondscapeDateTimePicker";
 import BondscapeSelectCategory from "@/creator/create/BondscapeSelectCategory";
-import SmallTextInput from "@/creator/create/SmallTextInput";
-import LocationInput from "@/creator/create/LocationInput";
 import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
 import BondscapeSelectTags from "@/creator/create/BondscapeSelectTags";
-import BondscapeButton from "@/components/BondscapeButton";
-import React from "react";
+import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
+import LocationInput from "@/creator/create/LocationInput";
+import SmallTextInput from "@/creator/create/SmallTextInput";
 import useUser from "@/hooks/user/useUser";
 import { CreateEventValues, Organizer } from "@/types/event";
+import { ErrorMessage, Form, FormikProps } from "formik";
+import React from "react";
 
 interface MainSectionProps {
   readonly title: string;
@@ -90,6 +90,11 @@ const MainSection = ({
               onChangeStart={(value) => setFieldValue("startDate", value)}
               onChangeEnd={(value) => setFieldValue("endDate", value)}
             />
+            <div className="text-bondscape-text_neutral_900 text-[12px] font-normal">
+              {
+                "The start/end time of the event will be in the time zone based on where the event will be held."
+              }
+            </div>
             <BondscapeSelectCategory
               initialCategories={values.categories}
               required={false}

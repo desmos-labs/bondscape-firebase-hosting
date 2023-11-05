@@ -110,9 +110,8 @@ export const useCreateEvent = () => {
         (organizer) => organizer.organizerAddress,
       );
       // Add the user's address to the list of organizers if it's a new event
-      if (!eventId) {
-        organizersAddresses.unshift(user.profile.address);
-      }
+      organizersAddresses.unshift(user.profile.address);
+      console.log(organizersAddresses);
       // Load the cover picture if it exists
       let coverPicUrl = values.coverPicUrl;
       if (values.coverPic) {
@@ -127,7 +126,15 @@ export const useCreateEvent = () => {
         }
       }
 
-      let eventCreationResult: any;
+      let eventCreationResult: Result<
+        {
+          data: {
+            event_id: string;
+          };
+          type: "create" | "edit";
+        },
+        Error
+      >;
 
       const eventParams = {
         status: values.status,
@@ -148,20 +155,16 @@ export const useCreateEvent = () => {
           eventId,
           ...eventParams,
         });
-      } else {
-        eventCreationResult = await CreateEvent({
-          ...eventParams,
-        });
-      }
-
-      // Check the result: if it's ok, create ticket categories and then redirect to the events page and show a success toast, otherwise show an error toast
-      let ticketCategoryDeleteResult;
-      if (eventCreationResult.isOk() || eventId) {
+        if (eventCreationResult.isErr()) {
+          toast.error(eventCreationResult.error.message);
+          return;
+        }
+        let ticketCategoryDeleteResult;
         if (ticketCategoriesToDelete.length > 0) {
           ticketCategoryDeleteResult = await Promise.all(
             ticketCategoriesToDelete.map(async (ticketCategoryId) => {
               return DeleteTicketCategory({
-                eventId: eventCreationResult.value.data.event_id ?? eventId,
+                eventId,
                 categoryId: ticketCategoryId,
               });
             }),
@@ -176,13 +179,26 @@ export const useCreateEvent = () => {
           });
           return;
         }
+      } else {
+        eventCreationResult = await CreateEvent({
+          ...eventParams,
+        });
 
+        if (eventCreationResult.isErr()) {
+          toast.error(eventCreationResult.error.message);
+          return;
+        }
+      }
+
+      // Check the result: if it's ok, create ticket categories and then redirect to the events page and show a success toast, otherwise show an error toast
+      if (eventCreationResult.isOk()) {
         let ticketCategoryCreationResult: Result<any, Error>[] = [];
+        const id = eventCreationResult.value.data.event_id ?? eventId;
         if (values.ticketsCategories) {
           ticketCategoryCreationResult = await Promise.all(
             values.ticketsCategories.map((ticketCategory) => {
               return createTicketCategory(
-                eventCreationResult.value.data.event_id ?? eventId,
+                id,
                 ticketCategory,
                 ticketCategory.id,
               );
@@ -205,8 +221,6 @@ export const useCreateEvent = () => {
             : "Event updated successfully",
         );
         router.replace(`/creator/events`);
-      } else {
-        toast.error(eventCreationResult.error.message);
       }
     },
     [createTicketCategory, router, ticketCategoriesToDelete, user],

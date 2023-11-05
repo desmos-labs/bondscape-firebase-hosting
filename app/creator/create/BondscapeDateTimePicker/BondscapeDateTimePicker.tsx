@@ -1,5 +1,7 @@
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import React, { useState } from "react";
 import "./style.css";
 
@@ -24,6 +26,9 @@ const BondscapeDateTimePicker = ({
 }: Props) => {
   const [minDate, setMinDate] = useState<dayjs.Dayjs>();
   const [maxDate, setMaxDate] = useState<dayjs.Dayjs>();
+
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
   const ClearIcon = () => {
     return (
@@ -62,15 +67,11 @@ const BondscapeDateTimePicker = ({
         <div className="flex flex-1">
           <DatePicker
             value={initialStartValue ? dayjs(initialStartValue) : undefined}
-            disabledDate={
-              maxDate
-                ? (current) => current > maxDate || current < dayjs()
-                : (current) => current < dayjs()
-            }
+            disabledDate={maxDate ? (current) => current > maxDate : undefined}
             onChange={(date) => {
-              setMinDate(date || dayjs());
+              setMinDate(date || undefined);
               if (date) {
-                onChangeStart(date.toISOString());
+                onChangeStart(dayjs.utc(date).tz().format());
               } else {
                 onChangeStart(undefined);
               }
@@ -96,15 +97,11 @@ const BondscapeDateTimePicker = ({
         <div className="flex flex-1">
           <DatePicker
             value={initialEndValue ? dayjs(initialEndValue) : undefined}
-            disabledDate={
-              minDate
-                ? (current) => current < minDate
-                : (current) => current < dayjs().add(1, "hour")
-            }
+            disabledDate={minDate ? (current) => current < minDate : undefined}
             onChange={(date) => {
               setMaxDate(date || undefined);
               if (date) {
-                onChangeEnd(date.toISOString());
+                onChangeEnd(dayjs.utc(date).tz().format());
               } else {
                 onChangeEnd(undefined);
               }

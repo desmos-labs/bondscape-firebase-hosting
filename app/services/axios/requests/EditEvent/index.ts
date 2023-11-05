@@ -17,7 +17,15 @@ const EditEvent = ({
   website,
 }: EventRequestParams & {
   eventId: string;
-}): ResultAsync<any, Error> => {
+}): ResultAsync<
+  {
+    data: {
+      event_id: string;
+    };
+    type: "create" | "edit";
+  },
+  Error
+> => {
   return ResultAsync.fromPromise(
     axiosInstance.put(`/events/${eventId}`, {
       status,
