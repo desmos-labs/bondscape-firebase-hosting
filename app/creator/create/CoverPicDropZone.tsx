@@ -4,18 +4,23 @@ import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 interface Props {
+  readonly text?: string;
+  readonly description?: React.ReactNode;
+
   /**
    * If the user is creating or editing a cover picture, this will be the image
    */
-  fileToUpload?: BondscapePreviewImage;
+  readonly fileToUpload?: BondscapePreviewImage;
   /**
    * If the user is editing the event but not modifying the cover picture, this will be the url of the cover picture
    */
-  coverPicUrl?: string;
-  setCoverPic: (coverPic: BondscapePreviewImage) => void;
+  readonly coverPicUrl?: string;
+  readonly setCoverPic: (coverPic: BondscapePreviewImage) => void;
 }
 
 const CoverPicDropZone = ({
+  text,
+  description,
   fileToUpload,
   coverPicUrl,
   setCoverPic,
@@ -60,7 +65,7 @@ const CoverPicDropZone = ({
             Drop the image here
           </div>
         ) : (
-          <div className="w-44 h-40 rounded-2xl flex-col justify-start items-center gap-6 inline-flex">
+          <div className="w-56 h-40 rounded-2xl flex-col justify-start items-center gap-6 inline-flex">
             <svg
               width="43"
               height="38"
@@ -77,17 +82,19 @@ const CoverPicDropZone = ({
                 strokeLinejoin="round"
               />
             </svg>
-            <div className="self-stretch h-16 flex-col justify-start items-center gap-2 flex">
-              <div className="w-32 h-8 bg-violet-400 rounded-lg justify-start items-start inline-flex">
+            <div className=" self-stretch h-16 flex-col justify-start items-center gap-2 flex">
+              <div className="px-1 w-36 h-8 bg-violet-400 rounded-lg justify-start items-start inline-flex">
                 <div className="grow self-stretch py-3 bg-violet-400 rounded-lg justify-center items-center gap-2 flex">
                   <div className="text-center text-white text-sm font-semibold leading-tight">
-                    Upload cover
+                    {text || "Upload a cover"}
                   </div>
                 </div>
               </div>
-              <div className="text-center text-white text-sm font-normal leading-tight">
-                Or drop a cover
+              <div className="text-center text-white text-[12px] font-normal leading-tight">
+                Or drop it here
               </div>
+
+              {description && <div className="text-center text-white text-[12px] pt-2">{description}</div>}
             </div>
           </div>
         )}

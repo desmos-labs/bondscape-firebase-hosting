@@ -104,6 +104,12 @@ const CreateTicketCategory = ({
                   <div className="flex flex-1 flex-row gap-6">
                     <div className="flex flex-col w-[31.25rem] gap-[1rem]">
                       <CoverPicDropZone
+                        text={"Upload an image"}
+                        description={
+                          <div className="text text-feedback-warning text-[12px]">
+                            This image will be the one used to create the NFTs of the tickets for this category.
+                          </div>
+                        }
                         fileToUpload={values.coverPic}
                         coverPicUrl={values.coverPicUrl}
                         setCoverPic={(coverPic) =>
