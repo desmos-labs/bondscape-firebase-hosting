@@ -111,7 +111,6 @@ export const useCreateEvent = () => {
       );
       // Add the user's address to the list of organizers if it's a new event
       organizersAddresses.unshift(user.profile.address);
-      console.log(organizersAddresses);
       // Load the cover picture if it exists
       let coverPicUrl = values.coverPicUrl;
       if (values.coverPic) {

@@ -50,7 +50,6 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
           if (loginResult.isOk()) {
             const bearer = loginResult.value;
             if (bearer) {
-              console.log("[TOKEN]:", bearer);
               // We use a cookie to store the bearer token for the apollo client
               setCookie(null, "bearer_token", bearer);
               await saveUser({
@@ -93,7 +92,6 @@ const useLoginWithWeb3Auth = (chain: SupportedChain) => {
     async (
       loginProvider: Web3AuthLoginProvider,
     ): Promise<Result<void, Error>> => {
-      console.log("loginWithWeb3Auth", web3authClient);
       if (!web3authClient) {
         return err(new Error("Web3Auth client not initialized"));
       }
