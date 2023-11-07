@@ -81,12 +81,12 @@ const CoverPicDropZone = ({
               <div className="w-32 h-8 bg-violet-400 rounded-lg justify-start items-start inline-flex">
                 <div className="grow self-stretch py-3 bg-violet-400 rounded-lg justify-center items-center gap-2 flex">
                   <div className="text-center text-white text-sm font-semibold leading-tight">
-                    Upload Image
+                    Upload cover
                   </div>
                 </div>
               </div>
               <div className="text-center text-white text-sm font-normal leading-tight">
-                Or drop an image
+                Or drop a cover
               </div>
             </div>
           </div>
