@@ -76,25 +76,25 @@ const MainSection = ({
             />
           </div>
           <div className="flex flex-col w-[31.75rem] xl:w-[41.5rem] gap-[1rem]">
-            {(!values.startDate || !values.endDate) && (
-              <div className="text-feedback-warning text-[12px] font-normal">
-                {
-                  "The event can only be published if the dates are entered; otherwise, it can only be saved as a draft."
-                }
-              </div>
-            )}
             <BondscapeDateTimePicker
+              startLabel={"Start date"}
+              endLabel={"End date"}
               initialStartValue={values.startDate}
               initialEndValue={values.endDate}
               required={false}
               onChangeStart={(value) => setFieldValue("startDate", value)}
               onChangeEnd={(value) => setFieldValue("endDate", value)}
-            />
-            <div className="text-bondscape-text_neutral_900 text-[12px] font-normal">
-              {
-                "The start/end time of the event will be in the time zone based on where the event will be held."
+              footer={
+              <div>
+                The start and end dates of the event will be in the time zone based on where the event will be held.
+                If no location is entered, the timezone will default to the UTC time zone.
+
+                <div className="text-feedback-warning mt-2">
+                  The event can only be published if the dates are entered; otherwise, it can only be saved as a draft.
+                </div>
+              </div>
               }
-            </div>
+            />
             <BondscapeSelectCategory
               initialCategories={values.categories}
               required={false}

@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import "./style.css";
 
 interface Props {
+  readonly title?: string;
+  readonly description?: string;
   readonly startLabel?: string;
   readonly endLabel?: string;
   readonly initialStartValue?: string;
@@ -13,9 +15,12 @@ interface Props {
   readonly required: boolean;
   readonly onChangeStart: (value: string | undefined) => void;
   readonly onChangeEnd: (value: string | undefined) => void;
+  readonly footer?: React.ReactNode;
 }
 
 const BondscapeDateTimePicker = ({
+  title,
+  description,
   startLabel,
   endLabel,
   initialStartValue,
@@ -23,6 +28,7 @@ const BondscapeDateTimePicker = ({
   required,
   onChangeStart,
   onChangeEnd,
+  footer,
 }: Props) => {
   const [minDate, setMinDate] = useState<dayjs.Dayjs>();
   const [maxDate, setMaxDate] = useState<dayjs.Dayjs>();
@@ -57,6 +63,11 @@ const BondscapeDateTimePicker = ({
 
   return (
     <div className="flex flex-col bg-bondscape-text_neutral_100 gap-[0.75rem] rounded-[16px]  p-[1rem]">
+      <div className="text text-white text-left">
+        {title && <div className="font-bold">{title}</div>}
+        {description && <div className="text-sm">{description}</div>}
+      </div>
+
       <div className="flex flex-row items-center gap-2">
         <div className="flex gap-1 min-w-[130px]">
           <label className="text-[16px] text-bondscape-text_neutral_900 whitespace-nowrap">
@@ -117,6 +128,8 @@ const BondscapeDateTimePicker = ({
           />
         </div>
       </div>
+
+      {footer && <div className="text-bondscape-text_neutral_900 text-[12px] font-normal">{footer}</div>}
     </div>
   );
 };

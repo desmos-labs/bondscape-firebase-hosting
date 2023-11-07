@@ -130,9 +130,12 @@ const CreateTicketCategory = ({
                         )}
                       </ErrorMessage>
                       <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
+                        <div className="text text-white text-left px-[1rem]">
+                          <div className="font-bold">Category info</div>
+                        </div>
                         <SmallTextInput
                           inputName={"category"}
-                          title={"Category"}
+                          title={"Name"}
                           placeholder={"Category name"}
                           required={true}
                           onChange={(text) => setFieldValue("category", text)}
@@ -153,10 +156,17 @@ const CreateTicketCategory = ({
                         )}
                       </ErrorMessage>
                       <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
+                        <div className="text text-white text-left px-[1rem]">
+                          <div className="font-bold">Tickets quantities</div>
+                          <div className="text-sm">
+                            Here you can define the maximum amount of tickets that a single user can get for this
+                            category, as well as the maximum amount of tickets available for this category.
+                          </div>
+                        </div>
                         <SmallTextInput
                           inputName={"maxQuantityPerPerson"}
                           title={"Per Person"}
-                          placeholder={"Max quantity per person"}
+                          placeholder={"Max amount of tickets a single user can get for this category"}
                           required={true}
                           onChange={(text) =>
                             setFieldValue(
@@ -169,8 +179,8 @@ const CreateTicketCategory = ({
                         />
                         <SmallTextInput
                           inputName={"maxQuantityPerCategory"}
-                          title={"Per Category"}
-                          placeholder={"Max quantity per category"}
+                          title={"Total"}
+                          placeholder={"Max amount of tickets available for this category"}
                           required={true}
                           onChange={(text) =>
                             setFieldValue(
@@ -183,6 +193,8 @@ const CreateTicketCategory = ({
                         />
                       </div>
                       <BondscapeDateTimePicker
+                        title="Availability"
+                        description="Here you can define when the tickets will be available for purchase."
                         startLabel={"Available From"}
                         endLabel={"Available Until"}
                         initialStartValue={values.availableFrom}
@@ -194,12 +206,8 @@ const CreateTicketCategory = ({
                         onChangeEnd={(value) =>
                           setFieldValue("availableUntil", value)
                         }
+                        footer="The availability time will be in the time zone based on where the event will be held."
                       />
-                      <div className="text-bondscape-text_neutral_900 text-[12px] font-normal">
-                        {
-                          "The availability time will be in the time zone based on where the event will be held."
-                        }
-                      </div>
                       <div className="flex flex-col bg-bondscape-text_neutral_100 rounded-[16px] gap-[0.75rem] py-[16px]">
                         <BondscapeSelectValidators
                           label={"Verifiers"}
@@ -219,7 +227,7 @@ const CreateTicketCategory = ({
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-1 justify-center gap-[40px] mt-20">
+                  <div className="flex flex-1 justify-center gap-[40px] mt-12">
                     <BondscapeButton
                       outlined
                       className="w-[256px] h-[44px] rounded-[8px] px-[24px] py-[12px]"
