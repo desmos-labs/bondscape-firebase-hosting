@@ -11,8 +11,6 @@ import EventsHeader from "@/components/EventsHeader";
 import Tabs from "@/components/Tabs";
 import { useActiveTab, useSetActiveTab } from "@/jotai/activeTab";
 import CreateEventHeader from "@/components/CreateEventHeader";
-import { useAtomValue } from "jotai";
-import { loginVisibilityState } from "@/jotai/loginVisibility";
 
 interface Props {
   readonly disableNavbarBgInDesktop?: boolean;
@@ -33,10 +31,9 @@ const NavigationBar = ({
 }: Props) => {
   const activeTab = useActiveTab();
   const setActiveTab = useSetActiveTab();
-  const isLoginButtonVisible = useAtomValue(loginVisibilityState);
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
-  const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
+  const [isMobile, isMd, isDesktop, isBreakpointReady] =
     useBreakpoints();
   const pathname = usePathname();
   const { user } = useUser();
@@ -70,11 +67,7 @@ const NavigationBar = ({
     ) {
       return;
     }
-    if (
-      !user ||
-      !isDesktop ||
-      (process.env.NODE_ENV === "production" && !isLoginButtonVisible)
-    ) {
+    if (!user || !isDesktop) {
       return;
     }
     return user.profile ? (
@@ -86,7 +79,7 @@ const NavigationBar = ({
         </div>
       </Link>
     );
-  }, [isDesktop, isLoginButtonVisible, pathname, user]);
+  }, [isDesktop, pathname, user]);
 
   return (
     <nav
