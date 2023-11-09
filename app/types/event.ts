@@ -74,9 +74,17 @@ export interface Event {
    */
   startDate: string;
   /**
+   * Event start date localized.
+   */
+  startDateLocalized: string;
+  /**
    * Event end date.
    */
   endDate: string;
+  /**
+   * Event end date localized.
+   */
+  endDateLocalized: string;
   /**
    * Event location.
    */

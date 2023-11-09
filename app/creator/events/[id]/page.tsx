@@ -5,6 +5,10 @@ import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
 import MainLayout from "@/layouts/MainLayout";
+import {
+  extractTimezoneOffset,
+  serializeTimezoneOffset,
+} from "@/lib/DateUtils";
 import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
 import GetQrCode from "@/services/axios/requests/GetQrCode";
 import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
@@ -218,19 +222,32 @@ export default function EventDetails({ params }: { params: any }) {
                   <div className="text-base font-semibold text-bondscape-text_neutral_900">
                     {selectedEvent ? (
                       getEventPeriodExtended(
-                        selectedEvent?.startDate,
-                        selectedEvent?.endDate,
+                        selectedEvent?.startDateLocalized,
+                        selectedEvent?.endDateLocalized,
                       ).date
                     ) : (
                       <Skeleton width={300} />
                     )}
                   </div>
-                  <div className="text-sm text-bondscape-text_neutral_700">
+                  <div>
                     {selectedEvent ? (
-                      getEventPeriodExtended(
-                        selectedEvent?.startDate,
-                        selectedEvent?.endDate,
-                      ).time
+                      <div className="flex flex-row gap-2">
+                        <div className="text-sm text-bondscape-text_neutral_700">
+                          {
+                            getEventPeriodExtended(
+                              selectedEvent?.startDateLocalized,
+                              selectedEvent?.endDateLocalized,
+                            ).time
+                          }
+                        </div>
+                        <div className="text-sm font-semibold text-bondscape-text_neutral_700">
+                          {serializeTimezoneOffset(
+                            extractTimezoneOffset(
+                              selectedEvent?.startDateLocalized,
+                            ),
+                          )}
+                        </div>
+                      </div>
                     ) : (
                       <Skeleton width={200} />
                     )}

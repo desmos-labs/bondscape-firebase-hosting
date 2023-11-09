@@ -18,7 +18,9 @@ const EventsFields = gql`
       hash
     }
     startDate: start_date
+    startDateLocalized: start_date_localized
     endDate: end_date
+    endDateLocalized: end_date_localized
     googlePlaceId: google_place_id
     organizers {
       ...OrganizerFields

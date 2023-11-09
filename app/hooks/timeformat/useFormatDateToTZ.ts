@@ -1,25 +1,56 @@
-import { useCallback } from "react";
+import {
+  addTimezoneOffsetToDate,
+  extractTimezoneOffset,
+  normalizeDateTime,
+} from "@/lib/DateUtils";
+import { differenceInHours, format, parseISO } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
-import { differenceInHours, parseISO } from "date-fns";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { useCallback } from "react";
 
 /**
  * A hook that allows formatting a timestamp into a specified format.
  */
 const useFormatDateToTZ = () => {
+  dayjs.extend(utc);
   const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  /**
+   * Format a RFC3339 date respecting the timezone specified in the
+   * received date instead of converting it to the user's timezone.
+   */
+  const formatTimeRespectingTimezone = useCallback(
+    (timeToFormat: string, formatString: string) => {
+      if (!timeToFormat) {
+        return "T.B.D.";
+      }
+
+      // Extracts the timezone offset from the received date.
+      const timeZoneOffset = extractTimezoneOffset(timeToFormat);
+      // Parse the received date to a Date in the user's timezone.
+      const parsedTime = parseISO(normalizeDateTime(timeToFormat));
+      return format(
+        addTimezoneOffsetToDate(parsedTime, timeZoneOffset),
+        formatString,
+      );
+    },
+    [],
+  );
 
   /**
    * A function that formats a timestamp into a specified format.
    */
   const formatTime = useCallback(
-    (timeToFormat: string, formatString: string) => {
+    (timeToFormat: string | Date, formatString: string) => {
       if (!timeToFormat) return "T.B.D.";
       // append a zone designator to timestamp if it is not present
       // this is for formatting the time to different timezones
-      const parsedTime = parseISO(
-        !timeToFormat.includes("Z") ? `${timeToFormat}Z` : timeToFormat,
-      );
-      return formatInTimeZone(parsedTime, currentTimeZone, formatString);
+      const parsedTime =
+        typeof timeToFormat === "string"
+          ? parseISO(normalizeDateTime(timeToFormat))
+          : timeToFormat;
+      return formatInTimeZone(timeToFormat, currentTimeZone, formatString);
     },
     [currentTimeZone],
   );
@@ -33,26 +64,26 @@ const useFormatDateToTZ = () => {
   const getEventPeriod = useCallback(
     (start: string, end: string) => {
       if (!start || !end) return "T.B.D.";
-      const parsedStart = parseISO(!start.includes("Z") ? `${start}Z` : start);
-      const parsedEnd = parseISO(!end.includes("Z") ? `${end}Z` : end);
+      const parsedStart = parseISO(normalizeDateTime(start));
+      const parsedEnd = parseISO(normalizeDateTime(end));
 
       /**
        * If the difference between the start and end time is within 24 hours, only show the date
        * example: 02 Oct, 2021: 10:00 - 11:00
        */
       if (differenceInHours(parsedStart, parsedEnd) > -24) {
-        return `${formatTime(start, "EEE, MMM dd, yyyy")}`;
+        return `${formatTimeRespectingTimezone(start, "EEE, MMM dd, yyyy")}`;
       }
       /**
        * Otherwise show the date and time on both dates
        * example: 02 Oct, 2021: 10:00 - 03 Oct, 2021: 11:00
        */
-      return `${formatTime(start, "MMM dd")} - ${formatTime(
+      return `${formatTimeRespectingTimezone(start, "MMM dd")} - ${formatTime(
         end,
         "MMM dd, yyyy",
       )}`;
     },
-    [formatTime],
+    [formatTime, formatTimeRespectingTimezone],
   );
 
   /**
@@ -64,26 +95,26 @@ const useFormatDateToTZ = () => {
   const getPastEventPeriod = useCallback(
     (start: string, end: string) => {
       if (!start || !end) return "T.B.D.";
-      const parsedStart = parseISO(!start.includes("Z") ? `${start}Z` : start);
-      const parsedEnd = parseISO(!end.includes("Z") ? `${end}Z` : end);
+      const parsedStart = parseISO(normalizeDateTime(start));
+      const parsedEnd = parseISO(normalizeDateTime(end));
 
       /**
        * If the difference between the start and end time is within 24 hours, only show the date
        * example: 02 Oct, 2021: 10:00 - 11:00
        */
       if (differenceInHours(parsedStart, parsedEnd) > -24) {
-        return `${formatTime(start, "MMM dd, yyyy")}`;
+        return `${formatTimeRespectingTimezone(start, "MMM dd, yyyy")}`;
       }
       /**
        * Otherwise show the date and time on both dates
        * example: 02 Oct, 2021: 10:00 - 03 Oct, 2021: 11:00
        */
-      return `${formatTime(start, "MMM dd")} - ${formatTime(
-        end,
-        "MMM dd, yyyy",
-      )}`;
+      return `${formatTimeRespectingTimezone(
+        start,
+        "MMM dd",
+      )} - ${formatTimeRespectingTimezone(end, "MMM dd, yyyy")}`;
     },
-    [formatTime],
+    [formatTimeRespectingTimezone],
   );
 
   /**
@@ -99,25 +130,31 @@ const useFormatDateToTZ = () => {
           time: "",
         };
       }
-      const parsedStart = parseISO(!start.includes("Z") ? `${start}Z` : start);
-      const parsedEnd = parseISO(!end.includes("Z") ? `${end}Z` : end);
+      const parsedStart = parseISO(normalizeDateTime(start));
+      const parsedEnd = parseISO(normalizeDateTime(end));
 
       if (differenceInHours(parsedStart, parsedEnd) > -24) {
         return {
-          date: `${formatTime(start, "MMM dd, yyyy")}`,
-          time: `${formatTime(start, "HH:mm")} - ${formatTime(end, "HH:mm")}`,
+          date: `${formatTimeRespectingTimezone(start, "MMM dd, yyyy")}`,
+          time: `${formatTimeRespectingTimezone(
+            start,
+            "HH:mm",
+          )} - ${formatTimeRespectingTimezone(end, "HH:mm")}`,
         };
       }
 
       return {
-        date: `${formatTime(start, "MMM dd")} - ${formatTime(
-          end,
-          "MMM dd, yyyy",
-        )}`,
-        time: `${formatTime(start, "HH:mm")} - ${formatTime(end, "HH:mm")}`,
+        date: `${formatTimeRespectingTimezone(
+          start,
+          "MMM dd",
+        )} - ${formatTimeRespectingTimezone(end, "MMM dd, yyyy")}`,
+        time: `${formatTimeRespectingTimezone(
+          start,
+          "HH:mm",
+        )} - ${formatTimeRespectingTimezone(end, "HH:mm")}`,
       };
     },
-    [formatTime],
+    [formatTimeRespectingTimezone],
   );
 
   /**
@@ -127,23 +164,23 @@ const useFormatDateToTZ = () => {
    */
   const getEventPeriodCompressed = useCallback(
     (start: string, end: string) => {
-      const parsedStart = parseISO(!start.includes("Z") ? `${start}Z` : start);
-      const parsedEnd = parseISO(!end.includes("Z") ? `${end}Z` : end);
+      const parsedStart = parseISO(normalizeDateTime(start));
+      const parsedEnd = parseISO(normalizeDateTime(end));
 
       if (differenceInHours(parsedStart, parsedEnd) > -24) {
         return {
-          date: `${formatTime(start, "MMM dd, yyyy")}`,
+          date: `${formatTimeRespectingTimezone(start, "MMM dd, yyyy")}`,
         };
       }
 
       return {
-        date: `${formatTime(start, "MMM dd")} - ${formatTime(
-          end,
-          "MMM dd, yyyy",
-        )}`,
+        date: `${formatTimeRespectingTimezone(
+          start,
+          "MMM dd",
+        )} - ${formatTimeRespectingTimezone(end, "MMM dd, yyyy")}`,
       };
     },
-    [formatTime],
+    [formatTimeRespectingTimezone],
   );
 
   return {
