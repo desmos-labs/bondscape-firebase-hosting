@@ -22,6 +22,12 @@ const EventsFields = gql`
     endDate: end_date
     endDateLocalized: end_date_localized
     googlePlaceId: google_place_id
+    location {
+      name
+      formattedAddress: formatted_address
+      country
+      url
+    }
     organizers {
       ...OrganizerFields
       organizerAddress: organizer_address

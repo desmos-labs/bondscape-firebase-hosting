@@ -1,6 +1,25 @@
 import { DesmosProfile } from "@/types/desmos";
 import { BondscapePreviewImage } from "@/types/image";
 
+export interface EventLocation {
+  /**
+   * Name of the location.
+   */
+  name: string;
+  /**
+   * Address of the location.
+   */
+  formattedAddress: string;
+  /**
+   * Country of the location.
+   */
+  country: string;
+  /**
+   * Link to the location on Google Maps.
+   */
+  url: string;
+}
+
 export interface Organizer {
   /**
    * Organizer Desmos profile.
@@ -91,6 +110,7 @@ export interface Event {
    * Event location.
    */
   googlePlaceId: string;
+  location: EventLocation;
   /**
    * Event organizers
    */
@@ -183,6 +203,7 @@ export interface CreateEventValues {
    * Event place id (Google Maps).
    */
   placeId?: string;
+  location?: EventLocation;
   /**
    * Event organizers, creator + co-hosts.
    */

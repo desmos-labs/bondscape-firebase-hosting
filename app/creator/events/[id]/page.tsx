@@ -1,6 +1,5 @@
 "use client";
 import BondscapeButton from "@/components/BondscapeButton";
-import useGetGooglePlace from "@/hooks/events/useGetGooglePlace";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
@@ -37,7 +36,6 @@ export default function EventDetails({ params }: { params: any }) {
   const router = useRouter();
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
   const { getEventPeriodExtended } = useFormatDateToTZ();
-  const { googlePlace } = useGetGooglePlace(selectedEvent?.googlePlaceId);
 
   // Callbacks
 
@@ -257,8 +255,12 @@ export default function EventDetails({ params }: { params: any }) {
               <button
                 className="flex basis-1/2 flex-row gap-2 items-center"
                 onClick={() =>
-                  googlePlace?.url &&
-                  window.open(googlePlace.url, "_blank", "noreferrer")
+                  selectedEvent?.location?.url &&
+                  window.open(
+                    selectedEvent.location.url,
+                    "_blank",
+                    "noreferrer",
+                  )
                 }
               >
                 <div>
@@ -272,14 +274,14 @@ export default function EventDetails({ params }: { params: any }) {
                 <div className="w-[80%] text-start">
                   <div className="text-base font-semibold text-bondscape-text_neutral_900">
                     {selectedEvent ? (
-                      googlePlace?.name
+                      selectedEvent.location?.name
                     ) : (
                       <Skeleton width={300} />
                     )}
                   </div>
                   <div className="text-sm text-bondscape-text_neutral_700">
                     {selectedEvent ? (
-                      googlePlace?.formattedAddress
+                      selectedEvent?.location?.formattedAddress
                     ) : (
                       <Skeleton width={200} />
                     )}

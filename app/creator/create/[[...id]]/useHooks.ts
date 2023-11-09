@@ -21,6 +21,7 @@ const useHooks = (eventId?: string) => {
     startDate: undefined,
     endDate: undefined,
     placeId: undefined,
+    location: undefined,
     ticketsCategories: [],
   });
 
@@ -65,6 +66,7 @@ const useHooks = (eventId?: string) => {
         endDate: event.endDate,
         categories: event.categories.map((category) => category.category),
         placeId: event.googlePlaceId,
+        location: event.location,
         organizers: event.organizers,
         tags: event.tags,
         website: event.website,
