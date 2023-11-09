@@ -35,7 +35,9 @@ export interface EventTicketCategory {
   description?: string;
   coverPicUrl?: string;
   startDate?: string;
+  startDateLocalized?: string;
   endDate?: string;
+  endDateLocalized?: string;
   ticketsSold?: {
     aggregate: {
       count: number;

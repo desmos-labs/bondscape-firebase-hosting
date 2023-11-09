@@ -41,7 +41,9 @@ const EventsFields = gql`
       description
       coverPicUrl: tickets_image_url
       startDate: start_date
+      startDateLocalized: start_date_localized
       endDate: end_date
+      endDateLocalized: end_date_localized
       ticketsSold: tickets_aggregate {
         aggregate {
           count

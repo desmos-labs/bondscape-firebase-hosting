@@ -5,15 +5,12 @@ import {
 } from "@/lib/DateUtils";
 import { differenceInHours, format, parseISO } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import { useCallback } from "react";
 
 /**
  * A hook that allows formatting a timestamp into a specified format.
  */
 const useFormatDateToTZ = () => {
-  dayjs.extend(utc);
   const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   /**

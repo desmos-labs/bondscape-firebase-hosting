@@ -381,31 +381,41 @@ export default function EventDetails({ params }: { params: any }) {
                       }}
                     />
                   </div>
-                  {ticketCategory.startDate && ticketCategory.endDate && (
-                    <div className="flex flex-row gap-2 items-center">
-                      <Image
-                        alt={"Tickets icon"}
-                        src={"/eventDetailsCalendarIcon.png"}
-                        width={20}
-                        height={20}
-                      />
-                      <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
-                        {
-                          getEventPeriodExtended(
-                            ticketCategory?.startDate,
-                            ticketCategory?.endDate,
-                          ).date
-                        }
-                        <span className="mr-2" />
-                        {
-                          getEventPeriodExtended(
-                            ticketCategory?.startDate,
-                            ticketCategory?.endDate,
-                          ).time
-                        }
+                  {ticketCategory.startDateLocalized &&
+                    ticketCategory.endDateLocalized && (
+                      <div className="flex flex-row gap-2 items-center">
+                        <Image
+                          alt={"Tickets icon"}
+                          src={"/eventDetailsCalendarIcon.png"}
+                          width={20}
+                          height={20}
+                        />
+                        <div className="flex flex-row gap-1 items-center">
+                          <div className="text-sm font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
+                            {
+                              getEventPeriodExtended(
+                                ticketCategory?.startDateLocalized,
+                                ticketCategory?.endDateLocalized,
+                              ).date
+                            }
+                            <span className="mr-2" />
+                            {
+                              getEventPeriodExtended(
+                                ticketCategory?.startDateLocalized,
+                                ticketCategory?.endDateLocalized,
+                              ).time
+                            }
+                          </div>
+                          <div className="text-sm font-semibold text-bondscape-text_neutral_700">
+                            {serializeTimezoneOffset(
+                              extractTimezoneOffset(
+                                ticketCategory?.startDateLocalized,
+                              ),
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               );
             })}
