@@ -187,10 +187,12 @@ export interface CreateEventValues {
    * Event start date.
    */
   startDate?: string;
+  startDateLocalized?: string;
   /**
    * Event end date.
    */
   endDate?: string;
+  endDateLocalized?: string;
   /**
    * Event categories.
    */

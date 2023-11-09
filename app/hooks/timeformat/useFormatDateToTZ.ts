@@ -47,7 +47,7 @@ const useFormatDateToTZ = () => {
         typeof timeToFormat === "string"
           ? parseISO(normalizeDateTime(timeToFormat))
           : timeToFormat;
-      return formatInTimeZone(timeToFormat, currentTimeZone, formatString);
+      return formatInTimeZone(parsedTime, currentTimeZone, formatString);
     },
     [currentTimeZone],
   );

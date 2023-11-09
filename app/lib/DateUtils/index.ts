@@ -1,3 +1,5 @@
+import dayjs, { Dayjs } from "dayjs";
+
 /**
  * Interface that represents a timezone offset.
  */
@@ -102,4 +104,14 @@ export const addTimezoneOffsetToDate = (
   // Computes the timezone offset in milliseconds.
   const timezoneOffset = offset.hours * 3600000 + offset.minutes * 60000;
   return new Date(utcTime + timezoneOffset);
+};
+
+/**
+ * Converts a provided date to a Date in correct format to be sent to our APIs
+ * @param date string | Date - The date to convert.
+ */
+export const getDatePickerParsedDate = (date: Dayjs) => {
+  const offset = dayjs(date).utcOffset();
+  const dateWithOffset = dayjs(date).utcOffset(offset);
+  return dateWithOffset.format("YYYY-MM-DDTHH:mm:00");
 };

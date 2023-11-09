@@ -79,8 +79,8 @@ const MainSection = ({
             <BondscapeDateTimePicker
               startLabel={"Start date"}
               endLabel={"End date"}
-              initialStartValue={values.startDate}
-              initialEndValue={values.endDate}
+              initialStartValue={values.startDateLocalized}
+              initialEndValue={values.endDateLocalized}
               required={false}
               onChangeStart={(value) => setFieldValue("startDate", value)}
               onChangeEnd={(value) => setFieldValue("endDate", value)}
