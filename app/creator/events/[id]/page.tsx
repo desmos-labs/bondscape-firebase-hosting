@@ -252,7 +252,7 @@ export default function EventDetails({ params }: { params: any }) {
                     src={"/eventDetailsLocationIcon.png"}
                   />
                 </div>
-                <div className="flex flex-col items-start">
+                <div className="w-[80%] text-start">
                   <div className="text-base font-semibold text-bondscape-text_neutral_900">
                     {selectedEvent ? (
                       googlePlace?.name
