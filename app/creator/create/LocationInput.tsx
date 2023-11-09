@@ -48,6 +48,7 @@ const LocationInput = ({
     // by setting the second parameter to "false"
     setValue(suggestion.description, false);
     onChange(suggestion.place_id);
+    clearSuggestions();
   };
 
   const renderSuggestions = () =>
