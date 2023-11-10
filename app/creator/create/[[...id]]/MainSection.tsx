@@ -79,20 +79,21 @@ const MainSection = ({
             <BondscapeDateTimePicker
               startLabel={"Start date"}
               endLabel={"End date"}
-              initialStartValue={values.startDate}
-              initialEndValue={values.endDate}
+              initialStartValue={values.startDateLocalized}
+              initialEndValue={values.endDateLocalized}
               required={false}
               onChangeStart={(value) => setFieldValue("startDate", value)}
               onChangeEnd={(value) => setFieldValue("endDate", value)}
               footer={
-              <div>
-                The start and end dates of the event will be in the time zone based on where the event will be held.
-                If no location is entered, the timezone will default to the UTC time zone.
-
-                <div className="text-feedback-warning mt-2">
-                  The event can only be published if the dates are entered; otherwise, it can only be saved as a draft.
+                <div>
+                  The start and end dates of the event will be in the time zone
+                  based on where the event will be held. If no location is
+                  entered, the timezone will default to the UTC time zone.
+                  <div className="text-feedback-warning mt-2">
+                    The event can only be published if the dates are entered;
+                    otherwise, it can only be saved as a draft.
+                  </div>
                 </div>
-              </div>
               }
             />
             <BondscapeSelectCategory
@@ -110,6 +111,7 @@ const MainSection = ({
               />
               <LocationInput
                 defaultValue={values.placeId}
+                formattedAddress={values.location?.formattedAddress}
                 title={"Location"}
                 required={false}
                 onChange={(placeId) => setFieldValue("placeId", placeId)}

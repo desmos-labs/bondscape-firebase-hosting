@@ -1,8 +1,9 @@
+import { getDatePickerParsedDate, normalizeDateTime } from "@/lib/DateUtils";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 
 interface Props {
@@ -30,6 +31,8 @@ const BondscapeDateTimePicker = ({
   onChangeEnd,
   footer,
 }: Props) => {
+  const [startValue, setStartValue] = useState<dayjs.Dayjs | undefined>();
+  const [endValue, setEndValue] = useState<dayjs.Dayjs | undefined>();
   const [minDate, setMinDate] = useState<dayjs.Dayjs>();
   const [maxDate, setMaxDate] = useState<dayjs.Dayjs>();
 
@@ -61,6 +64,25 @@ const BondscapeDateTimePicker = ({
     );
   };
 
+  useEffect(() => {
+    if (initialStartValue) {
+      const startValueWithoutTz = initialStartValue?.slice(0, -6);
+      setStartValue(dayjs(startValueWithoutTz));
+      onChangeStart(
+        normalizeDateTime(getDatePickerParsedDate(dayjs(startValueWithoutTz))),
+      );
+    }
+    if (initialEndValue) {
+      const endValueWithoutTz = initialEndValue?.slice(0, -6);
+      setEndValue(dayjs(endValueWithoutTz));
+      onChangeEnd(
+        normalizeDateTime(getDatePickerParsedDate(dayjs(endValueWithoutTz))),
+      );
+    }
+    // Adding those deps will cause an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialEndValue, initialStartValue]);
+
   return (
     <div className="flex flex-col bg-bondscape-text_neutral_100 gap-[0.75rem] rounded-[16px]  p-[1rem]">
       <div className="text text-white text-left">
@@ -77,12 +99,13 @@ const BondscapeDateTimePicker = ({
         </div>
         <div className="flex flex-1">
           <DatePicker
-            value={initialStartValue ? dayjs(initialStartValue) : undefined}
+            value={startValue}
             disabledDate={maxDate ? (current) => current > maxDate : undefined}
             onChange={(date) => {
               setMinDate(date || undefined);
               if (date) {
-                onChangeStart(dayjs.utc(date).tz().format());
+                setStartValue(dayjs(date));
+                onChangeStart(normalizeDateTime(getDatePickerParsedDate(date)));
               } else {
                 onChangeStart(undefined);
               }
@@ -107,12 +130,13 @@ const BondscapeDateTimePicker = ({
         </div>
         <div className="flex flex-1">
           <DatePicker
-            value={initialEndValue ? dayjs(initialEndValue) : undefined}
+            value={endValue}
             disabledDate={minDate ? (current) => current < minDate : undefined}
             onChange={(date) => {
               setMaxDate(date || undefined);
               if (date) {
-                onChangeEnd(dayjs.utc(date).tz().format());
+                setEndValue(dayjs(date));
+                onChangeEnd(normalizeDateTime(getDatePickerParsedDate(date)));
               } else {
                 onChangeEnd(undefined);
               }
@@ -129,7 +153,11 @@ const BondscapeDateTimePicker = ({
         </div>
       </div>
 
-      {footer && <div className="text-bondscape-text_neutral_900 text-[12px] font-normal">{footer}</div>}
+      {footer && (
+        <div className="text-bondscape-text_neutral_900 text-[12px] font-normal">
+          {footer}
+        </div>
+      )}
     </div>
   );
 };

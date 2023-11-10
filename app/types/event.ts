@@ -1,6 +1,25 @@
 import { DesmosProfile } from "@/types/desmos";
 import { BondscapePreviewImage } from "@/types/image";
 
+export interface EventLocation {
+  /**
+   * Name of the location.
+   */
+  name: string;
+  /**
+   * Address of the location.
+   */
+  formattedAddress: string;
+  /**
+   * Country of the location.
+   */
+  country: string;
+  /**
+   * Link to the location on Google Maps.
+   */
+  url: string;
+}
+
 export interface Organizer {
   /**
    * Organizer Desmos profile.
@@ -35,7 +54,9 @@ export interface EventTicketCategory {
   description?: string;
   coverPicUrl?: string;
   startDate?: string;
+  startDateLocalized?: string;
   endDate?: string;
+  endDateLocalized?: string;
   ticketsSold?: {
     aggregate: {
       count: number;
@@ -74,13 +95,22 @@ export interface Event {
    */
   startDate: string;
   /**
+   * Event start date localized.
+   */
+  startDateLocalized: string;
+  /**
    * Event end date.
    */
   endDate: string;
   /**
+   * Event end date localized.
+   */
+  endDateLocalized: string;
+  /**
    * Event location.
    */
   googlePlaceId: string;
+  location: EventLocation;
   /**
    * Event organizers
    */
@@ -157,10 +187,12 @@ export interface CreateEventValues {
    * Event start date.
    */
   startDate?: string;
+  startDateLocalized?: string;
   /**
    * Event end date.
    */
   endDate?: string;
+  endDateLocalized?: string;
   /**
    * Event categories.
    */
@@ -173,6 +205,7 @@ export interface CreateEventValues {
    * Event place id (Google Maps).
    */
   placeId?: string;
+  location?: EventLocation;
   /**
    * Event organizers, creator + co-hosts.
    */

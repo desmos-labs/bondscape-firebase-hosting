@@ -1,10 +1,13 @@
 "use client";
 import BondscapeButton from "@/components/BondscapeButton";
-import useGetGooglePlace from "@/hooks/events/useGetGooglePlace";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
 import MainLayout from "@/layouts/MainLayout";
+import {
+  extractTimezoneOffset,
+  serializeTimezoneOffset,
+} from "@/lib/DateUtils";
 import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
 import GetQrCode from "@/services/axios/requests/GetQrCode";
 import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
@@ -33,7 +36,6 @@ export default function EventDetails({ params }: { params: any }) {
   const router = useRouter();
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
   const { getEventPeriodExtended } = useFormatDateToTZ();
-  const { googlePlace } = useGetGooglePlace(selectedEvent?.googlePlaceId);
 
   // Callbacks
 
@@ -218,19 +220,32 @@ export default function EventDetails({ params }: { params: any }) {
                   <div className="text-base font-semibold text-bondscape-text_neutral_900">
                     {selectedEvent ? (
                       getEventPeriodExtended(
-                        selectedEvent?.startDate,
-                        selectedEvent?.endDate,
+                        selectedEvent?.startDateLocalized,
+                        selectedEvent?.endDateLocalized,
                       ).date
                     ) : (
                       <Skeleton width={300} />
                     )}
                   </div>
-                  <div className="text-sm text-bondscape-text_neutral_700">
+                  <div>
                     {selectedEvent ? (
-                      getEventPeriodExtended(
-                        selectedEvent?.startDate,
-                        selectedEvent?.endDate,
-                      ).time
+                      <div className="flex flex-row gap-2">
+                        <div className="text-sm text-bondscape-text_neutral_700">
+                          {
+                            getEventPeriodExtended(
+                              selectedEvent?.startDateLocalized,
+                              selectedEvent?.endDateLocalized,
+                            ).time
+                          }
+                        </div>
+                        <div className="text-sm font-semibold text-bondscape-text_neutral_700">
+                          {serializeTimezoneOffset(
+                            extractTimezoneOffset(
+                              selectedEvent?.startDateLocalized,
+                            ),
+                          )}
+                        </div>
+                      </div>
                     ) : (
                       <Skeleton width={200} />
                     )}
@@ -240,8 +255,12 @@ export default function EventDetails({ params }: { params: any }) {
               <button
                 className="flex basis-1/2 flex-row gap-2 items-center"
                 onClick={() =>
-                  googlePlace?.url &&
-                  window.open(googlePlace.url, "_blank", "noreferrer")
+                  selectedEvent?.location?.url &&
+                  window.open(
+                    selectedEvent.location.url,
+                    "_blank",
+                    "noreferrer",
+                  )
                 }
               >
                 <div>
@@ -252,17 +271,17 @@ export default function EventDetails({ params }: { params: any }) {
                     src={"/eventDetailsLocationIcon.png"}
                   />
                 </div>
-                <div className="flex flex-col items-start">
+                <div className="w-[80%] text-start">
                   <div className="text-base font-semibold text-bondscape-text_neutral_900">
                     {selectedEvent ? (
-                      googlePlace?.name
+                      selectedEvent.location?.name
                     ) : (
                       <Skeleton width={300} />
                     )}
                   </div>
                   <div className="text-sm text-bondscape-text_neutral_700">
                     {selectedEvent ? (
-                      googlePlace?.formattedAddress
+                      selectedEvent?.location?.formattedAddress
                     ) : (
                       <Skeleton width={200} />
                     )}
@@ -364,31 +383,41 @@ export default function EventDetails({ params }: { params: any }) {
                       }}
                     />
                   </div>
-                  {ticketCategory.startDate && ticketCategory.endDate && (
-                    <div className="flex flex-row gap-2 items-center">
-                      <Image
-                        alt={"Tickets icon"}
-                        src={"/eventDetailsCalendarIcon.png"}
-                        width={20}
-                        height={20}
-                      />
-                      <div className="text-base font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
-                        {
-                          getEventPeriodExtended(
-                            ticketCategory?.startDate,
-                            ticketCategory?.endDate,
-                          ).date
-                        }
-                        <span className="mr-2" />
-                        {
-                          getEventPeriodExtended(
-                            ticketCategory?.startDate,
-                            ticketCategory?.endDate,
-                          ).time
-                        }
+                  {ticketCategory.startDateLocalized &&
+                    ticketCategory.endDateLocalized && (
+                      <div className="flex flex-row gap-2 items-center">
+                        <Image
+                          alt={"Tickets icon"}
+                          src={"/eventDetailsCalendarIcon.png"}
+                          width={20}
+                          height={20}
+                        />
+                        <div className="flex flex-row gap-1 items-center">
+                          <div className="text-sm font-normal leading-normal text-bondscape-text_neutral_700 mt-0.5">
+                            {
+                              getEventPeriodExtended(
+                                ticketCategory?.startDateLocalized,
+                                ticketCategory?.endDateLocalized,
+                              ).date
+                            }
+                            <span className="mr-2" />
+                            {
+                              getEventPeriodExtended(
+                                ticketCategory?.startDateLocalized,
+                                ticketCategory?.endDateLocalized,
+                              ).time
+                            }
+                          </div>
+                          <div className="text-sm font-semibold text-bondscape-text_neutral_700">
+                            {serializeTimezoneOffset(
+                              extractTimezoneOffset(
+                                ticketCategory?.startDateLocalized,
+                              ),
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               );
             })}

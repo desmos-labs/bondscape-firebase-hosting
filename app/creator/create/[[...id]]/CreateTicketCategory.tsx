@@ -26,6 +26,7 @@ const CreateTicketCategory = ({
   onHide,
 }: CreateTicketCategoryProps) => {
   const { user } = useUser();
+  const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState<TicketCategoryValues>({
     description: "",
     category: "",
@@ -43,9 +44,11 @@ const CreateTicketCategory = ({
 
   useEffect(() => {
     if (selectedCategoryIndex !== undefined && globalValues.ticketsCategories) {
+      setLoading(true);
       setInitialValues({
         ...globalValues.ticketsCategories[selectedCategoryIndex],
       });
+      setLoading(false);
     }
   }, [globalValues.ticketsCategories, selectedCategoryIndex]);
 
@@ -80,6 +83,16 @@ const CreateTicketCategory = ({
     onHide();
   };
 
+  if (!initialValues) {
+    return (
+      <div className="max-w-[63.25rem]">
+        <div className="relative flex flex-col">
+          <div className="flex flex-1 flex-col bg-bondscape-surface rounded-[24px] p-x-6 p-y-10"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[63.25rem]">
       <div className="relative flex flex-col">
@@ -107,7 +120,8 @@ const CreateTicketCategory = ({
                         text={"Upload an image"}
                         description={
                           <div className="text text-feedback-warning text-[12px]">
-                            This image will be the one used to create the NFTs of the tickets for this category.
+                            This image will be the one used to create the NFTs
+                            of the tickets for this category.
                           </div>
                         }
                         fileToUpload={values.coverPic}
@@ -165,14 +179,18 @@ const CreateTicketCategory = ({
                         <div className="text text-white text-left px-[1rem]">
                           <div className="font-bold">Tickets quantities</div>
                           <div className="text-sm">
-                            Here you can define the maximum amount of tickets that a single user can get for this
-                            category, as well as the maximum amount of tickets available for this category.
+                            Here you can define the maximum amount of tickets
+                            that a single user can get for this category, as
+                            well as the maximum amount of tickets available for
+                            this category.
                           </div>
                         </div>
                         <SmallTextInput
                           inputName={"maxQuantityPerPerson"}
                           title={"Per Person"}
-                          placeholder={"Max amount of tickets a single user can get for this category"}
+                          placeholder={
+                            "Max amount of tickets a single user can get for this category"
+                          }
                           required={true}
                           onChange={(text) =>
                             setFieldValue(
@@ -186,7 +204,9 @@ const CreateTicketCategory = ({
                         <SmallTextInput
                           inputName={"maxQuantityPerCategory"}
                           title={"Total"}
-                          placeholder={"Max amount of tickets available for this category"}
+                          placeholder={
+                            "Max amount of tickets available for this category"
+                          }
                           required={true}
                           onChange={(text) =>
                             setFieldValue(

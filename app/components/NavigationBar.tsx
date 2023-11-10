@@ -1,16 +1,16 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import BondscapeLogo from "./BondscapeLogo";
-import useBreakpoints from "../hooks/layout/useBreakpoints";
-import { usePathname } from "next/navigation";
-import useUser from "@/hooks/user/useUser";
-import SelectComponent from "@/components/SelectComponent";
-import { AnimatePresence, motion } from "framer-motion";
-import EventsHeader from "@/components/EventsHeader";
-import Tabs from "@/components/Tabs";
-import { useActiveTab, useSetActiveTab } from "@/jotai/activeTab";
 import CreateEventHeader from "@/components/CreateEventHeader";
+import EventsHeader from "@/components/EventsHeader";
+import SelectComponent from "@/components/SelectComponent";
+import Tabs from "@/components/Tabs";
+import useUser from "@/hooks/user/useUser";
+import { useActiveTab, useSetActiveTab } from "@/jotai/activeTab";
+import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import useBreakpoints from "../hooks/layout/useBreakpoints";
+import BondscapeLogo from "./BondscapeLogo";
 
 interface Props {
   readonly disableNavbarBgInDesktop?: boolean;
@@ -33,7 +33,8 @@ const NavigationBar = ({
   const setActiveTab = useSetActiveTab();
   const [navbarBgVisible, setNavbarBgVisible] = useState(false);
   // Hooks
-  const [isMobile, isMd, isDesktop, isBreakpointReady] =
+  // Do not remove unused values
+  const [isMobile, isMd, isLg, isXl, isDesktop, isBreakpointReady] =
     useBreakpoints();
   const pathname = usePathname();
   const { user } = useUser();

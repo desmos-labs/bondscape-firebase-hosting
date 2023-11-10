@@ -1,15 +1,22 @@
 import React, { useEffect } from "react";
-import usePlacesAutocomplete, { getDetails } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
+import usePlacesAutocomplete from "use-places-autocomplete";
 
 interface Props {
   readonly defaultValue?: string;
+  readonly formattedAddress?: string;
   readonly title: string;
   readonly required: boolean;
   readonly onChange: (placeId: string) => void;
 }
 
-const LocationInput = ({ defaultValue, title, required, onChange }: Props) => {
+const LocationInput = ({
+  defaultValue,
+  formattedAddress,
+  title,
+  required,
+  onChange,
+}: Props) => {
   const {
     ready,
     value,
@@ -22,18 +29,10 @@ const LocationInput = ({ defaultValue, title, required, onChange }: Props) => {
   });
 
   useEffect(() => {
-    if (defaultValue) {
-      getDetails({
-        placeId: defaultValue,
-      }).then((result) => {
-        if (typeof result !== "string") {
-          if (result?.formatted_address != null) {
-            setValue(result?.formatted_address, false);
-          }
-        }
-      });
+    if (formattedAddress) {
+      setValue(formattedAddress, false);
     }
-  }, [defaultValue, setValue]);
+  }, [formattedAddress, setValue]);
 
   const ref = useOnclickOutside(() => {
     clearSuggestions();
