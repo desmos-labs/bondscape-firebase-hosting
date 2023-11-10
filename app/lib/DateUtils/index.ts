@@ -24,10 +24,11 @@ export interface TimezoneOffset {
  * if don't contains the timezone offset or the Z character.
  */
 export const normalizeDateTime = (date: string): string => {
-  if (date.indexOf("Z") === -1 && date.indexOf("+") === -1) {
+  const RFC3339Regex =
+    /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[+-]\d{2}:\d{2}))$/;
+  if (!RFC3339Regex.test(date)) {
     return `${date}Z`;
   }
-
   return date;
 };
 
@@ -38,18 +39,19 @@ export const extractTimezoneOffset = (date: string): TimezoneOffset => {
   if (date.indexOf("Z") !== -1) {
     return { hours: 0, minutes: 0 };
   }
-  const indexOfPlus = date.indexOf("+");
-  const indexOfMinus = date.indexOf("-");
+  const indexOfPlus = date.lastIndexOf("+");
+  const indexOfMinus = date.lastIndexOf("-");
   // Return if there is no offset.
   if (indexOfPlus === -1 && indexOfMinus === -1) {
     return { hours: 0, minutes: 0 };
   }
-  const offsetDividerIndex = indexOfPlus !== -1 ? indexOfPlus : indexOfMinus;
-  const offset = date.substring(offsetDividerIndex + 1);
-  // Return if we have an invalid offset.
-  if (offset.length === 0) {
+  const offsetDividerIndex =
+    indexOfPlus !== -1 ? indexOfPlus + 1 : indexOfMinus + 1;
+  // Return an empty offset if the index is not at the end.
+  if (date.length - offsetDividerIndex < 2) {
     return { hours: 0, minutes: 0 };
   }
+  const offset = date.substring(offsetDividerIndex);
   // Get an integer value that can be used later on to convert the parsed hours and
   // minutes in +hours and +minutes if the UTC offset is + or
   // -hours and -minutes if the UTC offset is -.
