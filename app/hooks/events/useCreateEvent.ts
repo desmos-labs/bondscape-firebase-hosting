@@ -149,8 +149,6 @@ export const useCreateEvent = () => {
         tags: values.tags,
       };
 
-      console.log("FACCIO LA CHIAMATA", eventParams.startDate);
-
       if (eventId) {
         eventCreationResult = await EditEvent({
           eventId,
