@@ -247,13 +247,15 @@ export default function EventDetails({ params }: { params: any }) {
                             ).time
                           }
                         </div>
-                        <div className="text-sm font-semibold text-bondscape-text_neutral_700">
-                          {serializeTimezoneOffset(
-                            extractTimezoneOffset(
-                              selectedEvent?.startDateLocalized,
-                            ),
-                          )}
-                        </div>
+                        {selectedEvent.startDateLocalized && (
+                          <div className="text-sm font-semibold text-bondscape-text_neutral_700">
+                            {serializeTimezoneOffset(
+                              extractTimezoneOffset(
+                                selectedEvent.startDateLocalized,
+                              ),
+                            )}
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <Skeleton width={200} />
