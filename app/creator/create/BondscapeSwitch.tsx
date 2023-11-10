@@ -8,7 +8,7 @@ interface Props {
   readonly required?: boolean;
 }
 
-const SmallTextInput = ({ title, value, onChange, required }: Props) => {
+const BondscapeSwitch = ({ title, value, onChange, required }: Props) => {
   const [isChecked, setIsChecked] = useState(value || false);
   return (
     <div className="flex flex-1 flex-row bg-bondscape-text_neutral_100 gap-2 px-[1rem] rounded-[16px] items-center">
@@ -20,6 +20,7 @@ const SmallTextInput = ({ title, value, onChange, required }: Props) => {
       </div>
       <InputSwitch
         pt={{
+          // @ts-ignore
           slider: ({ props }) => ({
             className: props.checked
               ? "bg-bondscape-primary"
@@ -36,4 +37,4 @@ const SmallTextInput = ({ title, value, onChange, required }: Props) => {
   );
 };
 
-export default SmallTextInput;
+export default BondscapeSwitch;
