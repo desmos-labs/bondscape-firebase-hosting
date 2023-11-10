@@ -14,6 +14,7 @@ const CreateEvent = ({
   placeId,
   tags,
   website,
+  isPrivate,
 }: EventRequestParams): ResultAsync<any, Error> => {
   return ResultAsync.fromPromise(
     axiosInstance.post("/events", {
@@ -28,6 +29,7 @@ const CreateEvent = ({
       organizers_addresses: organizersAddresses,
       categories_ids: categoriesIds,
       tags: tags,
+      is_private: isPrivate,
     }),
     (e: any) => e ?? Error("Error creating event"),
   ).map((response) => {

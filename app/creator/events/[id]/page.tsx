@@ -167,9 +167,18 @@ export default function EventDetails({ params }: { params: any }) {
               <Skeleton className="w-full h-full rounded-[12px]" />
             )}
           </div>
-          <div className="text-3xl font-semibold text-bondscape-text_neutral_900 mt-6 mb-4">
-            {selectedEvent?.name ?? <Skeleton width={500} />}
-          </div>
+          {selectedEvent ? (
+            <div className="flex flex-row gap-2 items-center justify-between">
+              <div className="text-3xl font-semibold text-bondscape-text_neutral_900 mt-6 mb-4">
+                {selectedEvent?.name}
+              </div>
+              <div className="text-sm font-semibold text-bondscape-text_neutral_900 mt-6 mb-4">
+                {selectedEvent?.isPrivate ? "Private Event" : "Public Event"}
+              </div>
+            </div>
+          ) : (
+            <Skeleton className="mt-8" width={500} />
+          )}
           {selectedEvent ? (
             <div className="flex flex-1 flex-row">
               <div className="flex justify-center items-center">
