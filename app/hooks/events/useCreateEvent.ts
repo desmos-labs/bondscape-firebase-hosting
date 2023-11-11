@@ -147,6 +147,7 @@ export const useCreateEvent = () => {
         website: values.website,
         placeId: values.placeId,
         tags: values.tags,
+        isPrivate: values.isPrivate,
       };
 
       if (eventId) {

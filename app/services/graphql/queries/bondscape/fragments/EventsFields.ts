@@ -41,6 +41,7 @@ const EventsFields = gql`
     detailsLink: details_link
     website
     tags
+    isPrivate: is_private
     ticketsCategories: tickets_categories {
       id
       name

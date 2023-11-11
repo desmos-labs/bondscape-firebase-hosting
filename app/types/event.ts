@@ -149,6 +149,7 @@ export interface Event {
    * Event tickets categories.
    */
   ticketsCategories: EventTicketCategory[];
+  isPrivate: boolean;
 }
 
 export interface TicketCategoryValues {
@@ -218,6 +219,7 @@ export interface CreateEventValues {
    * Event tickets categories.
    */
   ticketsCategories?: TicketCategoryValues[];
+  isPrivate?: boolean;
 }
 
 export interface GQLEventsResult {
@@ -255,6 +257,7 @@ export interface EventRequestParams {
   placeId?: string;
   organizersAddresses: string[];
   tags?: string[];
+  isPrivate?: boolean;
 }
 
 export interface TicketCategoryRequestParams {

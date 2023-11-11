@@ -15,6 +15,7 @@ const EditEvent = ({
   placeId,
   tags,
   website,
+  isPrivate,
 }: EventRequestParams & {
   eventId: string;
 }): ResultAsync<
@@ -39,6 +40,7 @@ const EditEvent = ({
       organizers_addresses: organizersAddresses,
       categories_ids: categoriesIds,
       tags: tags,
+      is_private: isPrivate,
     }),
     (e: any) => e ?? Error("Error editing event"),
   ).map((response) => {

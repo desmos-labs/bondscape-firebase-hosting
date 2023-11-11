@@ -4,6 +4,7 @@ import BondscapeDateTimePicker from "@/creator/create/BondscapeDateTimePicker/Bo
 import BondscapeSelectCategory from "@/creator/create/BondscapeSelectCategory";
 import BondscapeSelectCoHosts from "@/creator/create/BondscapeSelectCoHosts";
 import BondscapeSelectTags from "@/creator/create/BondscapeSelectTags";
+import BondscapeSwitch from "@/creator/create/BondscapeSwitch";
 import CoverPicDropZone from "@/creator/create/CoverPicDropZone";
 import LocationInput from "@/creator/create/LocationInput";
 import SmallTextInput from "@/creator/create/SmallTextInput";
@@ -130,6 +131,13 @@ const MainSection = ({
                 initialTags={values.tags}
                 required={false}
                 onChange={(tags) => setFieldValue("tags", tags)}
+              />
+              <BondscapeSwitch
+                title={"Private Event"}
+                value={values.isPrivate}
+                onChange={(newValue) => {
+                  setFieldValue("isPrivate", newValue);
+                }}
               />
             </div>
           </div>

@@ -36,6 +36,9 @@ export const normalizeDateTime = (date: string): string => {
  * Utility function to extract the timezone offset from a RFC3339 encoded date time.
  */
 export const extractTimezoneOffset = (date: string): TimezoneOffset => {
+  if (!date) {
+    return { hours: 0, minutes: 0 };
+  }
   if (date.indexOf("Z") !== -1) {
     return { hours: 0, minutes: 0 };
   }

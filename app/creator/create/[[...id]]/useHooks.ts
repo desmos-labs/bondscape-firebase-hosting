@@ -23,6 +23,7 @@ const useHooks = (eventId?: string) => {
     placeId: undefined,
     location: undefined,
     ticketsCategories: [],
+    isPrivate: false,
   });
 
   // Memoized values
@@ -72,6 +73,7 @@ const useHooks = (eventId?: string) => {
         organizers: event.organizers,
         tags: event.tags,
         website: event.website,
+        isPrivate: event.isPrivate,
         ticketsCategories: event.ticketsCategories.map((ticketCategory) => {
           return {
             id: ticketCategory.id,
