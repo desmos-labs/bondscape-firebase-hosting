@@ -32,14 +32,16 @@ export default function EventDetails({ params }: { params: any }) {
 
   const [eventQRCodeDialogURL, setEventQRCodeDialogURL] = useState<
     string | undefined
-  >(undefined);
+  >();
   const [eventQRCodeDialogImageSrc, setEventQRCodeDialogImageSrc] = useState<
     string | undefined
-  >(undefined);
+  >();
   const [eventQRCodeDialogVisible, setEventQRCodeDialogVisible] =
     useState(false);
 
+  const [eventShareURL, setEventShareURL] = useState<string | undefined>();
   const [eventShareQRCode, setEventShareQRCode] = useState("");
+  const [eventJoinURL, setEventJoinURL] = useState<string | undefined>();
   const [eventJoinQRCode, setEventJoinQRCode] = useState("");
 
   // ------------------------------------------------------------------------------------------------------------------
@@ -71,15 +73,15 @@ export default function EventDetails({ params }: { params: any }) {
 
   const showEventJoinQRCode = useCallback(() => {
     setEventQRCodeDialogImageSrc(eventJoinQRCode);
-    setEventQRCodeDialogURL(undefined);
+    setEventQRCodeDialogURL(eventJoinURL);
     setEventQRCodeDialogVisible(true);
-  }, [eventJoinQRCode]);
+  }, [eventJoinQRCode, eventJoinURL]);
 
   const showEventShareQRCode = useCallback(() => {
     setEventQRCodeDialogImageSrc(eventShareQRCode);
-    setEventQRCodeDialogURL(selectedEvent?.detailsLink);
+    setEventQRCodeDialogURL(eventShareURL);
     setEventQRCodeDialogVisible(true);
-  }, [eventShareQRCode, selectedEvent?.detailsLink]);
+  }, [eventShareQRCode, eventShareURL]);
 
   // ------------------------------------------------------------------------------------------------------------------
   // --- Effects
@@ -88,7 +90,10 @@ export default function EventDetails({ params }: { params: any }) {
   useEffect(() => {
     if (selectedEvent) {
       GetEventJoinLink(selectedEvent.id)
-        .andThen((url) => GetQrCode(url, "url"))
+        .andThen((url) => {
+          setEventJoinURL(url);
+          return GetQrCode(url, "url");
+        })
         .then((result) => {
           if (result.isOk()) {
             setEventJoinQRCode(result.value.url);
@@ -96,7 +101,10 @@ export default function EventDetails({ params }: { params: any }) {
         });
 
       GetEventDetailsLink(selectedEvent.id)
-        .andThen((url) => GetQrCode(url, "url"))
+        .andThen((url) => {
+          setEventShareURL(url);
+          return GetQrCode(url, "url");
+        })
         .then((result) => {
           if (result.isOk()) {
             setEventShareQRCode(result.value.url);
@@ -151,16 +159,16 @@ export default function EventDetails({ params }: { params: any }) {
           description={
             "Share your event with other users so they can find it easily!"
           }
-          buttonText={"Show URL"}
+          buttonText={"Show"}
           onButtonClick={showEventShareQRCode}
         />
         <EventDetailsTopInfoSection
           visible={selectedEvent !== undefined}
           title={"Event Check-in"}
           description={
-            "Save this QR and show it to attendees at the event to let them create memories!"
+            "Allow attendees at the event to join your event and create memories!"
           }
-          buttonText={"Show QR Code"}
+          buttonText={"Show"}
           onButtonClick={showEventJoinQRCode}
         />
         <div className="flex flex-1 flex-col bg-bondscape-surface p-[24px] rounded-[16px]">
