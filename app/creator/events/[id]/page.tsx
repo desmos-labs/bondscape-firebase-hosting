@@ -1,70 +1,61 @@
 "use client";
-import BondscapeButton from "@/components/BondscapeButton";
 import useCustomLazyQuery from "@/hooks/graphql/useCustomLazyQuery";
 import useBreakpoints from "@/hooks/layout/useBreakpoints";
 import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
 import MainLayout from "@/layouts/MainLayout";
-import {
-  extractTimezoneOffset,
-  serializeTimezoneOffset,
-} from "@/lib/DateUtils";
+import {extractTimezoneOffset, serializeTimezoneOffset,} from "@/lib/DateUtils";
 import GetEventJoinLink from "@/services/axios/requests/GetEventJoinLink";
 import GetQrCode from "@/services/axios/requests/GetQrCode";
 import GetEventById from "@/services/graphql/queries/bondscape/GetEventById";
-import { Event, GQLEventsResult } from "@/types/event";
+import {Event, GQLEventsResult} from "@/types/event";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
-import { ProgressBar } from "primereact/progressbar";
-import { classNames } from "primereact/utils";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {useRouter} from "next/navigation";
+import {ProgressBar} from "primereact/progressbar";
+import {classNames} from "primereact/utils";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import Skeleton from "react-loading-skeleton";
-import { PuffLoader } from "react-spinners";
-import { toast } from "react-toastify";
+import GetEventDetailsLink from "@/services/axios/requests/GetEventDetailsLink";
+import EventDetailsTopInfoSection from "@/components/EventDetailsTopInfoSection";
+import EventQRCodeDialog from "@/components/EventQRCodeDialog";
 
+/**
+ * Event details page.
+ * @constructor
+ */
 export default function EventDetails({ params }: { params: any }) {
-  // States
-  const [selectedEvent, setSelectedEvent] = useState<Event>();
-  const [eventQrCode, setEventQrCode] = useState("");
-  const [generatingQr, setGeneratingQr] = useState(false);
-  const [qrCodeVisible, setQrCodeVisible] = useState(false);
+  // ------------------------------------------------------------------------------------------------------------------
+  // --- States
+  // ------------------------------------------------------------------------------------------------------------------
 
-  // Hooks
+  const [selectedEvent, setSelectedEvent] = useState<Event>();
+
+  const [eventQRCodeDialogURL, setEventQRCodeDialogURL] = useState<
+    string | undefined
+  >();
+  const [eventQRCodeDialogImageSrc, setEventQRCodeDialogImageSrc] = useState<
+    string | undefined
+  >();
+  const [eventQRCodeDialogVisible, setEventQRCodeDialogVisible] =
+    useState(false);
+
+  const [eventShareURL, setEventShareURL] = useState<string | undefined>();
+  const [eventShareQRCode, setEventShareQRCode] = useState("");
+  const [eventJoinURL, setEventJoinURL] = useState<string | undefined>();
+  const [eventJoinQRCode, setEventJoinQRCode] = useState("");
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // --- Hooks
+  // ------------------------------------------------------------------------------------------------------------------
+
   const [isMobile, isMd] = useBreakpoints();
   const router = useRouter();
   const [getEventById] = useCustomLazyQuery<GQLEventsResult>(GetEventById);
   const { getEventPeriodExtended } = useFormatDateToTZ();
 
-  // Callbacks
-
-  const generateQrCode = useCallback(async (url: string) => {
-    const result = await GetQrCode(url, "url");
-    if (result.isOk()) {
-      setEventQrCode(result.value.url);
-    }
-  }, []);
-
-  const toDataURL = useCallback(async () => {
-    setGeneratingQr(true);
-    try {
-      const response = await fetch(eventQrCode);
-      const blob = await response.blob();
-      return URL.createObjectURL(blob);
-    } finally {
-      setGeneratingQr(false);
-    }
-  }, [eventQrCode]);
-
-  const saveQrCode = useCallback(async () => {
-    const a = document.createElement("a");
-    a.href = await toDataURL();
-    a.download = `bondscape_${selectedEvent?.name}_qr_code.png`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }, [selectedEvent?.name, toDataURL]);
+  // ------------------------------------------------------------------------------------------------------------------
+  // --- Callbacks
+  // ------------------------------------------------------------------------------------------------------------------
 
   const loadEvent = useCallback(
     async (eventId: string) => {
@@ -80,17 +71,47 @@ export default function EventDetails({ params }: { params: any }) {
     [getEventById],
   );
 
-  // Effects
+  const showEventJoinQRCode = useCallback(() => {
+    setEventQRCodeDialogImageSrc(eventJoinQRCode);
+    setEventQRCodeDialogURL(eventJoinURL);
+    setEventQRCodeDialogVisible(true);
+  }, [eventJoinQRCode, eventJoinURL]);
+
+  const showEventShareQRCode = useCallback(() => {
+    setEventQRCodeDialogImageSrc(eventShareQRCode);
+    setEventQRCodeDialogURL(eventShareURL);
+    setEventQRCodeDialogVisible(true);
+  }, [eventShareQRCode, eventShareURL]);
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // --- Effects
+  // ------------------------------------------------------------------------------------------------------------------
 
   useEffect(() => {
     if (selectedEvent) {
-      GetEventJoinLink(selectedEvent.id).then((result) => {
-        if (result.isOk()) {
-          generateQrCode(result.value);
-        }
-      });
+      GetEventJoinLink(selectedEvent.id)
+        .andThen((url) => {
+          setEventJoinURL(url);
+          return GetQrCode(url, "url");
+        })
+        .then((result) => {
+          if (result.isOk()) {
+            setEventJoinQRCode(result.value.url);
+          }
+        });
+
+      GetEventDetailsLink(selectedEvent.id)
+        .andThen((url) => {
+          setEventShareURL(url);
+          return GetQrCode(url, "url");
+        })
+        .then((result) => {
+          if (result.isOk()) {
+            setEventShareQRCode(result.value.url);
+          }
+        });
     }
-  }, [generateQrCode, selectedEvent]);
+  }, [selectedEvent]);
 
   useEffect(() => {
     const eventId = params.id as string;
@@ -110,6 +131,10 @@ export default function EventDetails({ params }: { params: any }) {
     }
   }, [selectedEvent]);
 
+  // ------------------------------------------------------------------------------------------------------------------
+  // --- Screen rendering
+  // ------------------------------------------------------------------------------------------------------------------
+
   if (isMobile || isMd) {
     return (
       <div className="flex flex-1 h-screen justify-center items-center px-xMobile">
@@ -128,26 +153,24 @@ export default function EventDetails({ params }: { params: any }) {
       editButtonHref={`/creator/create/${params.id}`}
     >
       <div className="flex flex-1 flex-col lg:pb-12 xl:pb-24 max-w-[51rem] xl:max-w-[70rem] mx-auto mt-[32px] gap-[24px]">
-        <div className="flex flex-1 flex-col gap-[12px] bg-bondscape-surface p-[24px] rounded-[16px]">
-          <div className="text-2xl font-semibold text-bondscape-text_neutral_900">
-            Event Check-in
-          </div>
-          <div className="flex flex-row items-center justify-between">
-            <div className="text-bondscape-text_neutral_900 text-base">
-              Save this QR and shows it to attendees at the event to let them
-              join the memories creation!
-            </div>
-            {selectedEvent && (
-              <BondscapeButton
-                textClassName="text-sm"
-                className="w-[165px] px-[20px] py-[10px] rounded-[10px] z-4 h-10"
-                loading={false}
-                text={"Show QR Code"}
-                onClick={() => setQrCodeVisible(true)}
-              />
-            )}
-          </div>
-        </div>
+        <EventDetailsTopInfoSection
+          visible={selectedEvent !== undefined}
+          title={"Share your event"}
+          description={
+            "Share your event with other users so they can find it easily!"
+          }
+          buttonText={"Show"}
+          onButtonClick={showEventShareQRCode}
+        />
+        <EventDetailsTopInfoSection
+          visible={selectedEvent !== undefined}
+          title={"Event Check-in"}
+          description={
+            "Allow attendees at the event to join your event and create memories!"
+          }
+          buttonText={"Show"}
+          onButtonClick={showEventJoinQRCode}
+        />
         <div className="flex flex-1 flex-col bg-bondscape-surface p-[24px] rounded-[16px]">
           <div className="relative w-[48rem] h-[27rem] xl:w-[67rem] xl:h-[37.7rem]">
             {selectedEvent ? (
@@ -435,63 +458,13 @@ export default function EventDetails({ params }: { params: any }) {
           </div>
         </div>
       </div>
-      <Dialog
-        draggable={false}
-        modal={true}
-        blockScroll={true}
-        className="flex w-[480px]"
-        visible={qrCodeVisible}
-        onHide={() => setQrCodeVisible(false)}
-      >
-        <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="p-2.5 rounded-[8px] bg-white">
-            {eventQrCode ? (
-              <Image
-                alt={"Qr code"}
-                src={eventQrCode}
-                width={158}
-                height={158}
-              />
-            ) : (
-              <PuffLoader color={"#A579FF"} />
-            )}
-          </div>
-          <div className="flex flex-1 flex-col gap-[40px] items-center">
-            <div className="text-xl font-semibold text-bondscape-text_neutral_900 mt-6">
-              {selectedEvent?.name ?? <Skeleton width={500} />}
-            </div>
-            {selectedEvent && (
-              <div className="flex flex-col gap-4">
-                <Button
-                  outlined
-                  className="w-[432px] justify-center font-semibold"
-                  pt={{
-                    label: {
-                      className: "font-semibold",
-                    },
-                  }}
-                  label={"Copy Link"}
-                  onClick={() => {
-                    navigator.clipboard.writeText(selectedEvent.detailsLink);
-                    toast("Link copied to clipboard!");
-                  }}
-                />
-                <Button
-                  loading={generatingQr}
-                  className="w-[432px] justify-center font-semibold"
-                  pt={{
-                    label: {
-                      className: "font-semibold",
-                    },
-                  }}
-                  label={"Download QR Code"}
-                  onClick={() => saveQrCode()}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </Dialog>
+      <EventQRCodeDialog
+        eventName={selectedEvent?.name}
+        linkUrl={eventQRCodeDialogURL}
+        qrCodeImageSrc={eventQRCodeDialogImageSrc}
+        visible={eventQRCodeDialogVisible}
+        onHide={() => setEventQRCodeDialogVisible(false)}
+      />
     </MainLayout>
   );
 }
