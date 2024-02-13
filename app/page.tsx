@@ -1,8 +1,8 @@
-import MainLayout from "./layouts/MainLayout";
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 import mockupImage from "../public/mockup-image-mobile.webp";
+import MainLayout from "./layouts/MainLayout";
 import DefaultSEO from "./seo";
 
 export const metadata = {
@@ -11,12 +11,8 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <MainLayout
-      backgroundImage={true}
-      disableNavbarBgInDesktop={true}
-      fullScreenHeightOption={"onlyDesktop"}
-    >
-      <div className="flex justify-center w-full h-screen">
+    <MainLayout backgroundImage={true} disableNavbarBgInDesktop={true}>
+      <div className="flex items-center justify-center w-full">
         <div className="flex flex-col lg:flex-row items-center relative justify-center">
           <div className="w-[280px] h-[382px] md:w-[350px] md:h-[478px] lg:w-[438px] lg:h-[597px] relative">
             <Image

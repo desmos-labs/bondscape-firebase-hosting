@@ -1,8 +1,8 @@
 "use client";
-import React, { useMemo } from "react";
 import EventComponent from "@/components/EventComponent";
-import { Event } from "@/types/event";
 import EventComponentSkeleton from "@/components/EventComponentSkeleton";
+import { Event } from "@/types/event";
+import React, { useMemo } from "react";
 
 interface Props {
   readonly isLoading: boolean;

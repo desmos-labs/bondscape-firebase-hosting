@@ -31,7 +31,7 @@ export default function Events() {
 
   if (isMobile || isMd) {
     return (
-      <div className="flex flex-1 h-screen justify-center items-center px-xMobile">
+      <div className="flex flex-1 h-screen px-xMobile">
         <div className="text-white">
           This page is not supported on mobile devices. Please use a desktop
         </div>
@@ -45,8 +45,8 @@ export default function Events() {
       backgroundOverlay={bgOverlay}
       forceNavbarBgVisible={true}
     >
-      <div className="lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto mt-[32px]">
-        <div className="relative flex flex-1 flex-col">
+      <div className="flex lg:pb-12 xl:pb-24 max-w-[70rem] xl:max-w-[90rem] mx-auto mt-[32px]">
+        <div className="relative flex flex-1 flex-col items-center justify-center">
           <EventsTabs
             isLoading={isActuallyLoading}
             activeTab={activeTab}

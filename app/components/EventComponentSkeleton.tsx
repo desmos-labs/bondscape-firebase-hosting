@@ -13,7 +13,7 @@ const EventComponentSkeleton = ({ events }: Props) => {
       return (
         <div
           key={index}
-          className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface gap-[1rem] bondscape-box-shadow-event-card`}
+          className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface gap-[1rem] bondscape-box-shadow-event-card min-w-[540px] xl:min-w-[695px]`}
         >
           <div className="relative w-full h-[16.5rem] xl:h-[23.5rem]">
             <Skeleton className="w-full h-full" borderRadius={12} />

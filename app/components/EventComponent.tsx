@@ -1,13 +1,13 @@
 "use client";
-import React, { useMemo, useRef } from "react";
+import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
+import { useSetDeleteEventModal } from "@/jotai/deleteEventModal";
 import { Event } from "@/types/event";
 import Image from "next/image";
-import useFormatDateToTZ from "@/hooks/timeformat/useFormatDateToTZ";
 import Link from "next/link";
 import { Button } from "primereact/button";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { classNames } from "primereact/utils";
-import { useSetDeleteEventModal } from "@/jotai/deleteEventModal";
+import React, { useMemo, useRef } from "react";
 
 interface Props {
   event: Event;
@@ -38,7 +38,7 @@ const EventComponent = ({ event, isLive, lastItemRef }: Props) => {
   return (
     <Link
       href={`/creator/events/${event.id}`}
-      className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface hover:bg-[#28282D] gap-[1rem] bondscape-box-shadow-event-card transition ease-in-out`}
+      className={`flex flex-col w-full p-[24px] rounded-[24px] bg-bondscape-surface hover:bg-[#28282D] gap-[1rem] bondscape-box-shadow-event-card transition ease-in-out min-w-[540px] xl:min-w-[695px]`}
       ref={lastItemRef}
     >
       <div className="relative w-full h-[16.5rem] xl:h-[23.5rem]">

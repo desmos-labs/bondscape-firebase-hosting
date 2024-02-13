@@ -98,7 +98,7 @@ export default function CreateEvent({ params }: PageProps) {
             }
       }
     >
-      <div className="overflow-x-hidden">
+      <div className="flex flex-grow justify-center items-center overflow-x-hidden">
         <Formik
           enableReinitialize={true}
           validationSchema={validateSchema}

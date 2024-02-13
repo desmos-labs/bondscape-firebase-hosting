@@ -53,9 +53,9 @@ export default function Login() {
       isLoading={loginLoading}
       disableNavbarBgInDesktop={true}
     >
-      <div className="relative w-full flex justify-center">
+      <div className="relative w-full flex justify-center items-center">
         <div className="flex justify-center">
-          <div className="w-[27rem] flex flex-col items-center gap-8 mt-48">
+          <div className="w-[27rem] flex flex-col items-center gap-8">
             <Image
               priority
               alt={"Bondscape Logo with text"}

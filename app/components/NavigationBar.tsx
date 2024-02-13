@@ -63,7 +63,7 @@ const NavigationBar = ({
   const RightButton = useMemo(() => {
     if (
       pathname === "/creator/login" ||
-      pathname === "/creator/privacy" ||
+      pathname === "/privacy" ||
       pathname === "/terms"
     ) {
       return;

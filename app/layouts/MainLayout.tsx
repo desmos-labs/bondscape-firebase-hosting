@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import heroImage from "../../public/bondscape-home-bg-masked.png";
+import BackgroundImage from "@/components/BackgroundImage";
+import Footer from "@/components/Footer";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import NavigationBar from "../components/NavigationBar";
-import BackgroundImage from "../components/BackgroundImage";
+import React from "react";
 import LoadingOverlay from "react-loading-overlay-ts";
+import heroImage from "../../public/bondscape-home-bg-masked.png";
+import NavigationBar from "../components/NavigationBar";
 
 export interface MainLayoutProps {
   readonly backgroundImage?: boolean;
@@ -15,7 +16,6 @@ export interface MainLayoutProps {
   readonly disableNavbarBgInDesktop?: boolean;
   readonly forceNavbarBgVisible?: boolean;
   readonly customClasses?: string;
-  readonly fullScreenHeightOption?: "always" | "onlyDesktop" | "never";
   readonly statusBarMode?: "goBack" | "editDetails";
   readonly statusBarBackOverride?: () => void;
   readonly editButtonHref?: string;
@@ -31,28 +31,10 @@ const MainLayout = (props: MainLayoutProps) => {
     disableNavbarBgInDesktop,
     forceNavbarBgVisible,
     customClasses,
-    fullScreenHeightOption,
     statusBarMode,
     statusBarBackOverride,
     editButtonHref,
   } = props;
-  const [sectionHeight, setSectionHeight] = useState("h-auto");
-
-  useEffect(() => {
-    if (fullScreenHeightOption) {
-      switch (fullScreenHeightOption) {
-        case "always":
-          setSectionHeight("h-screen");
-          break;
-        case "onlyDesktop":
-          setSectionHeight("h-auto lg:h-screen");
-          break;
-        case "never":
-          setSectionHeight("h-auto");
-          break;
-      }
-    }
-  }, [fullScreenHeightOption]);
 
   return (
     <LoadingOverlay
@@ -67,9 +49,7 @@ const MainLayout = (props: MainLayoutProps) => {
         }),
       }}
     >
-      <div
-        className={`${customClasses} relative ${sectionHeight} min-h-screen`}
-      >
+      <div className={`${customClasses} flex flex-col h-dvh`}>
         <div className={`sticky top-0 w-full z-10`}>
           <div className="relative w-full min-w-[375px]">
             <NavigationBar
@@ -94,7 +74,10 @@ const MainLayout = (props: MainLayoutProps) => {
             alt={"Bondscape overlay"}
           />
         )}
-        <main className="w-full">{children}</main>
+        <main className="flex flex-grow w-full">{children}</main>
+        <footer className="relative w-full min-w-[375px]">
+          <Footer />
+        </footer>
       </div>
     </LoadingOverlay>
   );
